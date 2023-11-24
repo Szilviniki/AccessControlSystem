@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
-async function toHash(password:string){
+async function HashPassword(password:string){
     return await bcrypt.hash(password, 9)
 }
 
-export {toHash}
+export {HashPassword}

@@ -1,5 +1,5 @@
 import {PrismaClient} from "@prisma/client"
-import {toHash} from "../../functions/password_functions";
+import {HashPassword} from "../../functions/password_functions";
 
 const prisma = new PrismaClient
 
@@ -14,7 +14,7 @@ async function loginCheck(user: string, password: string) {
                 username: user
             }
         })
-        return a.password === await toHash(password);
+        return a.password === await HashPassword(password);
 
     } catch (e) {
         return false

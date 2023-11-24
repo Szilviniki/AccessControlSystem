@@ -36,6 +36,7 @@ model gate_logs {
   person_id Int
   is_guest  Boolean? @default(dbgenerated("b'0'")) @db.Bit(1)
   timestamp DateTime @db.DateTime(0)
+  /// TODO:Think of a way to log traffic flow direction
 }
 
 model groups {
@@ -77,15 +78,16 @@ model parents {
   name           String           @db.VarChar(75)
   phone          String?          @db.VarChar(20)
   email          String?          @db.VarChar(100)
-  isPrimary      Boolean          @db.Bit(1)
+  is_primary     Boolean          @db.Bit(1)
   student_parent student_parent[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model priviliges {
   id                 Int                  @id @default(autoincrement())
+  name               String               @db.VarChar(50)
   type               Int
-  description        String?              @db.VarChar(256)
+  description        String?              @db.VarChar(255)
   student_priviliges student_priviliges[]
 }
 
@@ -93,7 +95,8 @@ model priviliges {
 model punishments {
   id                   Int                    @id @default(autoincrement())
   name                 String                 @db.VarChar(50)
-  type                 Int?
+  type                 Int
+  description          String?                @db.VarChar(255)
   students_punishments students_punishments[]
 }
 
@@ -101,7 +104,7 @@ model punishments {
 model roles {
   id                    Int       @id @default(autoincrement())
   name                  String    @db.VarChar(50)
-  can_edit_privilige    Boolean?  @default(dbgenerated("b'0'")) @db.Bit(1)
+  can_edit_privilege    Boolean?  @default(dbgenerated("b'0'")) @db.Bit(1)
   can_edit_student_list Boolean?  @default(dbgenerated("b'0'")) @db.Bit(1)
   can_approve_guest     Boolean?  @default(dbgenerated("b'0'")) @db.Bit(1)
   can_write_message     Boolean?  @default(dbgenerated("b'1'")) @db.Bit(1)
