@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import login from "./login/routes/login";
+import login from "./login/routes/RLogin";
+import students from "./students/routes/RStudents";
 
 const app = express()
 const port = 4001;
@@ -11,6 +12,7 @@ app.use(express.urlencoded(({
 )
 app.use(cors())
 app.use("/login",login)
+app.use("/students",students)
 app.listen(port, ()=>{
     console.log(`app listening on ${port}`)
 })
