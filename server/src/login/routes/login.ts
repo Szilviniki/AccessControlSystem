@@ -1,9 +1,7 @@
-import {PrismaClient} from "@prisma/client";
 import express, {Request, Response} from "express";
 import {dumbLoginCheck, loginCheck} from "../services/login";
 
 const login = express.Router()
-const prisma = new PrismaClient
 
 //validates provided login credentials
 login.get("/check", async (req: Request, res: Response) => {
