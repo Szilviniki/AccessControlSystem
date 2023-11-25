@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-title:"Access Control System",
+   title:"Access Control System",
 }
 
 export default function RootLayout({
@@ -18,12 +18,8 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en">
-      <head>
-      </head>
       <body className={inter.className}>
-      <Container>
         {children}
-      </Container>
       </body>
       </html>
   )

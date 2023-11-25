@@ -1,8 +1,7 @@
 "use client";
-import {IInput} from "@/interfaces/loginForm";
-import {Form as BSForm, Button, Col} from 'react-bootstrap';
-import React, {useState} from "react";
-
+import { IInput } from "@/interfaces/loginForm";
+import { Form as BSForm, Button, Col } from 'react-bootstrap';
+import React, { useState } from "react";
 
 export default function Form({
                                  inputs,
@@ -18,40 +17,44 @@ export default function Form({
             e.preventDefault();
             onSubmitFunction(formInputValues);
         }}>
-            {inputs && inputs.map((input: IInput) => {
-                let renderInput = (
-                    <BSForm.Control
-
-                        className="inputFc"
-                        placeholder={input.label}
-                        type={input.type}
-                        id={input.id}
-                    />
-                );
-                if (input.type === "button") {
-                    renderInput = (
-                        <Col sm={12}>
-                            <Button
-                                id={input.id}
-                                type="submit"
-                                className="loginBt"
-                            >
-                                {input.label}
-                            </Button>
-                        </Col>
-                    );
-                }
-
+            {inputs && inputs.map((input: IInput, index) => {
                 return (
                     <BSForm.Group
+                        key={index}
                         className="mb-3"
-                        controlId={input.id}
+                        controlId={`form-${input.id}`}
                     >
-                        {input.type !== "button"}
-                        {renderInput}
+                        {input.type !== "button" ? (
+                            <BSForm.Control
+                                className="inputFc"
+                                placeholder={input.label}
+                                type={input.type}
+                                id={input.id}
+                                onChange={(e) => {
+                                    setFormInputValues((prevValues) => ({
+                                        ...prevValues,
+                                        [input.id]: e.target.value,
+                                    }));
+                                }}
+                            />
+                        ) : (
+                            <Col sm={12}>
+                                <Button
+                                    type="submit"
+                                    className="loginBt"
+                                >
+                                    {input.label}
+                                </Button>
+                            </Col>
+                        )}
                     </BSForm.Group>
                 );
             })}
         </form>
     );
+}
+
+export interface FormValues {
+    username: string;
+    password: string;
 }
