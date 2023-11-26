@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model faculty {
+  id                                             Int                    @id @default(autoincrement())
+  group_id                                       Int?
+  name                                           String                 @db.VarChar(75)
+  present                                        Boolean                @db.Bit(1)
+  password                                       String                 @db.VarChar(128)
+  phone                                          String?                @db.VarChar(20)
+  email                                          String?                @db.VarChar(45)
+  role_id                                        Int?
+  username                                       String                 @unique(map: "username_UNIQUE") @db.VarChar(20)
+  groups_faculty_group_idTogroups                groups?                @relation("faculty_group_idTogroups", fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "faculty_groups_id_fk")
+  roles                                          roles?                 @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "faculty_roles_id_fk")
+  groups_groups_leader_idTofaculty               groups[]               @relation("groups_leader_idTofaculty")
+  message_user_message_user_reciever_idTofaculty message_user[]         @relation("message_user_reciever_idTofaculty")
+  message_user_message_user_sender_idTofaculty   message_user[]         @relation("message_user_sender_idTofaculty")
+  student_priviliges                             student_priviliges[]
+  students_punishments                           students_punishments[]
+
+  @@index([group_id], map: "faculty_groups_id_fk")
+  @@index([role_id], map: "faculty_roles_id_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model gate_logs {
+  id        Int      @id @default(autoincrement())
+  person_id Int
+  is_guest  Boolean? @default(dbgenerated("b'0'")) @db.Bit(1)
+  timestamp DateTime @db.DateTime(0)
+}
+
+model groups {
+  id                                Int        @id @default(autoincrement())
+  leader_id                         Int?
+  group_name                        String     @db.VarChar(100)
+  faculty_faculty_group_idTogroups  faculty[]  @relation("faculty_group_idTogroups")
+  faculty_groups_leader_idTofaculty faculty?   @relation("groups_leader_idTofaculty", fields: [leader_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "groups_faculty_id_fk")
+  students                          students[]
+
+  @@index([leader_id], map: "groups_faculty_id_fk")
+}
+
+model message_user {
+  message_id                                Int
+  sender_id                                 Int
+  reciever_id                               Int
+  faculty_message_user_reciever_idTofaculty faculty  @relation("message_user_reciever_idTofaculty", fields: [reciever_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "message_user_faculty_reciever_id_fk")
+  faculty_message_user_sender_idTofaculty   faculty  @relation("message_user_sender_idTofaculty", fields: [sender_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "message_user_faculty_sender_id_fk")
+  messages                                  messages @relation(fields: [message_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "message_user_messages_id_fk")
+
+  @@id([message_id, reciever_id, sender_id])
+  @@index([reciever_id], map: "message_user_faculty_reciever_id_fk")
+  @@index([sender_id], map: "message_user_faculty_sender_id_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model messages {
+  id           Int            @id @default(autoincrement())
+  subject      String         @db.VarChar(128)
+  message      String         @db.VarChar(512)
+  sent_on      DateTime?      @db.Date
+  is_important Boolean?       @db.Bit(1)
+  message_user message_user[]
+}
+
+model parents {
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(75)
+  phone          String?          @db.VarChar(20)
+  email          String?          @db.VarChar(100)
+  is_primary     Boolean          @db.Bit(1)
+  student_parent student_parent[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model priviliges {
+  id                 Int                  @id @default(autoincrement())
+  type               Int
+  description        String?              @db.VarChar(255)
+  name               String               @db.VarChar(50)
+  student_priviliges student_priviliges[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model punishments {
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @db.VarChar(50)
+  type                 Int
+  description          String?                @db.VarChar(255)
+  students_punishments students_punishments[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model roles {
+  id                    Int       @id @default(autoincrement())
+  name                  String    @db.VarChar(50)
+  can_edit_privilege    Boolean?  @default(dbgenerated("b'0'")) @db.Bit(1)
+  can_edit_student_list Boolean?  @default(dbgenerated("b'0'")) @db.Bit(1)
+  can_approve_guest     Boolean?  @default(dbgenerated("b'0'")) @db.Bit(1)
+  can_write_message     Boolean?  @default(dbgenerated("b'1'")) @db.Bit(1)
+  faculty               faculty[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model student_parent {
+  student_id Int
+  parent_id  Int
+  parents    parents  @relation(fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student_parent_parents_id_fk")
+  students   students @relation(fields: [student_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student_parent_students_id_fk")
+
+  @@id([student_id, parent_id])
+  @@index([parent_id], map: "student_parent_parents_id_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model student_priviliges {
+  student_id   Int
+  privilige_id Int
+  granter_id   Int
+  granted_on   DateTime   @db.Date
+  valid_until  DateTime?  @db.Date
+  faculty      faculty    @relation(fields: [granter_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student_priviliges_faculty_id_fk")
+  priviliges   priviliges @relation(fields: [privilige_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student_priviliges_priviliges_id_fk")
+  students     students   @relation(fields: [student_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student_priviliges_students_id_fk")
+
+  @@id([student_id, privilige_id, granter_id, granted_on])
+  @@index([granter_id], map: "student_priviliges_faculty_id_fk")
+  @@index([privilige_id], map: "student_priviliges_priviliges_id_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model students {
+  id                   Int                    @id @default(autoincrement())
+  group_id             Int
+  age                  Int
+  name                 String                 @db.VarChar(75)
+  is_in                Boolean                @default(dbgenerated("b'0'")) @db.Bit(1)
+  phone                String?                @db.VarChar(20)
+  email                String?                @db.VarChar(100)
+  student_parent       student_parent[]
+  student_priviliges   student_priviliges[]
+  groups               groups                 @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "students_groups_id_fk")
+  students_punishments students_punishments[]
+
+  @@index([group_id], map: "students_groups_id_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model students_punishments {
+  punishment_id Int
+  student_id    Int
+  assigner_id   Int
+  assigned_on   DateTime    @db.Date
+  ends_on       DateTime?   @db.Date
+  faculty       faculty     @relation(fields: [assigner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "students_punishments_faculty_id_fk")
+  punishments   punishments @relation(fields: [punishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "students_punishments_punishments_id_fk")
+  students      students    @relation(fields: [student_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "students_punishments_students_id_fk")
+
+  @@id([punishment_id, student_id, assigner_id, assigned_on])
+  @@index([assigner_id], map: "students_punishments_faculty_id_fk")
+  @@index([student_id], map: "students_punishments_students_id_fk")
+}
