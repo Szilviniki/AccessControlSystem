@@ -3,10 +3,10 @@ import { IInput } from "@/interfaces/loginForm";
 import { Form as BSForm, Button, Col } from 'react-bootstrap';
 import React, { useState } from "react";
 
-export default function Form({
-                                 inputs,
-                                 onSubmitFunction
-                             }: {
+export default function CustomForm({
+                                       inputs,
+                                       onSubmitFunction
+                                   }: {
     inputs: Array<IInput>,
     onSubmitFunction: Function
 }) {
@@ -22,14 +22,12 @@ export default function Form({
                     <BSForm.Group
                         key={index}
                         className="mb-3"
-                        controlId={`form-${input.id}`}
                     >
                         {input.type !== "button" ? (
                             <BSForm.Control
                                 className="inputFc"
                                 placeholder={input.label}
                                 type={input.type}
-                                id={input.id}
                                 onChange={(e) => {
                                     setFormInputValues((prevValues) => ({
                                         ...prevValues,

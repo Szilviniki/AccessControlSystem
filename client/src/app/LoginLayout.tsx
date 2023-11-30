@@ -19,14 +19,15 @@ export default function LoginLayout({
 }) {
     return (
 
-            <Container>
-                <Row className=" justify-content-center ">
-                    <Col sm={8} className="align-items-center d-flex" style={{height: '100vh'}}>
-                        <Card className="loginC w-100">
+        <Container>
+            <Row className=" justify-content-center ">
+                <Col sm={8} md={8} lg={8} className="align-items-center d-flex" style={{height: '100vh'}}>
+                    <Card className="loginC w-100  justify-content-center ">
                             {children}
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
-        )
+
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    )
 }
