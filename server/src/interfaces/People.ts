@@ -14,7 +14,8 @@ interface IGroup {
     group_name:number,
 }
 
-interface IStudent {
+interface IStudent{
+    id:string,
     group_id:number,
     age:number,
     name:string,

@@ -6,9 +6,9 @@ interface IMessage {
 }
 
 interface ILogs {
-    person_id:number,
-    is_guest:Boolean
-    timestamp:Date
+    person_id?:number,
+    is_guest?:boolean|null
+    timestamp:string
 }
 
 export {ILogs, IMessage}

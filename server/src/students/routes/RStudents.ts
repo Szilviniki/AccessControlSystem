@@ -1,6 +1,6 @@
 import express, {Request, Response} from "express";
 import {IStudent} from "../../interfaces/People";
-import {AddStudent, RemoveStudent} from "../services/SStudents";
+import {AddStudent, GetAllStudents, GetStudent, RemoveStudent} from "../services/SStudents";
 
 const students = express.Router()
 
@@ -10,6 +10,7 @@ students.get("/", (res:Response)=>{
 
 students.post("/add", async (req:Request, res:Response)=>{
     const studentData:IStudent = {
+        id:req.body.id,
         name:req.body.name,
         group_id:parseInt(req.body.group_id),
         age:parseInt(req.body.age),
@@ -19,18 +20,36 @@ students.post("/add", async (req:Request, res:Response)=>{
     }
 const result = await AddStudent(studentData)
     if(result.success){
-        res.status(200).send(result.created)
+        res.status(200).send(result)
     }else{
-        res.status(400).send(result.error)
+        res.status(400).send(result)
     }
 })
 
 students.delete("/delete", async (req:Request, res:Response)=>{
-    const result = await RemoveStudent(parseInt(req.body.student_id))
+    const result = await RemoveStudent(req.body.student_id)
     if (result.success){
         res.status(200).send(result)
     }else {
         res.status(400).send(result)
+    }
+})
+
+students.get("/get-all", async (res:Response)=>{
+    const result = await GetAllStudents()
+    if(result.success){
+        res.status(200).send(result)
+    }else{
+        res.status(200).send(result)
+    }
+})
+
+students.get("/get", async (req:Request, res:Response)=>{
+    const result = await GetStudent(req.body.id)
+    if(result.success){
+        res.status(200).send(result.message)
+    }else{
+        res.status(400).send(result.message)
     }
 })
 

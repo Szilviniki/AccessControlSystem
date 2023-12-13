@@ -12,7 +12,7 @@ model faculty {
   id                                             Int                    @id @default(autoincrement())
   group_id                                       Int?
   name                                           String                 @db.VarChar(75)
-  present                                        Boolean                @db.Bit(1)
+  is_in                                          Boolean                @db.Bit(1)
   password                                       String                 @db.VarChar(128)
   phone                                          String?                @db.VarChar(20)
   email                                          String?                @db.VarChar(45)
@@ -33,9 +33,9 @@ model faculty {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model gate_logs {
   id        Int      @id @default(autoincrement())
-  person_id Int
+  person_id Int?
   is_guest  Boolean? @default(dbgenerated("b'0'")) @db.Bit(1)
-  timestamp DateTime @db.DateTime(0)
+  timestamp String?  @db.VarChar(255)
 }
 
 model groups {
@@ -112,7 +112,7 @@ model roles {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model student_parent {
-  student_id Int
+  student_id String   @db.VarChar(20)
   parent_id  Int
   parents    parents  @relation(fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student_parent_parents_id_fk")
   students   students @relation(fields: [student_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "student_parent_students_id_fk")
@@ -123,7 +123,7 @@ model student_parent {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model student_priviliges {
-  student_id   Int
+  student_id   String     @db.VarChar(20)
   privilige_id Int
   granter_id   Int
   granted_on   DateTime   @db.Date
@@ -139,7 +139,7 @@ model student_priviliges {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model students {
-  id                   Int                    @id @default(autoincrement())
+  id                   String                 @id @db.VarChar(20)
   group_id             Int
   age                  Int
   name                 String                 @db.VarChar(75)
@@ -157,7 +157,7 @@ model students {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model students_punishments {
   punishment_id Int
-  student_id    Int
+  student_id    String      @db.VarChar(20)
   assigner_id   Int
   assigned_on   DateTime    @db.Date
   ends_on       DateTime?   @db.Date
