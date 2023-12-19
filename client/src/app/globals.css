@@ -2,10 +2,7 @@ body{
   background: #E5E4E2;
   height: 100vh;
 }
-.grid-container {
-  background:  #D9D9D9;
-  grid-gap: 0;
-}
+
 .loginC{
   background-image: url("../../public/images/house-lock.svg");
   background-repeat: no-repeat;
@@ -75,9 +72,14 @@ body{
 #problematic{
   background: #E29578 ;
 }
-#Nav{
-  background: #006D77;
+.Nav{
+  background: #FAFAFA;
 }
 .navItem{
+  font-color: #E5E4E2;
+
+}
+.Vertical-Nav{
+  height: 100vh;
   background: #006D77;
 }

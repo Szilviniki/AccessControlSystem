@@ -2,10 +2,13 @@ import type {Metadata} from 'next';
 import {Inter} from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../globals.css';
-import {Col, Container, Image, Nav, Row} from 'react-bootstrap';
+import {Col, Container, Nav, Row} from 'react-bootstrap';
 import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import kep from '@/../public/images/hous.svg';
+import NavItemStudents from "@/components/NavItemStudents";
+import NavItemNotes from "@/components/NavItemNotes";
+import NavItemMail from "@/components/NavItemMail";
+
+
 
 const inter = Inter({subsets: ['latin']});
 
@@ -20,19 +23,33 @@ export default function HomePLayout({
 }) {
     return (
         <>
-            <Row style={{background: "red"}}>
-                <Col sm={{span: 3, offset: 2}}>
-                    <h2>Tűz</h2>
+            <Row>
+                <Col md={2} className="Vertical-Nav">
+                    <Nav defaultActiveKey="/home" className="flex-column">
+                       <NavItemStudents/>
+                        <NavItemMail/>
+                        <NavItemNotes/>
+
+                    </Nav>
                 </Col>
-                <Col sm={{span: 6, offset: 2}}>
-                    <h2>Jó napot!</h2>
+                <Col md={10}>
+                    <Row className="Nav">
+                        <Col sm={{span: 3, offset: 2}}>
+                            <h2>Tűz</h2>
+                        </Col>
+                        <Col sm={{span: 6, offset: 1}}>
+                            <h2>Jó napot!</h2>
+                        </Col>
+                    </Row>
+                    <Container>
+                        <Row>
+                            <Col sm={12}>{children}</Col>
+                        </Row>
+                    </Container>
                 </Col>
             </Row>
-            <Container>
-                <Row className="grid-container">
-                    <Col sm={12}>{children}</Col>
-                </Row>
-            </Container>
+
+
         </>
 );
 }

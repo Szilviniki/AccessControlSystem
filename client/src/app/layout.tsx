@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
    title:"Access Control System",
+    
 }
 
 export default function RootLayout({
