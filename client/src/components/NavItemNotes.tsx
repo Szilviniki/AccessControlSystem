@@ -5,9 +5,9 @@ import React from "react";
 export default function NavItemStudents() {
     return(
         <Nav.Link eventKey='/notes' className="Nav-Item">
-            <img src='/images/pencil.svg' alt="Feljegyzések kép"/> Feljegyzések
+            <p className="NavLink"><img src='/images/pencil.svg' alt="Feljegyzések kép"/> Feljegyzések</p>
         </Nav.Link>
 
 
-    )
+)
 }

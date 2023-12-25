@@ -1,13 +1,32 @@
 'use client'
-import {Card, Col, Row} from "react-bootstrap";
+import {Card, Col, Nav, NavbarText, NavLink, Row} from "react-bootstrap";
 import React from "react";
 import HomePLayout from "@/app/home/HomePLayout";
+import {getCookie, setCookie} from "cookies-next";
+import VerticalNavigation from "@/components/VerticalNavigation";
+import Navbar from "react-bootstrap/Navbar";
+import {cookies} from "next/headers";
 
 export default function HomePage() {
+const user = getCookie('user');
     return (
         <>
             <HomePLayout>
-                <Row>
+               <Row>
+                <Col md={2}>
+                    <VerticalNavigation/>
+                </Col>
+                <Col md={10}>
+                    <Row>
+                    <Navbar className="fixed-top Top-Nav" >
+                        <Navbar.Collapse className="justify-content-end ">
+                        <NavbarText className="mx-3" >Jó napot! {user}</NavbarText>
+                        </Navbar.Collapse>
+                    </Navbar>
+
+
+                </Row>
+                <Row className="margin">
                     <Col>
                         <Card className="CardHP" id="present">
                             <h1>jelen</h1>
@@ -41,6 +60,8 @@ export default function HomePage() {
                         </Col>
                     </Col>
                 </Row>
+                </Col>
+               </Row>
             </HomePLayout>
         </>
     );

@@ -5,9 +5,9 @@ import React from "react";
 export default function NavItemStudents() {
     return(
         <Nav.Link eventKey="/student" className="Nav-Item">
-            <img src='/images/people.svg' alt="Diákok kép" /> Diákok
+            <p className="NavLink"><img src='/images/people.svg' alt="Diákok kép"/> Diákok</p>
         </Nav.Link>
 
 
-    )
+)
 }

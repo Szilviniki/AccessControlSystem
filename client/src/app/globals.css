@@ -17,10 +17,8 @@ body{
   height: 70%;
 
 }
-#loginImage{
+.loginImage{
   max-width: 50%;
-  height: auto;
-  margin:10px;
 }
 .loginBt, .loginBt:hover{
   background: #006D77;
@@ -75,11 +73,28 @@ body{
 .Nav{
   background: #FAFAFA;
 }
-.navItem{
-  font-color: #E5E4E2;
-
-}
 .Vertical-Nav{
   height: 100vh;
+  width: 36vh;
   background: #006D77;
+  padding-bottom:2% ;
+  z-index: 2;
+}
+.Top-Nav{
+  background: #FAFAFA;
+  height: 7%;
+  z-index: 1;
+ margin-bottom: 8%;
+}
+.Nav-Img{
+  height: 20%;
+  margin-bottom: 10px;
+  margin-top: 20px ;
+}
+.margin{
+  margin-top: 5%;
+  margin-left: 1%;
+}
+.NavLink{
+  color: #FAFAFA;
 }

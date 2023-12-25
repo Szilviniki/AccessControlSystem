@@ -4,8 +4,8 @@ import React from "react";
 
 export default function NavItemStudents() {
     return(
-        <Nav.Link eventKey='/home' className="Nav-Item">
-            <img src='/images/hous.svg' alt="Kezdőlap kép"  /> Kezdőlap
+        <Nav.Link eventKey='/home'>
+            <p className="NavLink"><img src='/images/hous.svg' alt="Kezdőlap kép"/> Kezdőlap</p>
         </Nav.Link>
 
 
