@@ -1,15 +1,17 @@
 'use client'
-import NavItemStudents from "@/components/NavItemStudents";
-import NavItemMail from "@/components/NavItemMail";
-import NavItemNotes from "@/components/NavItemNotes";
+import NavItemStudents from "@/components/NavigationItem/NavItemStudents";
+import NavItemMail from "@/components/NavigationItem/NavItemMail";
+import NavItemNotes from "@/components/NavigationItem/NavItemNotes";
 import {Col, Nav, Row} from "react-bootstrap";
-import NavItemSettings from "@/components/NavItemSettings";
-import NavItemExit from "@/components/NavItemExit";
-import NavItemHome from "@/components/NavItemHome";
+import NavItemSettings from "@/components/NavigationItem/NavItemSettings";
+import NavItemExit from "@/components/NavigationItem/NavItemExit";
+import NavItemHome from "@/components/NavigationItem/NavItemHome";
 import React from "react";
 
-export default function VerticalNavigation() {
+export default function VerticalNavigation(   ) {
+    const pages =["NavItemHome","NavItemStudents","NavItemMail","NavItemNotes","NavItemSettings"]
     return(
+
         <Row>
             <Col md={12}>
         <Nav defaultActiveKey="/home" className="flex-column position-fixed Vertical-Nav" >

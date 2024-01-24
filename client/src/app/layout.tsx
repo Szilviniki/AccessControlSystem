@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './globals.css'
 import React from "react";
+import {CookiesProvider} from "next-client-cookies/server";
+import {Col, Container, Row} from "react-bootstrap";
+import VerticalNavigation from "@/components/VerticalNavigation";
+import TopNavigation from "@/components/TopNavigation";
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,9 +20,13 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en">
-      <body className={inter.className}>
-        {children}
-      </body>
+          <body className={inter.className}>
+              <CookiesProvider>
+                  <Container fluid>
+                      {children}
+                  </Container>
+              </CookiesProvider>
+          </body>
       </html>
   )
 }
