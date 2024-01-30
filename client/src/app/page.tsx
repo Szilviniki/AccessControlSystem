@@ -1,95 +1,50 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import {Card, Col, Row} from "react-bootstrap";
+import React from "react";
+import {getCookies} from "next-client-cookies/server";
+import MainTemplate from "@/app/MainTemplate";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+export default function HomePage() {
+    const email = cookies().get("email");
+    return(
+        <>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <MainTemplate>
+                <Row>
+                    <Col>
+                        <Card className="CardHP" id="present">
+                            <h1>jelen</h1>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card className="CardHP" id="not-present">
+                            <h1>jelenleg nincs bent</h1>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card className="CardHP" id="problematic">
+                            <h1>Problémás diákok</h1>
+                        </Card>
+                    </Col>
+                </Row>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+                <Row>
+                    <Col>
+                        <Col>
+                            <Card className="CardHP">
+                                <h1>Legutóbbi ki és belépések</h1>
+                            </Card>
+                        </Col>
+                    </Col>
+                    <Col>
+                        <Col>
+                            <Card className="CardHP">
+                                <h1>16:00 után kint tartozkodhat</h1>
+                            </Card>
+                        </Col>
+                    </Col>
+                </Row>
+        </MainTemplate>
+        </>
+    )}
