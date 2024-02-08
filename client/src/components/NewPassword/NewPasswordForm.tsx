@@ -4,13 +4,14 @@ import { Form, Button } from "react-bootstrap"
 import Notiflix from "notiflix";
 import {useCookies} from "next-client-cookies";
 import {login} from "@/actions/loginForm";
+import NewPassword from "@/app/newpassword/page";
 
-function LoginForm() {
+function NewPasswordForm() {
     const cookies = useCookies();
 
-    async function onLogin(formData: FormData) {
+    async function newpassword(formData: FormData) {
 
-        const res = await login(formData);
+        const res = await newpassword(formData);
         console.log("action válasz: ", res)
         if (!res.error) {
             cookies.set("user", JSON.stringify(res))
@@ -28,29 +29,29 @@ function LoginForm() {
         }
     }
     return (
-        <form action={onLogin}>
+        <form action={NewPassword}>
             <Form.Group>
                 <Form.Control
-                    type="email"
-                    name="email"
-                    placeholder="Email cím"
+                    type="password"
+                    name="pasword1"
+                    placeholder="Jelszó"
                     className="inputFc"
                 />
             </Form.Group>
             <Form.Group>
                 <Form.Control
                     type="password"
-                    name="password"
-                    placeholder="Jelszó"
+                    name="password2"
+                    placeholder="Jelszó megerősítés"
                     className="inputFc"
                 />
             </Form.Group>
             <Form.Group>
-                <Button type="submit" className="mt-2 loginBt">Bejelentkezés</Button>
+                <Button type="submit" className="mt-2 loginBt">Mentés</Button>
             </Form.Group>
         </form>
     );
 }
 
 
-export default LoginForm;
+export default NewPasswordForm;

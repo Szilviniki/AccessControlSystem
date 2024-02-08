@@ -1,5 +1,4 @@
-import {Col, Container, Row} from "react-bootstrap";
-import VerticalNavigation from "@/components/VerticalNavigation";
+import {Container} from "react-bootstrap";
 import TopNavigation from "@/components/TopNavigation";
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';

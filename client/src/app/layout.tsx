@@ -2,9 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import React from "react";
 import {CookiesProvider} from "next-client-cookies/server";
-import {Col, Container, Row} from "react-bootstrap";
-import VerticalNavigation from "@/components/VerticalNavigation";
-import TopNavigation from "@/components/TopNavigation";
+import { Container} from "react-bootstrap";
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,10 +17,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-      <html lang="en">
+      <html lang="hu">
           <body className={inter.className}>
               <CookiesProvider>
-                  <Container fluid className="p-0">
+                  <Container fluid className="p-0 w-100" style={{height: "100vh"}}>
                       {children}
                   </Container>
               </CookiesProvider>
