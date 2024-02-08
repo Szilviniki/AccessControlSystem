@@ -2,10 +2,11 @@
 import {Col, Row, Image} from "react-bootstrap";
 import {getCookie, setCookie} from "cookies-next";
 import LoginForm from "@/components/Login/LoginForm";
+import Template from "@/app/Template";
 
 export default function Login() {
     return (
-        <>
+        <Template>
             <Row className=" justify-content-center ">
                 <Col sm={6} md={12} lg={6}>
                     <Image src="images/person-circle.svg"
@@ -19,6 +20,6 @@ export default function Login() {
                     <LoginForm />
                 </Col>
             </Row>
-        </>
+        </Template>
 );
 }

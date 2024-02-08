@@ -19,12 +19,7 @@ const data = () => {
                 },
             },
             {
-                label: 'Osztály',
-                field: 'group',
-                width: 270,
-            },
-            {
-                label: 'Csoport',
+                label: 'Beosztás',
                 field: 'class',
                 width: 200,
             },
@@ -328,13 +323,12 @@ export default function StudentPage(){
                             hover
                             entriesOptions={[10, 20, 50, 100]}
                             entries={10}
-                            entriesLabel="Diákok száma az oldalon"
+                            entriesLabel="Dolgozók száma"
                             pagesAmount={4}
                             data={data()}
                             materialSearch={true}
                             searchLabel="Keresés"
-                            bordered-color="red"
-                            noRecordsFoundLabel="Nem található diák"
+                            noRecordsFoundLabel="Nem található dolgozó"
                             paging={true}
                             paginationLabel={["<", ">"]}
                             info={false}
@@ -345,5 +339,5 @@ export default function StudentPage(){
                 </CDBCard>
             </CDBContainer>
         </MainTemplate>
-)
+    )
 }
