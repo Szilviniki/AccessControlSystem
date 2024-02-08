@@ -30,6 +30,23 @@ public class StudentsController : ControllerBase
         }
     }
 
+    [HttpGet("GetExtended")]
+    public IActionResult Details(Guid id)
+    {
+        try
+        {
+            if (!_sql.Students.Any(x => x.Id == id)) return NotFound();
+            var info = _sql.ExtendedStudents.Where(x => x.StudentId == id);
+            Console.WriteLine(info);
+            return Ok(info);
+
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {

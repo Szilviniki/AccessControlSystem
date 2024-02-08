@@ -15,13 +15,13 @@ public class LoginController : ControllerBase
     }
 
     [HttpGet("GetDummy")]
-    public async Task<IActionResult> DummyCheck(string email, string password)
+    public IActionResult DummyCheck(string email, string password)
     {
         try
         {
             if (!_sql.Faculties.Any(x => x.Email == email && x.Password == password)) return BadRequest("No match");
             {
-                var role = await _sql.PersonRoles.SingleAsync(x =>
+                var role =  _sql.PersonRoles.Single(x =>
                     x.Users.Single(y => y.Email == email).RoleId == x.Id);
                 return Ok(role);
             }
@@ -32,14 +32,14 @@ public class LoginController : ControllerBase
         }
     }
 
-    [HttpGet("Get")]
-    public async Task<IActionResult> Check(string email, string password)
+    [HttpGet("Check")]
+    public IActionResult Check(string email, string password)
     {
         try
         {
-            var person = await _sql.Faculties.Include(faculty => faculty.Role).SingleAsync(x => x.Email == email);
+            var person = _sql.Faculties.Single(x => x.Email == email);
             if (!BCrypt.Net.BCrypt.EnhancedVerify(password, person.Password)) return BadRequest("No match");
-            var role = person.Role;
+             var role = _sql.PersonRoles.Single(x => x.Id == person.RoleId);
             return Ok(role);
         }
         catch (Exception e)
