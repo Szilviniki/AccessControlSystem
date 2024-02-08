@@ -22,11 +22,12 @@ namespace DB_Module
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudentRestriction>().HasKey(x => new { x.StudentId, x.RestrictionId });
-
-            // modelBuilder.Entity<Role>().HasMany<Faculty>()
-            //                            .WithOne(x => x.Role)
-            //                            .HasForeignKey(x => x.RoleId)
-            //                            .IsRequired(true);
+            modelBuilder.Entity<ExtendedStudent>(ex =>
+            {
+                ex.HasNoKey();
+                ex.ToView("ExtendedStudents");
+            }
+            );
 
             base.OnModelCreating(modelBuilder);
         }
@@ -42,5 +43,6 @@ namespace DB_Module
         public DbSet<StudentRestriction> StudentRestrictions { get; set; }
         public DbSet<StudentPrivilege> StudentPrivileges { get; set; }
         public DbSet<StudentParent> studentParents { get; set; }
+        public DbSet<ExtendedStudent> ExtendedStudents { get; }
     }
 }

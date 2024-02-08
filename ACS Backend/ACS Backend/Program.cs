@@ -1,15 +1,27 @@
-using DB_Module;
 using Microsoft.EntityFrameworkCore;
+using FluentScheduler;
 
 namespace ACS_Backend
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
+            Registry registry = new Registry();
+
+            /* 
+
+
+             ScheduledTasks st = new ScheduledTasks(sql);
+
+             st.EveryoneOut();
+             registry.Schedule(st.EveryoneOut).ToRunEvery(0).Weeks().On(DayOfWeek.Saturday).At(09, 00);*/
+
             var builder = WebApplication.CreateBuilder(args);
 
-            SQL.connectionString = builder.Configuration.GetConnectionString("SQL");
+            SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -34,7 +46,6 @@ namespace ACS_Backend
 
 
             app.MapControllers();
-
             app.Run();
         }
     }
