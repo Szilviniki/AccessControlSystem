@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ACS_Backend.Controllers;
 
@@ -31,15 +32,15 @@ public class StudentsController : ControllerBase
     }
 
     [HttpGet("GetExtended")]
-    public IActionResult Details(Guid id)
+    public IActionResult Details(int cardId)
     {
         try
         {
-            if (!_sql.Students.Any(x => x.Id == id)) return NotFound();
-            var info = _sql.ExtendedStudents.Where(x => x.StudentId == id);
+            if (!_sql.Students.Any(x => x.CardId == cardId)) return NotFound();
+            var info = this._sql.ExtendedStudents.FromSqlRaw(($"Select * from [StudentExtended] where[cardId]={cardId} "));
+
             Console.WriteLine(info);
             return Ok(info);
-
         }
         catch (Exception e)
         {
