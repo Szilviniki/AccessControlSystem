@@ -1,28 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Data;
+using ACS_Backend.Exceptions;
+using ACS_Backend.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
 
 [Route("api/v1/[controller]")]
 public class StudentsController : ControllerBase
 {
-    private SQL _sql;
+    private readonly StudentService _studentService;
 
-    public StudentsController(SQL sql)
+    public StudentsController(StudentService studentService)
     {
-        _sql = sql;
+        _studentService = studentService;
     }
 
-    [HttpGet("Get")]
+    [HttpGet("Get/{id}")]
     public IActionResult Get(Guid id)
     {
         try
         {
-            if (!_sql.Students.Any(x => id == x.Id))
-            {
-                return NotFound();
-            }
-
-            return Ok(_sql.Students.Single(x => x.Id == id));
+            var student = _studentService.GetStudent(id);
+            return Ok(student);
+        }
+        catch (ItemNotFoundException)
+        {
+            return StatusCode(404);
         }
         catch (Exception e)
         {
@@ -30,29 +33,13 @@ public class StudentsController : ControllerBase
         }
     }
 
-    [HttpGet("GetExtended")]
-    public IActionResult Details(Guid id)
-    {
-        try
-        {
-            if (!_sql.Students.Any(x => x.Id == id)) return NotFound();
-            var info = _sql.ExtendedStudents.Where(x => x.StudentId == id);
-            Console.WriteLine(info);
-            return Ok(info);
-
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
 
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
         try
         {
-            return Ok(_sql.Students);
+            return Ok(_studentService.GetAllStudents());
         }
         catch (Exception e)
         {
@@ -65,13 +52,12 @@ public class StudentsController : ControllerBase
     {
         try
         {
-            if (_sql.Students.Any(x => x.CardId == student.CardId)) return BadRequest("Already exists");
-
-            student.Id = Guid.NewGuid();
-            student.BirthDate = student.BirthDate.Date;
-            _sql.Students.Add(student);
-            await _sql.SaveChangesAsync();
-            return StatusCode(201, "Created");
+            await _studentService.AddStudent(student);
+            return StatusCode(201);
+        }
+        catch (ConstraintException)
+        {
+            return StatusCode(409);
         }
         catch (Exception e)
         {
@@ -84,12 +70,16 @@ public class StudentsController : ControllerBase
     {
         try
         {
-            if (!_sql.Students.Any(x => x.Id == updatedStudent.Id)) return NotFound("Student not found!");
-            {
-                _sql.Students.Update(updatedStudent);
-                await _sql.SaveChangesAsync();
-                return Ok("Updated");
-            }
+            await _studentService.UpdateStudent(updatedStudent);
+            return Ok();
+        }
+        catch (ItemNotFoundException)
+        {
+            return StatusCode(404);
+        }
+        catch (ConstraintException)
+        {
+            return StatusCode(409);
         }
         catch (Exception e)
         {
@@ -97,20 +87,45 @@ public class StudentsController : ControllerBase
         }
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("Delete/{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         try
         {
-            if (!_sql.Students.Any(x => x.Id == id)) return BadRequest("Student not found!");
-
-            _sql.Students.Remove(_sql.Students.Single(x => x.Id == id));
-            await _sql.SaveChangesAsync();
-            return Ok("Removed from database");
+            await _studentService.RemoveStudent(id);
+            return Ok();
+        }
+        catch (ItemNotFoundException)
+        {
+            return StatusCode(404);
         }
         catch (Exception e)
         {
             return StatusCode(500, e.Message);
         }
+    }
+
+    [HttpGet("GetExtended/{id:int}")]
+    public IActionResult GetExtendedStudent(int id)
+    {
+        try
+        {
+            var info = _studentService.GetExtendedStudent(id);
+            return Ok(info);
+        }
+        catch (ItemNotFoundException)
+        {
+            return StatusCode(404);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("GetAllExtended")]
+    public IActionResult GetAllExtended()
+    {
+        return Ok(_studentService.GetAllExtendedStudents());
     }
 }
