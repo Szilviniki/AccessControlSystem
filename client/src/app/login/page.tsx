@@ -1,6 +1,5 @@
 'use client'
 import {Col, Row, Image} from "react-bootstrap";
-import {getCookie, setCookie} from "cookies-next";
 import LoginForm from "@/components/Login/LoginForm";
 import Template from "@/app/Template";
 
@@ -13,7 +12,7 @@ export default function Login() {
                            alt="itt lenne a kép"
                            className="m-10 h-auto loginImage"/>
                 </Col>
-                <h1>{getCookie('email')}</h1>
+
             </Row>
             <Row className=" justify-content-center ">
                 <Col sm={5} md={5}>

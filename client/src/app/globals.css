@@ -103,5 +103,11 @@ body{
 .table{
   padding: 5px 5px 5px 5px;
 border-radius: 50px;
-
+}
+.key{
+  color: #83C5BE;
+  margin-bottom: 5px;
+}
+link{
+  text-decoration: none;
 }

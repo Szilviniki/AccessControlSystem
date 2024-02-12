@@ -3,21 +3,20 @@ import React from 'react';
 import { Form, Button } from "react-bootstrap"
 import Notiflix from "notiflix";
 import {useCookies} from "next-client-cookies";
-import {login} from "@/actions/loginForm";
 import NewPassword from "@/app/newpassword/page";
 
 function NewPasswordForm() {
     const cookies = useCookies();
 
-    async function newpassword(formData: FormData) {
+   /** async function newpassword(formData: FormData) {
 
         const res = await newpassword(formData);
         console.log("action válasz: ", res)
-        if (!res.error) {
+        if (res==) {
             cookies.set("user", JSON.stringify(res))
             location.href = "/"
         } else {
-            let message = res.messages;
+            let message = res;
             if (Array.isArray(message)) {
                 message = message[0]
             }
@@ -27,7 +26,7 @@ function NewPasswordForm() {
                 'Rendben',
             );
         }
-    }
+    }**/
     return (
         <form action={NewPassword}>
             <Form.Group>

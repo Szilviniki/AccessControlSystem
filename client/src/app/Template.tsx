@@ -1,14 +1,15 @@
 import {Card, Col, Container, Row} from "react-bootstrap";
-import TopNavigation from "@/components/TopNavigation";
+import TopNavigation from "@/components/Navbar/TopNavigation";
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './globals.css'
-import SideMenu from "../components/Sidebar";
+import SideMenu from "../components/Navbar/Sidebar";
 
 export default function Template({ children }: { children: React.ReactNode }) {
+
     return (
-        <Row className=" justify-content-center " style={{height: "100vh"}}>
-            <Col sm={8} md={6} lg={8} className="align-items-center d-flex" style={{height: '100vh'}}>
+        <Row className=" justify-content-center fluid" style={{height: "100vh"}}>
+            <Col sm={6} md={4} lg={8} className="align-items-center d-flex" style={{height: '100vh'}}>
                 <Card className="loginC w-100  justify-content-center ">
                     {children}
                 </Card>

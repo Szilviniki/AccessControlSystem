@@ -1,13 +1,18 @@
+'use client'
 import {Card, Col, Row} from "react-bootstrap";
 import React from "react";
 import {getCookies} from "next-client-cookies/server";
 import MainTemplate from "@/app/MainTemplate";
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
+import {useCookies} from "next-client-cookies";
+
 
 export default function HomePage() {
-    const email = cookies().get("email");
+
+
     return(
+
         <>
 
         <MainTemplate>
@@ -15,6 +20,7 @@ export default function HomePage() {
                     <Col>
                         <Card className="CardHP" id="present">
                             <h1>jelen</h1>
+
                         </Card>
                     </Col>
                     <Col>

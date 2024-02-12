@@ -1,11 +1,11 @@
 "use server"
+import {cookies} from "next/headers";
 
 type LoginResponse = {
     error?: boolean
     messages? : string[]|string
 }
 export async function login(formData:FormData): Promise<LoginResponse>{
-
     try {
         const res = await fetch(`http://localhost:4001/api/v1/Login/TestLogin`,{
 
@@ -18,8 +18,12 @@ export async function login(formData:FormData): Promise<LoginResponse>{
         })
 
 
+
         const data = await res.json();
+
+
         return data
+
     } catch (e){
         console.log(e);
        return {
