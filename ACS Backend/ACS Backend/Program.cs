@@ -1,3 +1,5 @@
+using ACS_Backend.Interfaces;
+using ACS_Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using FluentScheduler;
 
@@ -5,12 +7,11 @@ namespace ACS_Backend
 {
     public class Program
     {
-
         public static void Main(string[] args)
         {
             Registry registry = new Registry();
 
-            /* 
+            /*
 
 
              ScheduledTasks st = new ScheduledTasks(sql);
@@ -28,10 +29,10 @@ namespace ACS_Backend
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<SQL>(a =>
-            {
-                a.UseSqlServer(SQL.connectionString);
-            });
+            builder.Services.AddDbContext<SQL>(a => { a.UseSqlServer(SQL.connectionString); });
+            builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<ICheckInService, CheckInService>();
 
             var app = builder.Build();
 
