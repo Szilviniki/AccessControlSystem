@@ -1,48 +1,31 @@
+using ACS_Backend.Exceptions;
+using ACS_Backend.Model;
+using ACS_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
-using BCrypt.Net;
-using Microsoft.EntityFrameworkCore;
 
 namespace ACS_Backend.Controllers;
 
 [Route("api/v1/[controller]")]
 public class LoginController : ControllerBase
 {
-    private SQL _sql;
+    private LoginService _loginService;
 
-    public LoginController(SQL sql)
+    public LoginController(LoginService loginService)
     {
-        _sql = sql;
+        _loginService = loginService;
     }
 
-    [HttpPost("TestLogin")]
-    public IActionResult DummyCheck([FromBody] LoginData data)
+    [HttpGet("Check")]
+    public IActionResult Check([FromBody] LoginModel loginModel)
     {
         try
         {
-            if (!_sql.Faculties.Any(x => x.Email == data.Email && x.Password == data.Password)) return BadRequest("No match");
-            {
-                var person = _sql.Faculties.Single(x => x.Email == data.Email && x.Password == data.Password);
-                var role = _sql.PersonRoles.Single(x => x.Id == person.RoleId);
-
-                return Ok(role);
-            }
+            var res = _loginService.Check(loginModel);
+            return Ok();
         }
-        catch (Exception e)
+        catch (FailedLoginException)
         {
-            return StatusCode(500, e.Message);
-        }
-    }
-
-    [HttpPost("Check")]
-    public IActionResult Check([FromBody] LoginData data)
-    {
-        try
-        {
-            var person = _sql.Faculties.Single(x => x.Email == data.Email);
-            Console.WriteLine(person.ToString());
-            if (!BCrypt.Net.BCrypt.EnhancedVerify(data.Password, person.Password)) return BadRequest("No match");
-            var role = _sql.PersonRoles.Single(x => x.Id == person.RoleId);
-            return Ok(person);
+            return StatusCode(401);
         }
         catch (Exception e)
         {

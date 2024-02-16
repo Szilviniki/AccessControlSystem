@@ -1,4 +1,7 @@
-﻿using BCrypt.Net;
+using ACS_Backend.Exceptions;
+using ACS_Backend.Model;
+using ACS_Backend.Services;
+using BCrypt.Net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
@@ -6,71 +9,125 @@ namespace ACS_Backend.Controllers;
 [Route("api/v1/[controller]")]
 public class FacultyController : ControllerBase
 {
-    private SQL _sql;
+    private FacultyService _facultyService;
 
-    public FacultyController(SQL sql)
+    public FacultyController(FacultyService facultyService)
     {
-        _sql = sql;
+        _facultyService = facultyService;
     }
 
-    [HttpGet("Get")]
+    [HttpGet("Get/{id}")]
     public IActionResult Get(Guid id)
     {
         try
         {
-            if (!_sql.Faculties.Any(x => x.Id == id)) return NotFound("User not found");
-            var person = _sql.Faculties.Single(x => x.Id == id);
-            return Ok(person);
+            var res = new GenericResponseModel<Faculty>
+            {
+                Data = _facultyService.GetFaculty(id)
+            };
+            return Ok(res);
+        }
+        catch (ItemNotFoundException)
+        {
+            var res = new GenericResponseModel<Faculty>
+            {
+                Message = "Not found",
+                QueryIsSuccess = false
+            };
+            return StatusCode(404, res);
         }
         catch (Exception e)
         {
-            return StatusCode(500, e.Message);
+            var res = new GenericResponseModel<Faculty>
+            {
+                QueryIsSuccess = false,
+                Message = e.Message
+            };
+            return StatusCode(500, res);
         }
     }
 
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
+        var res = new GenericResponseModel<Array>();
         try
         {
-            var res = _sql.Faculties.ToArray();
-            Console.WriteLine(res);
+            res.Data = _facultyService.GetAllFaculties();
             return Ok(res);
         }
         catch (Exception e)
         {
-            return StatusCode(500, e.Message);
+            res.QueryIsSuccess = false;
+            res.Message = e.Message;
+            return StatusCode(500, res);
         }
     }
 
     [HttpPut("Add")]
-    public async Task<IActionResult> Add([FromBody]Faculty faculty)
+    public async Task<IActionResult> Add([FromBody] Faculty faculty)
     {
+        var res = new GenericResponseModel<Faculty>();
         try
         {
-            faculty.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(faculty.Password);
-            _sql.Faculties.Add(faculty);
-            await _sql.SaveChangesAsync();
+            await _facultyService.AddFaculty(faculty);
             return Ok();
+        }
+        catch (ItemAlreadyExistsException)
+        {
+            res.QueryIsSuccess = false;
+            res.Message = "Already exists";
+            res.Data = faculty;
+            return StatusCode(409, res);
+        }
+        catch (UniqueConstraintFailedException<List<string>> ux)
+        {
+            res.QueryIsSuccess = false;
+            res.Message = "Failed on unique constraint";
+            res.Data = faculty;
+            return StatusCode(409, res);
         }
         catch (Exception e)
         {
             return StatusCode(500, e.Message);
         }
-
     }
+
     [HttpPost("Update")]
     public async Task<IActionResult> Update([FromBody] Faculty faculty)
     {
-        try {
-            if (!_sql.Faculties.Any(x => x.Id == faculty.Id)) return NotFound("User not found");
-            _sql.Faculties.Update(faculty);
-            await _sql.SaveChangesAsync();
-            return Ok("Updated");
-            
-        }catch (Exception e)
+        try
         {
-            return StatusCode(500, e.Message);
+            await _facultyService.UpdateFaculty(faculty);
+            return Ok();
+        }
+        catch (ItemNotFoundException)
+        {
+            var res = new GenericResponseModel<List<string>>
+            {
+                QueryIsSuccess = false,
+                Message = "User not found"
+            };
+            return StatusCode(404, res);
+        }
+        catch (UniqueConstraintFailedException<List<string>> ux)
+        {
+            var res = new GenericResponseModel<List<string>>
+            {
+                QueryIsSuccess = false,
+                Message = "Failed on unique constraint",
+                Data = ux.FailedOn
+            };
+            return StatusCode(409, res);
+        }
+        catch (Exception e)
+        {
+            var res = new GenericResponseModel<List<string>>
+            {
+                QueryIsSuccess = false,
+                Message = e.Message
+            };
+            return StatusCode(500, res);
         }
     }
 
@@ -79,16 +136,21 @@ public class FacultyController : ControllerBase
     {
         try
         {
-            if (!_sql.Faculties.Any(x => x.Id == id)) return NotFound("User not found");
-            var user = _sql.Faculties.FirstOrDefault(x => x.Id == id);
-            _sql.Faculties.Remove(user);
-            await _sql.SaveChangesAsync();
+            await _facultyService.RemoveFaculty(id);
             return Ok("Deleted successfully");
+        }
+        catch (ItemNotFoundException)
+        {
+            return StatusCode(404);
         }
         catch (Exception e)
         {
-
-            return StatusCode(500, e.Message);
+            var res = new GenericResponseModel<string>
+            {
+                QueryIsSuccess = false,
+                Message = e.Message
+            };
+            return StatusCode(500, res);
         }
     }
 }
