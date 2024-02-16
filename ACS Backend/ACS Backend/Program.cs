@@ -32,6 +32,7 @@ namespace ACS_Backend
             builder.Services.AddDbContext<SQL>(a => { a.UseSqlServer(SQL.connectionString); });
             builder.Services.AddScoped<ILoginService, LoginService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<ICheckInService, CheckInService>();
 
             var app = builder.Build();
 

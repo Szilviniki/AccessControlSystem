@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using ACS_Backend.Exceptions;
+using ACS_Backend.Model;
 using ACS_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,15 +22,18 @@ public class StudentsController : ControllerBase
         try
         {
             var student = _studentService.GetStudent(id);
-            return Ok(student);
+            var res = new GenericResponseModel<Student> { Data = student, QueryIsSuccess = true };
+            return Ok(res);
         }
         catch (ItemNotFoundException)
         {
-            return StatusCode(404);
+            var res = new GenericResponseModel<Student> { QueryIsSuccess = false, Message = "Not found" };
+            return StatusCode(404, res);
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
         }
     }
 
@@ -39,11 +43,13 @@ public class StudentsController : ControllerBase
     {
         try
         {
-            return Ok(_studentService.GetAllStudents());
+            var res = new GenericResponseModel<Array> { Data = _studentService.GetAllStudents() };
+            return Ok(res);
         }
         catch (Exception e)
         {
-            return BadRequest(e);
+            var res = new GenericResponseModel<Array> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
         }
     }
 
@@ -55,13 +61,16 @@ public class StudentsController : ControllerBase
             await _studentService.AddStudent(student);
             return StatusCode(201);
         }
-        catch (ConstraintException)
+        catch (UniqueConstraintFailedException<List<string>> e)
         {
+            var res = new GenericResponseModel<List<string>>
+                { QueryIsSuccess = false, Message = "Unique constraint failed", Data = e.FailedOn };
             return StatusCode(409);
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            var res = new GenericResponseModel<List<string>> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
         }
     }
 
@@ -75,15 +84,22 @@ public class StudentsController : ControllerBase
         }
         catch (ItemNotFoundException)
         {
-            return StatusCode(404);
+            var res = new GenericResponseModel<List<string>> { QueryIsSuccess = false, Message = "Not found" };
+            return StatusCode(404, res);
         }
-        catch (ConstraintException)
+        catch (UniqueConstraintFailedException<List<string>> e)
         {
-            return StatusCode(409);
+            var res = new GenericResponseModel<List<string>>
+            {
+                Data = e.FailedOn,
+                QueryIsSuccess = false
+            };
+            return StatusCode(409, res);
         }
         catch (Exception e)
         {
-            return StatusCode(500, e.Message);
+            var res = new GenericResponseModel<List<string>> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
         }
     }
 
@@ -97,11 +113,13 @@ public class StudentsController : ControllerBase
         }
         catch (ItemNotFoundException)
         {
-            return StatusCode(404);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not found" };
+            return StatusCode(404, res);
         }
         catch (Exception e)
         {
-            return StatusCode(500, e.Message);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
         }
     }
 
@@ -115,17 +133,27 @@ public class StudentsController : ControllerBase
         }
         catch (ItemNotFoundException)
         {
-            return StatusCode(404);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not found" };
+            return StatusCode(404, res);
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, e.Message);
         }
     }
 
     [HttpGet("GetAllExtended")]
     public IActionResult GetAllExtended()
     {
-        return Ok(_studentService.GetAllExtendedStudents());
+        try
+        {
+            return Ok(_studentService.GetAllExtendedStudents());
+        }
+        catch (Exception e)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
+        }
     }
 }

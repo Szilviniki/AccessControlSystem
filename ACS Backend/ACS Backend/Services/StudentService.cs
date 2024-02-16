@@ -1,12 +1,14 @@
 ﻿using System.Data;
 using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
+using ACS_Backend.Utilities;
 
 namespace ACS_Backend.Services;
 
 public class StudentService : IStudentService
 {
     private SQL _sql;
+    private UniquenessChecker _checker = new UniquenessChecker(new SQL());
 
     public StudentService(SQL sql)
     {
@@ -31,13 +33,10 @@ public class StudentService : IStudentService
         {
             throw new ItemNotFoundException();
         }
-        else
-        {
-            if (_sql.Students.Any(x=>x.CardId==student.CardId))
-            {
-                throw new ConstraintException();
-            }
-        }
+
+        var checkRes = _checker.IsUniqueStudent(student);
+        if (!checkRes.QueryIsSuccess)
+            throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
         _sql.Students.Update(student);
         await _sql.SaveChangesAsync();
     }
@@ -45,14 +44,19 @@ public class StudentService : IStudentService
     public async Task RemoveStudent(Guid id)
     {
         if (!_sql.Students.Any(x => x.Id == id)) throw new ItemNotFoundException();
-         _sql.Students.Remove(_sql.Students.Single(x => x.Id == id));
-         await _sql.SaveChangesAsync();
+        _sql.Students.Remove(_sql.Students.Single(x => x.Id == id));
+        await _sql.SaveChangesAsync();
     }
 
     public async Task AddStudent(Student student)
     {
-        if (_sql.Students.Any(x => x.Email == student.Email || x.CardId == student.CardId))
-            throw new ConstraintException();
+        if (_sql.Students.Any(x => x.CardId == student.CardId))
+        {
+            throw new ItemAlreadyExistsException();
+        }
+        var checkRes = _checker.IsUniqueStudent(student);
+        if (!checkRes.QueryIsSuccess)
+            throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
         student.Id = Guid.NewGuid();
         student.BirthDate = student.BirthDate.Date;
         _sql.Students.Add(student);
