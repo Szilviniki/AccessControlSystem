@@ -22,10 +22,10 @@ namespace DB_Module
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudentRestriction>().HasKey(x => new { x.StudentId, x.RestrictionId });
-            modelBuilder.Entity<ExtendedStudent>(ex =>
+            modelBuilder.Entity<StudentExtended>(ex =>
             {
                 ex.HasNoKey();
-                ex.ToView("ExtendedStudents");
+                ex.ToView("StudentExtended");
             }
             );
 
@@ -43,6 +43,6 @@ namespace DB_Module
         public DbSet<StudentRestriction> StudentRestrictions { get; set; }
         public DbSet<StudentPrivilege> StudentPrivileges { get; set; }
         public DbSet<StudentParent> studentParents { get; set; }
-        public DbSet<ExtendedStudent> ExtendedStudents { get; }
+        public DbSet<StudentExtended> ExtendedStudents { get; set; }
     }
 }

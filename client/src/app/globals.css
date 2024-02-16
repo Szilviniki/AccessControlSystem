@@ -100,3 +100,8 @@ body{
 .NavLink{
   color: #FAFAFA;
 }
+.table{
+  padding: 5px 5px 5px 5px;
+border-radius: 50px;
+
+}

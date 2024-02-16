@@ -4,6 +4,7 @@ using ACS_Backend.Model;
 using ACS_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace ACS_Backend.Controllers;
 
 [Route("api/v1/[controller]")]
@@ -29,13 +30,10 @@ public class StudentsController : ControllerBase
         {
             var res = new GenericResponseModel<Student> { QueryIsSuccess = false, Message = "Not found" };
             return StatusCode(404, res);
-        }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-            return StatusCode(500, res);
+            return BadRequest(e.Message);
         }
     }
+
 
 
     [HttpGet("GetAll")]

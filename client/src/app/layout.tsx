@@ -22,7 +22,7 @@ export default function RootLayout({
       <html lang="en">
           <body className={inter.className}>
               <CookiesProvider>
-                  <Container fluid>
+                  <Container fluid className="p-0">
                       {children}
                   </Container>
               </CookiesProvider>
