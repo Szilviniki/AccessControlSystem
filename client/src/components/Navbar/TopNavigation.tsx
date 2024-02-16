@@ -10,7 +10,7 @@ const cookies = useCookies();
     return(
         <Navbar className="fixed-top Top-Nav" >
             <Navbar.Collapse className="justify-content-end ">
-                <NavbarText className="mx-3" >Jó napot! {useCookies().get("email")}</NavbarText>
+                <NavbarText className="mx-3" >Jó napot! {useCookies().get("user.name")}</NavbarText>
             </Navbar.Collapse>
         </Navbar>
     )

@@ -6,6 +6,7 @@ import {login} from "@/actions/loginAction";
 import {useCookies} from "next-client-cookies";
 
 
+
 function LoginForm() {
     const cookies = useCookies();
     async function onLogin(formData: FormData) {
@@ -27,7 +28,9 @@ function LoginForm() {
         else {
             const res = await login(formData);
             if (!res.error) {
-                cookies.set("email", formData.get("email")as string);
+                cookies.set("user", JSON.stringify(res));
+
+
 
                 location.href = "/"
             } else {

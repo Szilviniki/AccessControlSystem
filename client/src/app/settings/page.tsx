@@ -1,14 +1,27 @@
-'use client'
+import {Card, Col, Row} from "react-bootstrap";
 import React from "react";
+import {getCookies} from "next-client-cookies/server";
+import MainTemplate from "@/app/templates/MainTemplate";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
+import {useCookies} from "next-client-cookies";
 
 
-export default function HomePage() {
+export default function SettingsPage() {
+    const email = cookies().get("email");
 
-    return (
-        <>
+    if (!email) {
+        redirect("/login")
+    }
+    else {
 
-                <h1> Beállítások </h1>
+        return(
 
-        </>
-    );
+            <>
+
+                <MainTemplate>
+               settings
+                </MainTemplate>
+            </>
+        )}
 }

@@ -13,7 +13,7 @@ public class StudentsController : ControllerBase
         _sql = sql;
     }
 
-    [HttpGet("Get")]
+    [HttpGet("Get/{id}")]
     public IActionResult Get(Guid id)
     {
         try
@@ -53,6 +53,7 @@ public class StudentsController : ControllerBase
     {
         try
         {
+
             return Ok(_sql.Students);
         }
         catch (Exception e)

@@ -30,53 +30,54 @@ export default function SideMenu() {
                 <CDBSidebarContent>
                     <CDBSidebarMenu>
                         
-                        <Link href="/client/public">
+                        <Link href="/" className="Item">
                             <CDBSidebarMenuItem icon="home" iconSize="2x" >
                                 <p className="m-4" > Kezdőlap</p>
                             </CDBSidebarMenuItem>
                         </Link>
                     </CDBSidebarMenu>
                     <CDBSidebarMenu>
-                        <Link href="/students">
-                            <CDBSidebarMenuItem icon="user-friends" iconSize="2x">
+                        <Link href="/students" className="Item">
+                            <CDBSidebarMenuItem icon="user-friends" iconSize="2x" >
                                 <p className="m-4"> Diákok</p>
                             </CDBSidebarMenuItem>
                         </Link>
                     </CDBSidebarMenu>
                     <CDBSidebarMenu>
-                        <Link href="/workers">
+                        <Link href="/workers" className="Item">
                             <CDBSidebarMenuItem icon="user-tie" iconSize="2x" >
                               <p className="m-4"> Dolgozók</p>
                             </CDBSidebarMenuItem>
                         </Link>
                     </CDBSidebarMenu>
                     <CDBSidebarMenu>
-                        <Link href="/notes">
-                            <CDBSidebarMenuItem icon="user-edit" iconSize="2x">
+                        <Link href="/notes" className="Item">
+                            <CDBSidebarMenuItem icon="user-edit" iconSize="2x" >
                                 <p className="m-4"> Feljegyzések</p>
                             </CDBSidebarMenuItem>
                         </Link>
                     </CDBSidebarMenu>
-                    <CDBSidebarMenu>
-                        <Link href="/mail">
-                            <CDBSidebarMenuItem icon="envelope"  iconSize="2x">
+                    {/*<CDBSidebarMenu>
+                        <Link href="/mail" className="Item" >
+                            <CDBSidebarMenuItem icon="envelope"  iconSize="2x" >
                                 <p className="m-4"> Üzenetek</p>
                             </CDBSidebarMenuItem>
                         </Link>
-                    </CDBSidebarMenu>
+                    </CDBSidebarMenu>*/}
 
                 </CDBSidebarContent>
                 <CDBSidebarFooter>
                     <Row>
                         <Col lassName="justify-content-between mb-4">
-
-                                <CDBSidebarMenuItem icon="cog" iconSize="3x"></CDBSidebarMenuItem>
-
+                            <Link href="/settings" className="Item">
+                                <CDBSidebarMenuItem icon="cog" iconSize="2x"></CDBSidebarMenuItem>
+                            </Link>
                         </Col>
                         <Col className="justify-content-between mb-4">
-
-                                <CDBSidebarMenuItem icon="sign-out-alt" iconSize="3x" className="d-flex justify-content-between" ></CDBSidebarMenuItem>
-
+                            <Link href="/login" className="Item" onClick={()=>{
+                                cookies.remove("user")}}>
+                                <CDBSidebarMenuItem icon="sign-out-alt" iconSize="2x" className="d-flex justify-content-between"  ></CDBSidebarMenuItem>
+                            </Link>
                         </Col>
                     </Row>
                 </CDBSidebarFooter>

@@ -33,7 +33,9 @@ public class FacultyController : ControllerBase
     {
         try
         {
-            return Ok(_sql.Faculties);
+            var res = _sql.Faculties.ToArray();
+            Console.WriteLine(res);
+            return Ok(res);
         }
         catch (Exception e)
         {

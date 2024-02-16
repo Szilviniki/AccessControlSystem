@@ -1,6 +1,6 @@
 'use client'
 
-import Template from "@/app/Template";
+import Template from "@/app/templates/Template";
 import {Button, Col, Form, Image, Row} from "react-bootstrap";
 import React from "react";
 import {getCookie} from "cookies-next";

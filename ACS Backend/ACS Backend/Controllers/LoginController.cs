@@ -33,17 +33,16 @@ public class LoginController : ControllerBase
         }
     }
 
-    [HttpGet("Check")]
-    public IActionResult Check(string email, string password)
+    [HttpPost("Check")]
+    public IActionResult Check([FromBody] LoginData data)
     {
-        Console.WriteLine($"email: {email} password:{password}");
         try
         {
-            var person = _sql.Faculties.Single(x => x.Email == email);
+            var person = _sql.Faculties.Single(x => x.Email == data.Email);
             Console.WriteLine(person.ToString());
-            if (!BCrypt.Net.BCrypt.EnhancedVerify(password, person.Password)) return BadRequest("No match");
+            if (!BCrypt.Net.BCrypt.EnhancedVerify(data.Password, person.Password)) return BadRequest("No match");
             var role = _sql.PersonRoles.Single(x => x.Id == person.RoleId);
-            return Ok(role);
+            return Ok(person);
         }
         catch (Exception e)
         {

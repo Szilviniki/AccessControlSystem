@@ -1,8 +1,8 @@
-'use client'
+
 import {Card, Col, Row} from "react-bootstrap";
 import React from "react";
 import {getCookies} from "next-client-cookies/server";
-import MainTemplate from "@/app/MainTemplate";
+import MainTemplate from "@/app/templates/MainTemplate";
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 import {useCookies} from "next-client-cookies";
@@ -10,6 +10,12 @@ import {useCookies} from "next-client-cookies";
 
 export default function HomePage() {
 
+    const user = cookies().get("user");
+console.log(user)
+    if (!user) {
+        redirect("/login")
+    }
+    else {
 
     return(
 
@@ -19,7 +25,7 @@ export default function HomePage() {
                 <Row>
                     <Col>
                         <Card className="CardHP" id="present">
-                            <h1>jelen</h1>
+                            <h1></h1>
 
                         </Card>
                     </Col>
@@ -54,3 +60,4 @@ export default function HomePage() {
         </MainTemplate>
         </>
     )}
+}
