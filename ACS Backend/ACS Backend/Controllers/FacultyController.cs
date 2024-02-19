@@ -1,7 +1,6 @@
 using ACS_Backend.Exceptions;
+using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
-using ACS_Backend.Services;
-using BCrypt.Net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
@@ -9,9 +8,9 @@ namespace ACS_Backend.Controllers;
 [Route("api/v1/[controller]")]
 public class FacultyController : ControllerBase
 {
-    private FacultyService _facultyService;
+    private IFacultyService _facultyService;
 
-    public FacultyController(FacultyService facultyService)
+    public FacultyController(IFacultyService facultyService)
     {
         _facultyService = facultyService;
     }

@@ -3,7 +3,7 @@ using ACS_Backend.Exceptions;
 using ACS_Backend.Model;
 using ACS_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace ACS_Backend.Controllers;
 
@@ -31,12 +31,8 @@ public class StudentsController : ControllerBase
             var res = new GenericResponseModel<Student> { QueryIsSuccess = false, Message = "Not found" };
             return StatusCode(404, res);
         }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-            return StatusCode(500, res);
-        }
     }
+
 
 
     [HttpGet("GetAll")]

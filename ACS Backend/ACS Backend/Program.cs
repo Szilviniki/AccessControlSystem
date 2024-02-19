@@ -33,6 +33,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<ILoginService, LoginService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<ICheckInService, CheckInService>();
+            builder.Services.AddScoped<IFacultyService, FacultyService>();
 
             var app = builder.Build();
 

@@ -1,6 +1,6 @@
 using ACS_Backend.Exceptions;
+using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
-using ACS_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
@@ -8,9 +8,9 @@ namespace ACS_Backend.Controllers;
 [Route("api/v1/[controller]")]
 public class LoginController : ControllerBase
 {
-    private LoginService _loginService;
+    private ILoginService _loginService;
 
-    public LoginController(LoginService loginService)
+    public LoginController(ILoginService loginService)
     {
         _loginService = loginService;
     }
