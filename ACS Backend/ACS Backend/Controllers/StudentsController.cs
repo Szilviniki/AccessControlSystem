@@ -1,5 +1,6 @@
 using System.Data;
 using ACS_Backend.Exceptions;
+using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
 using ACS_Backend.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,9 @@ namespace ACS_Backend.Controllers;
 [Route("api/v1/[controller]")]
 public class StudentsController : ControllerBase
 {
-    private readonly StudentService _studentService;
+    private IStudentService _studentService;
 
-    public StudentsController(StudentService studentService)
+    public StudentsController(IStudentService studentService)
     {
         _studentService = studentService;
     }
