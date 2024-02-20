@@ -6,23 +6,28 @@ type LoginResponse = {
 }
 export async function login(formData:FormData): Promise<LoginResponse>{
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employees/login`,{
+        const res = await fetch(`http://localhost:4001/api/v1/Login/Check`,{
+
             method: "POST",
             headers:{
-                "Content-Type": "application/jsom"
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                email: formData.get("email"),
-                password: formData.get("password")
-            })
+            body:JSON.stringify({Email: formData.get("email"),Password: formData.get("password")})
+
+
         })
 
         const data = await res.json();
+
+
         return data
+
     } catch (e){
+        console.log(e);
        return {
             error: true,
             messages: "Sikertelen bejelentkezés!"
+
         }
     }
 }

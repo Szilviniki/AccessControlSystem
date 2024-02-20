@@ -1,3 +1,5 @@
+using ACS_Backend.Interfaces;
+using ACS_Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using FluentScheduler;
 using Microsoft.IdentityModel.Tokens;
@@ -43,10 +45,11 @@ namespace ACS_Backend
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<SQL>(a =>
-            {
-                a.UseSqlServer(SQL.connectionString);
-            });
+            builder.Services.AddDbContext<SQL>(a => { a.UseSqlServer(SQL.connectionString); });
+            builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<ICheckInService, CheckInService>();
+            builder.Services.AddScoped<IFacultyService, FacultyService>();
 
             var app = builder.Build();
 

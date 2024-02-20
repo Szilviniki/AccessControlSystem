@@ -1,18 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using ACS_Backend.Exceptions;
+using ACS_Backend.Interfaces;
+using ACS_Backend.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
-[Route("api/v1/[controller]")]
-public class CheckInController : ControllerBase
-{
-    private SQL _sql;
 
-    public CheckInController(SQL sql)
+[Route("api/v1/[controller]")]
+public class CheckInController : Controller
+{
+    private readonly ICheckInService _checkInService;
+
+    public CheckInController(ICheckInService checkInService)
     {
-        _sql = sql;
+        _checkInService = checkInService;
     }
-    [HttpGet("IsWorking")]
-    public IActionResult DbConnectionAlive()
+
+    [HttpPost("CheckFaculty")]
+    public async Task<IActionResult> CheckFaculty([FromBody] int cardId)
     {
-        return StatusCode(!_sql.Database.CanConnect() ? 503 : 204);
+        try
+        {
+            await _checkInService.CheckFaculty(cardId);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = true };
+            return Ok(res);
+        }
+        catch (ItemNotFoundException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not found" };
+            return StatusCode(404, res);
+        }
+        catch (Exception e)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
+        }
+    }
+
+    [HttpPost("CheckStudent")]
+    public async Task<IActionResult> CheckStudent([FromBody] int cardId)
+    {
+        try
+        {
+            await _checkInService.CheckStudent(cardId);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = true };
+            return Ok(res);
+        }
+        catch (ItemNotFoundException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not found" };
+            return StatusCode(404, res);
+        }
+        catch (Exception e)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
+        }
     }
 }
