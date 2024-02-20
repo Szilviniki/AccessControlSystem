@@ -1,6 +1,6 @@
 ﻿namespace DB_Module.Models
 {
-
+    [Table("Parents")]
     public class Parent
     {
         [Key]
