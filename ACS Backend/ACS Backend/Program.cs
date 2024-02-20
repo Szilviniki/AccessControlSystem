@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using FluentScheduler;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ACS_Backend
 {
-    public class Program
+    public static class Program
     {
-
         public static void Main(string[] args)
         {
             Registry registry = new Registry();
 
-            /* 
+            /*
 
 
              ScheduledTasks st = new ScheduledTasks(sql);
@@ -23,6 +23,21 @@ namespace ACS_Backend
             SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
 
             // Add services to the container.
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name:AllowedOrigins, policy =>
+                {
+                    policy.WithOrigins("127.0.0.1");
+                });
+            });
+
+            builder.Services.AddScoped<ILoginService, LoginService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<ICheckInService, CheckInService>();
+            builder.Services.AddScoped<IFacultyService, FacultyService>();
+
+
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,6 +56,8 @@ namespace ACS_Backend
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors(AllowedOrigins);
 
             app.UseAuthorization();
 
