@@ -4,7 +4,7 @@ body{
 }
 
 .loginC{
-  background-image: url("../../public/images/house-lock.svg");
+  background-image: url("../../../public/images/house-lock.svg");
   background-repeat: no-repeat;
   background-size: 45%;
   background-position:center center;
@@ -17,9 +17,6 @@ body{
   height: 70%;
 
 }
-.loginImage{
-  max-width: 50%;
-}
 .loginBt, .loginBt:hover{
   background: #006D77;
   border:1px;
@@ -27,6 +24,7 @@ body{
   width: 100%;
   margin-left: 5px;
   font-size: 20px;
+  font-weight: bold;
 }
 
 .inputFc{
@@ -73,13 +71,6 @@ body{
 .Nav{
   background: #FAFAFA;
 }
-.Vertical-Nav{
-  height: 100vh;
-  width: 36vh;
-  background: #006D77;
-  padding-bottom:2% ;
-  z-index: 2;
-}
 .Top-Nav{
   background: #FAFAFA;
   height: 7%;
@@ -103,5 +94,19 @@ body{
 .table{
   padding: 5px 5px 5px 5px;
 border-radius: 50px;
+}
+.key{
+  color: #83C5BE;
+  margin-bottom: 5px;
+}
+.table{
+  border-radius: 50px;
+  height: min-content;
+}
+.Switch {
+}
 
+h1{
+  font-weight: bold;
+  color: #006D77;
 }

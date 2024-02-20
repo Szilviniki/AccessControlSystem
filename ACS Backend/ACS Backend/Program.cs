@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ACS_Backend
 {
-    public class Program
+    public static class Program
     {
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)

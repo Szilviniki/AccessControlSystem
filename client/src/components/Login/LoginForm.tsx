@@ -2,29 +2,48 @@
 import React from 'react';
 import { Form, Button } from "react-bootstrap"
 import Notiflix from "notiflix";
+import {login} from "@/actions/loginAction";
 import {useCookies} from "next-client-cookies";
-import {login} from "@/actions/loginForm";
+
+
 
 function LoginForm() {
     const cookies = useCookies();
-
     async function onLogin(formData: FormData) {
 
-        const res = await login(formData);
-        console.log("action válasz: ", res)
-        if (!res.error) {
-            cookies.set("user", JSON.stringify(res))
-            location.href = "/"
-        } else {
-            let message = res.messages;
-            if (Array.isArray(message)) {
-                message = message[0]
-            }
+
+        if(formData.get("email")==null) {
             Notiflix.Report.warning(
-                'Valami nem jó!',
-                'Figyeljen oda, hogy minden mező helyesen legyen kitöltve!',
+                'Hiba!',
+                'Az email cím megdása kötelező megadása kötelező!',
                 'Rendben',
             );
+        }if (formData.get("password")==null) {
+            Notiflix.Report.warning(
+                'Hiba!',
+                'A jelszó megadása kötelező!',
+                'Rendben',
+            );
+        }
+        else {
+            const res = await login(formData);
+            if (!res.error) {
+                cookies.set("user", JSON.stringify(res));
+
+
+
+                location.href = "/"
+            } else {
+                let message = res.messages;
+                if (Array.isArray(message)) {
+                    message = message[0]
+                }
+                Notiflix.Report.warning(
+                    'Valami nem jó!',
+                    'Figyeljen oda, hogy minden mező helyesen legyen kitöltve!',
+                    'Rendben',
+                );
+            }
         }
     }
     return (
@@ -46,7 +65,7 @@ function LoginForm() {
                 />
             </Form.Group>
             <Form.Group>
-                <Button type="submit" variant="primary" className="mt-2 loginBt">Bejelentkezés</Button>
+                <Button type="submit" className="mt-2 loginBt">Bejelentkezés</Button>
             </Form.Group>
         </form>
     );

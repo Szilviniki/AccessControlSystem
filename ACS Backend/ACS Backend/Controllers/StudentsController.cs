@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using ACS_Backend.Exceptions;
 using ACS_Backend.Model;
 using ACS_Backend.Services;
