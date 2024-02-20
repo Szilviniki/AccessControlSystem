@@ -10,6 +10,6 @@
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public ICollection<Faculty> Users { get; } = new List<Faculty>();
+        public ICollection<Personnel> Users { get; } = new List<Personnel>();
     }
 }

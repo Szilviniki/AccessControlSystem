@@ -2,9 +2,9 @@
 
 public interface IFacultyService
 {
-    public Faculty GetFaculty(Guid id);
+    public Personnel GetFaculty(Guid id);
     public Array GetAllFaculties();
-    public Task UpdateFaculty(Faculty faculty);
-    public Task AddFaculty(Faculty faculty);
+    public Task UpdateFaculty(Personnel faculty);
+    public Task AddFaculty(Personnel faculty);
     public Task RemoveFaculty(Guid id);
 }

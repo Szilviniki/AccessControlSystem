@@ -37,7 +37,7 @@ namespace DB_Module
         public DbSet<Privilege> Privileges { get; set; }
         public DbSet<Restriction> Restrictions { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<Faculty> Faculties { get; set; }
+        public DbSet<Personnel> Faculties { get; set; }
         public DbSet<Role> PersonRoles { get; set; }
         public DbSet<GateLog> GateLogs { get; set; }
         public DbSet<StudentRestriction> StudentRestrictions { get; set; }

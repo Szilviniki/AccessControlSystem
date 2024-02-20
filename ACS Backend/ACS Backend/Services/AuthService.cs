@@ -15,7 +15,7 @@ public class AuthService : IAuthService
 
     public bool IsAuthenticated => throw new NotImplementedException();
 
-    public Faculty CurrentUser => throw new NotImplementedException();
+    public Personnel CurrentUser => throw new NotImplementedException();
 
     public async Task<LoginResultModel> Login(LoginResultModel login)
     {

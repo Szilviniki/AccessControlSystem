@@ -20,7 +20,7 @@ public class FacultyController : ControllerBase
     {
         try
         {
-            var res = new GenericResponseModel<Faculty>
+            var res = new GenericResponseModel<Personnel>
             {
                 Data = _facultyService.GetFaculty(id)
             };
@@ -28,7 +28,7 @@ public class FacultyController : ControllerBase
         }
         catch (ItemNotFoundException)
         {
-            var res = new GenericResponseModel<Faculty>
+            var res = new GenericResponseModel<Personnel>
             {
                 Message = "Not found",
                 QueryIsSuccess = false
@@ -37,7 +37,7 @@ public class FacultyController : ControllerBase
         }
         catch (Exception e)
         {
-            var res = new GenericResponseModel<Faculty>
+            var res = new GenericResponseModel<Personnel>
             {
                 QueryIsSuccess = false,
                 Message = e.Message
@@ -64,9 +64,9 @@ public class FacultyController : ControllerBase
     }
 
     [HttpPut("Add")]
-    public async Task<IActionResult> Add([FromBody] Faculty faculty)
+    public async Task<IActionResult> Add([FromBody] Personnel faculty)
     {
-        var res = new GenericResponseModel<Faculty>();
+        var res = new GenericResponseModel<Personnel>();
         try
         {
             await _facultyService.AddFaculty(faculty);
@@ -93,7 +93,7 @@ public class FacultyController : ControllerBase
     }
 
     [HttpPost("Update")]
-    public async Task<IActionResult> Update([FromBody] Faculty faculty)
+    public async Task<IActionResult> Update([FromBody] Personnel faculty)
     {
         try
         {

@@ -16,7 +16,7 @@ public class FacultyService : IFacultyService
 
     private UniquenessChecker _checker = new UniquenessChecker(new SQL());
 
-    public Faculty GetFaculty(Guid id)
+    public Personnel GetFaculty(Guid id)
     {
         if (!_sql.Faculties.Any(x => x.Id == id)) throw new ItemNotFoundException();
         var person = _sql.Faculties.Single(x => x.Id == id);
@@ -28,7 +28,7 @@ public class FacultyService : IFacultyService
         return _sql.Faculties.ToArray();
     }
 
-    public async Task UpdateFaculty(Faculty faculty)
+    public async Task UpdateFaculty(Personnel faculty)
     {
         if (!_sql.Faculties.Any(x => x.Id == faculty.Id)) throw new ItemNotFoundException();
         var checkRes = _checker.IsUniqueFaculty(faculty);
@@ -38,7 +38,7 @@ public class FacultyService : IFacultyService
         await _sql.SaveChangesAsync();
     }
 
-    public async Task AddFaculty(Faculty faculty)
+    public async Task AddFaculty(Personnel faculty)
     {
         if (_sql.Faculties.Any(x => x.CardId == faculty.CardId))
         {

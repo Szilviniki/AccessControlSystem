@@ -38,7 +38,7 @@ public class UniquenessChecker
             : new GenericResponseModel<List<string>> { Message = "Minden ok" };
     }
 
-    public GenericResponseModel<List<string>> IsUniqueFaculty(Faculty faculty)
+    public GenericResponseModel<List<string>> IsUniqueFaculty(Personnel faculty)
     {
         var fails = new List<string>();
         if (_sql.Faculties.Any(x => faculty.CardId == x.CardId)) fails.Add("Kártyaszám");
