@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACS_Backend.Controllers;
 
 [Route("api/v1/[controller]")]
-public class LoginController : ControllerBase
+public class AuthController : ControllerBase
 {
-    private ILoginService _loginService;
+    private IAuthService _authService;
 
-    public LoginController(ILoginService loginService)
+    public AuthController(IAuthService loginService)
     {
-        _loginService = loginService;
+        _authService = loginService;
     }
 
     [HttpGet("Check")]
@@ -20,7 +20,7 @@ public class LoginController : ControllerBase
     {
         try
         {
-            var res = _loginService.Check(loginModel);
+            var res = _authService.Login(loginModel);
             return Ok();
         }
         catch (FailedLoginException)
