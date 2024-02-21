@@ -67,8 +67,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IFacultyService, FacultyService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddScoped<IEncryptionService, EncryptionService>();
-           // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
+            // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
             var app = builder.Build();
 

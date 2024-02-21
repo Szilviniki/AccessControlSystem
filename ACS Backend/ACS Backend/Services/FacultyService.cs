@@ -50,8 +50,8 @@ public class FacultyService : IFacultyService
         if (faculty.CanLogin)
         {
             faculty.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(faculty.Password);
-        _sql.Personnel.Add(faculty);
         }
+        _sql.Personnel.Add(faculty);
         await _sql.SaveChangesAsync();
     }
 
