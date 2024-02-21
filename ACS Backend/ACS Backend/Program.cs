@@ -12,12 +12,9 @@ namespace ACS_Backend
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
         {
-            Registry registry = new Registry();
-            var sts = new SchedueldTaskService(new SQL());
-            registry.Schedule<>(a => a.EveryoneOut()).ToRunNow().AndEvery(1).Minutes();
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
-            TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("TokenEncryptionKey"));
+            TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
             SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
 
 
@@ -27,8 +24,7 @@ namespace ACS_Backend
                 options.AddPolicy(name: origin,
                                   policy =>
                                   {
-                                      policy.WithOrigins("http://example.com",
-                                                          "http://www.contoso.com");
+                                      policy.WithOrigins("127.0.0.1", "localhost");
                                   });
             });
 
@@ -64,12 +60,14 @@ namespace ACS_Backend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<SQL>(a => { a.UseSqlServer(SQL.connectionString); });
+            builder.Services.AddTransient<IHomepageService, HomepageService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<ICheckInService, CheckInService>();
             builder.Services.AddScoped<IFacultyService, FacultyService>();
+            builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+            builder.Services.AddScoped<IEncryptionService, EncryptionService>();
            // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
             var app = builder.Build();

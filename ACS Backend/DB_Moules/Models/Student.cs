@@ -22,9 +22,6 @@
         public string Phone { get; set; }
 
         [Required]
-        public int GroupId { get; set; }
-
-        [Required]
         public DateTime BirthDate { get; set; }
 
         [ForeignKey("ParentId")]

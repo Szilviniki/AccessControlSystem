@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace DB_Module.Models
 {
-    [Table("StudentRestrictions")]
-
+    [Table("StudentsRestrictions")]
+    [PrimaryKey("StudentId", "RestrictionId")]
     public class StudentRestriction
     {
-        [Required]
-        [Key]
-        public Guid StudentId { get; set; }
-        [Key]
-        [Required]
-        public int RestrictionId { get; set; }
+        [Required] [Column("student_id")] public Guid StudentId { get; set; }
+        [Required] [Column("restriction_id")] public int RestrictionId { get; set; }
     }
 }
