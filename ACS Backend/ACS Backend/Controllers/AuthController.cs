@@ -15,13 +15,13 @@ public class AuthController : ControllerBase
         _authService = loginService;
     }
 
-    [HttpGet("Check")]
+    [HttpPost("Check")]
     public IActionResult Check([FromBody] LoginModel loginModel)
     {
         try
         {
             var res = _authService.Login(loginModel);
-            return Ok();
+            return Ok(res.Result);
         }
         catch (FailedLoginException)
         {

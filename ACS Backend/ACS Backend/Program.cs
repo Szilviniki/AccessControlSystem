@@ -13,8 +13,8 @@ namespace ACS_Backend
         public static void Main(string[] args)
         {
             Registry registry = new Registry();
-            var sts = new SchedueldTaskService(new SQL());
-            registry.Schedule<>(a => a.EveryoneOut()).ToRunNow().AndEvery(1).Minutes();
+       /*     var sts = new SchedueldTaskService(new SQL());
+            registry.Schedule<>(a => a.EveryoneOut()).ToRunNow().AndEvery(1).Minutes();*/
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
             TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("TokenEncryptionKey"));
@@ -69,7 +69,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<ICheckInService, CheckInService>();
             builder.Services.AddScoped<IFacultyService, FacultyService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+            builder.Services.AddScoped<IEncryptionService, EncryptionService>();
            // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
             var app = builder.Build();

@@ -2,6 +2,6 @@
 {
     public interface ITokenService
     {
-        public string CreateToken(Faculty faculty);
+        public string CreateToken(Personnel faculty);
     }
 }

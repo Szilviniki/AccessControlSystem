@@ -12,8 +12,6 @@ namespace DB_Module.Models
         public string StudentName { get; set; }
         public string StudentEmail { get; set; }
         public string StudentPhone { get; set; }
-        public int GroupId { get; set; }
-        public string GroupName { get; set; }
         public int CardId { get; set; }
         public DateTime BirthDate { get; set; }
         public string ParentName { get; set; }

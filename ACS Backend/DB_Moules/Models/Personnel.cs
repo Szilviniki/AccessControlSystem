@@ -1,7 +1,7 @@
 ﻿namespace DB_Module.Models
 {
-    [Table("Faculty")]
-    public class Faculty
+    [Table("Personnel")]
+    public class Personnel
     {
         [Key] [Required] public Guid Id { get; set; }
 
@@ -9,15 +9,16 @@
 
         [Required] public int CardId { get; set; }
 
-        [Required] public string Email { get; set; } //unique
+        public string Email { get; set; } //unique
 
-        [Required] public string Password { get; set; }
+        public string Password { get; set; }
 
         public string Phone { get; set; }
-
-        public bool Present { get; set; }
+        [Column("present")]
+        public bool IsPresent { get; set; }
 
         public int RoleId { get; set; }
-
+        
+        public bool CanLogin { get; set; }
     }
 }

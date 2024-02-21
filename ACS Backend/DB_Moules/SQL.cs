@@ -36,13 +36,11 @@ namespace DB_Module
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Privilege> Privileges { get; set; }
         public DbSet<Restriction> Restrictions { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<Faculty> Faculties { get; set; }
+        public DbSet<Personnel> Personnel { get; set; }
         public DbSet<Role> PersonRoles { get; set; }
         public DbSet<GateLog> GateLogs { get; set; }
         public DbSet<StudentRestriction> StudentRestrictions { get; set; }
         public DbSet<StudentPrivilege> StudentPrivileges { get; set; }
-        public DbSet<StudentParent> studentParents { get; set; }
         public DbSet<StudentExtended> ExtendedStudents { get; set; }
     }
 }

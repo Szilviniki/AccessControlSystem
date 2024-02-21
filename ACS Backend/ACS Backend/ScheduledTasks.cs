@@ -12,7 +12,7 @@ namespace ACS_Backend
         }
         public async void EveryoneOut()
         {
-            var facultyInside = _sql.Faculties.Where(x => x.Present == true);
+            var facultyInside = _sql.Personnel.Where(x => x.IsPresent == true);
             var studentsInside = _sql.Students.Where(x => x.IsPresent == true);
 
             foreach (var student in studentsInside)
@@ -23,12 +23,12 @@ namespace ACS_Backend
 
             foreach (var faculty in facultyInside)
             {
-                faculty.Present = false;
-                _sql.Faculties.Update(faculty);
+                faculty.IsPresent = false;
+                _sql.Personnel.Update(faculty);
             }
 
             await _sql.SaveChangesAsync();
-            int remaining = _sql.Faculties.Count(x=>x.Present == true);
+            int remaining = _sql.Personnel.Count(x=>x.IsPresent == true);
             remaining += _sql.Students.Count(x => x.IsPresent == true);
             Console.WriteLine($"Remaining people: {remaining}");
         }

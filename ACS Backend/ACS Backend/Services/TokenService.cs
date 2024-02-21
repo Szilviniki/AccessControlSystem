@@ -7,7 +7,7 @@ namespace ACS_Backend.Services
 {
     public class TokenService : ITokenService
     {
-        public string CreateToken(Faculty user)
+        public string CreateToken(Personnel user)
         {
             var identity = new ClaimsIdentity(new[] {
                 new Claim("ID", user.Id.ToString()),
@@ -29,4 +29,4 @@ namespace ACS_Backend.Services
         }
     }
 }
-}
+

@@ -15,20 +15,20 @@ public class CheckInService : ICheckInService
 
     public async Task CheckFaculty(int cardId)
     {
-        if (!_sql.Faculties.Any(x => x.CardId == cardId))
+        if (!_sql.Personnel.Any(x => x.CardId == cardId))
         {
             throw new ItemNotFoundException();
         }
 
-        var faculty = _sql.Faculties.Single(x => x.CardId == cardId);
+        var faculty = _sql.Personnel.Single(x => x.CardId == cardId);
         var log = new GateLog
         {
             Stamp = DateTime.Now,
             PersonId = faculty.CardId,
             IsGuest = false
         };
-        faculty.Present = !faculty.Present;
-        _sql.Faculties.Update(faculty);
+        faculty.IsPresent = !faculty.IsPresent;
+        _sql.Personnel.Update(faculty);
         _sql.GateLogs.Add(log);
         await _sql.SaveChangesAsync();
     }

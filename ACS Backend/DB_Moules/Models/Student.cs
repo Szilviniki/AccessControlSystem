@@ -26,5 +26,11 @@
 
         [Required]
         public DateTime BirthDate { get; set; }
+
+        [ForeignKey("ParentId")]
+        public Guid ParentId { get; set; }
+
+        [NotMapped]
+        public Parent Parent { get; set; }
     }
 }
