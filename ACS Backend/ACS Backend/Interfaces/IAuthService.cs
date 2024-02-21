@@ -6,5 +6,5 @@ public interface IAuthService
 {
     bool IsAuthenticated { get; }
     Personnel CurrentUser { get; }
-    public Task<LoginResultModel> Login(LoginModel login);
+    public Task<LoginResponseModel> Login(LoginModel login);
 }

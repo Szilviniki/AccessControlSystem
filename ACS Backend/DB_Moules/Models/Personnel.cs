@@ -14,11 +14,13 @@
         public string Password { get; set; }
 
         public string Phone { get; set; }
-        [Column("present")]
-        public bool IsPresent { get; set; }
+        [Column("present")] public bool IsPresent { get; set; }
 
-        public int RoleId { get; set; }
-        
+        [ForeignKey("RoleId")] public int RoleId { get; set; }
+
         public bool CanLogin { get; set; }
+
+        [NotMapped]
+        public Role? Role { get; set; }
     }
 }

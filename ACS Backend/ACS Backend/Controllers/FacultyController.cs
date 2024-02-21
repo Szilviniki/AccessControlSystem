@@ -79,7 +79,7 @@ public class FacultyController : ControllerBase
             res.Data = faculty;
             return StatusCode(409, res);
         }
-        catch (UniqueConstraintFailedException<List<string>> ux)
+        catch (UniqueConstraintFailedException<List<string>>)
         {
             res.QueryIsSuccess = false;
             res.Message = "Failed on unique constraint";

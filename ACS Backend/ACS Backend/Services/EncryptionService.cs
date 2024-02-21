@@ -12,13 +12,13 @@ namespace ACS_Backend.Services
             _sql = sql;
         }
 
-        public async Task<string> HashPassword(string password)
+        public string HashPassword(string password)
         {
             var hash = BCrypt.Net.BCrypt.EnhancedHashPassword(password);
             return hash;
         }
 
-        public async Task<bool> ValidatePassword(string password, string email)
+        public bool ValidatePassword(string password, string email)
         {
             if (_sql.Personnel.Any(a => a.Email == email)) throw new FailedLoginException();
             var user = _sql.Personnel.Single(u => u.Email == email);

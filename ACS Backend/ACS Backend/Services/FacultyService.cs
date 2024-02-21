@@ -47,8 +47,10 @@ public class FacultyService : IFacultyService
         var checkRes = _checker.IsUniqueFaculty(faculty);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
-        var check =
+        if (faculty.CanLogin)
+        {
             faculty.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(faculty.Password);
+        }
         _sql.Personnel.Add(faculty);
         await _sql.SaveChangesAsync();
     }

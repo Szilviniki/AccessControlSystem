@@ -6,7 +6,7 @@ type LoginResponse = {
 }
 export async function login(formData:FormData): Promise<LoginResponse>{
     try {
-        const res = await fetch(`http://localhost:4001/api/v1/Login/Check`,{
+        const res = await fetch(`http://localhost:4001/api/v1/Auth/Check`,{
 
             method: "POST",
             headers:{
