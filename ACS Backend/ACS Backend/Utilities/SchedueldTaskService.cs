@@ -3,17 +3,13 @@ using FluentScheduler;
 
 namespace ACS_Backend.Utilities
 {
-    public class SchedueldTasks : IJob
+    public class SchedueldTasks
     {
-        private SQL _sql = new SQL();
+        private SQL _sql = new SQL(); 
 
-        public ScheduledTasks()
+        /*public Action EveryoneOut()
         {
-        }   
-
-        public Action EveryoneOut()
-        {
-            var facultyInside = _sql.Faculties.Where(x => x.Present == true);
+            var facultyInside = _sql.Faculties.Where(x => x.IsPresent == true);
             var studentsInside = _sql.Students.Where(x => x.IsPresent == true);
 
             foreach (var student in studentsInside)
@@ -24,7 +20,7 @@ namespace ACS_Backend.Utilities
 
             foreach (var faculty in facultyInside)
             {
-                faculty.Present = false;
+                faculty.IsPresent = false;
                 _sql.Faculties.Update(faculty);
             }
 
@@ -34,6 +30,6 @@ namespace ACS_Backend.Utilities
         public void Execute()
         {
             EveryoneOut();
-        }
+        }*/
     }
 }
