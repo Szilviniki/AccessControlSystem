@@ -1,24 +1,26 @@
 "use client";
 import React from 'react';
-import {Form, Button, FormGroup} from "react-bootstrap"
-import Notiflix, {Notify} from "notiflix";
-import {check} from "@/actions/checkAction";
+import {Form, Button} from "react-bootstrap"
+import {Notify} from "notiflix";
+import {, checkWorkers} from "@/actions/checkWorkersAction";
+import {checkStudent} from "@/actions/checkStudentAction";
 
 export default function CheckForm() {
     async function onCheck(formData: FormData) {
 
-        const res = await check(formData);
-        if (!res.error) {
+        const resWorkers = await checkWorkers(formData);
+        const resStudent= await checkStudent(formData);
+
+        if (resWorkers.queryIsSuccess===true || resStudent.queryIsSuccess===true) {
             Notify.success('Sikeres Belépés/Kilépés');
+            console.log(resWorkers)
 
         } else {
-            let message = res.messages;
-            if (Array.isArray(message)) {
-                message = message[0]
-            }
             Notify.failure('Sikertelen Belépés/Kilépés! ', {
                 timeout: 6000,
-            } );
+            });
+
+
         }
     }
 
@@ -26,7 +28,7 @@ export default function CheckForm() {
         <form action={onCheck}>
             <Form.Group>
                 <Form.Control
-                    type="text"
+                    type="number"
                     name="code"
                     placeholder="Belépőkód (diákigazolvány szám)"
                     className="inputFc"

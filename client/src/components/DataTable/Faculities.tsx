@@ -1,22 +1,25 @@
 "use client";
 
-import React, {use, useEffect, useState} from 'react';
-import DataTable, {TableColumn} from "react-data-table-component";
-import {ITable} from "@/interfaces/table";
+import React, {useEffect, useState} from 'react';
+import DataTable from "react-data-table-component";
 
 function Faculities() {
     const [faculties, setData] = useState([])
 
     useEffect(() => {
-            fetch(`http://localhost:4001/api/v1/Faculty/GetAll`).then((res) => {
-                res.json().then((datas) => {
-                    setData(datas.data)
-                })
+        fetch(`http://localhost:4001/api/v1/Faculty/GetAll`).then((res) => {
+            res.json().then((datas) => {
+                setData(datas.data)
             })
+        })
 
     }, [])
 
-    const columns: TableColumn<ITable> = [
+    const columns: {
+        name: string;
+        selector: (row: any) => any;
+        sortable: boolean;
+    }[] = [
         {
             name: 'Név',
             selector: (row: any) => row.name,
@@ -36,18 +39,19 @@ function Faculities() {
 
     function prepareData(datas: any[]) {
         return datas.map((item) => {
-            const pres=item.present;
-            let status ="jelen2";
-            if (pres==true){
-                status="nincs jelen";
-            } else {
-                status ="jelen";
+            const pres = item.isPresent;
+            let status = "jelen2";
+            if (pres == true) {
+                status = "nincs jelen";
+            }
+            if (!pres == true) {
+                status = "jelen";
             }
             return {
                 id: item.id,
                 name: item.name,
-                role_id: item.roleId,
-                present:status
+                role_id: item.role_id,
+                present: status
             }
         });
     }

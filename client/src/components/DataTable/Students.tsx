@@ -16,7 +16,11 @@ function Students() {
 
     }, [])
 
-    const columns: TableColumn<any> = [
+    const columns: {
+        name: string;
+        selector: (row: any) => any;
+        sortable: boolean;
+    }[] = [
         {
             name: 'Név',
             selector: (row: any) => row.name,
@@ -32,19 +36,17 @@ function Students() {
     function prepareData(datas: any[]) {
 
         return datas.map((item) => {
-            const pres=item.isPresent;
-            let status:string ="jelen";
-            if (pres==false){
-               status="nincs jelen";
+            const pres = item.isPresent;
+            let status: string = "jelen";
+            if (pres == false) {
+                status = "nincs jelen";
             } else {
-                status ="jelen";
+                status = "jelen";
             }
             return {
                 id: item.id,
                 name: item.name,
-                class:item.class,
-                groupId: item.groupId,
-                present:status
+                present: status
             }
         });
     }
