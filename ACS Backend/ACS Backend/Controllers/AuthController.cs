@@ -20,8 +20,8 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var res = _loginService.Check(loginModel);
-            var genericResponseModel = new GenericResponseModel<LoginResultModel>
+            var res = _authService.Login(loginModel);
+            var genericResponseModel = new GenericResponseModel<LoginResponseModel>
             {
                 Data = res.Result
             };

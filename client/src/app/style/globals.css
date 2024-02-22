@@ -103,7 +103,13 @@ border-radius: 50px;
   border-radius: 50px;
   height: min-content;
 }
-.Switch {
+._new, ._new:hover{
+  background: #006D77;
+  border:1px;
+  border-radius: 50px;
+  margin-left: 5px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 h1{

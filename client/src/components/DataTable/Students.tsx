@@ -8,9 +8,9 @@ function Students() {
 
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Students/GetAll`).then((res) => {
-            res.json().then((data) => {
-                seStudents(data)
-                console.log(data)
+            res.json().then((datas) => {
+                seStudents(datas.data)
+                console.log(datas)
             })
         })
 
@@ -39,9 +39,9 @@ function Students() {
         }
     ];
 
-    function prepareData(data: any[]) {
+    function prepareData(datas: any[]) {
 
-        return data.map((item) => {
+        return datas.map((item) => {
             const pres=item.isPresent;
             let status:string ="jelen";
             if (pres==false){

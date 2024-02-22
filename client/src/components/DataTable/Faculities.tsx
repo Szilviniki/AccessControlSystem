@@ -9,8 +9,8 @@ function Faculities() {
 
     useEffect(() => {
             fetch(`http://localhost:4001/api/v1/Faculty/GetAll`).then((res) => {
-                res.json().then((data) => {
-                    setData(data)
+                res.json().then((datas) => {
+                    setData(datas.data)
                 })
             })
 
@@ -34,8 +34,8 @@ function Faculities() {
         }
     ];
 
-    function prepareData(data: any[]) {
-        return data.map((item) => {
+    function prepareData(datas: any[]) {
+        return datas.map((item) => {
             const pres=item.present;
             let status ="jelen2";
             if (pres==true){
