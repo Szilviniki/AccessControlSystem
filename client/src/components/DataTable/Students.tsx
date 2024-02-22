@@ -23,16 +23,6 @@ function Students() {
             sortable: true
         },
         {
-            name: 'Osztály',
-            selector: (row: any) => row.class,
-            sortable: false
-        },
-        {
-            name: 'Csoport',
-            selector: (row: any) => row.groupId,
-            sortable: false
-        },
-        {
             name: 'Státusz',
             selector: (row: any) => row.present,
             sortable: false
