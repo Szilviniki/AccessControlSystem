@@ -1,14 +1,29 @@
 "use client";
 import React from 'react';
 import {Form, Button, FormGroup} from "react-bootstrap"
-import {useCookies} from "next-client-cookies";
+import Notiflix, {Notify} from "notiflix";
+import {check} from "@/actions/checkAction";
 
+export default function CheckForm() {
+    async function onCheck(formData: FormData) {
 
+        const res = await check(formData);
+        if (!res.error) {
+            Notify.success('Sikeres Belépés/Kilépés');
 
-function CheckForm() {
-    const cookies = useCookies();
+        } else {
+            let message = res.messages;
+            if (Array.isArray(message)) {
+                message = message[0]
+            }
+            Notify.failure('Sikertelen Belépés/Kilépés! ', {
+                timeout: 6000,
+            } );
+        }
+    }
+
     return (
-        <form>
+        <form action={onCheck}>
             <Form.Group>
                 <Form.Control
                     type="text"
@@ -23,6 +38,3 @@ function CheckForm() {
         </form>
     );
 }
-
-
-export default CheckForm ;
