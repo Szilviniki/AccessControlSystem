@@ -4,7 +4,7 @@ namespace ACS_Backend.Interfaces;
 
 public interface IAuthService
 {
-    bool IsAuthenticated { get; }
-    Personnel CurrentUser { get; }
+  /*  bool IsAuthenticated { get; }
+    Personnel CurrentUser { get; }*/
     public Task<LoginResponseModel> Login(LoginModel login);
 }

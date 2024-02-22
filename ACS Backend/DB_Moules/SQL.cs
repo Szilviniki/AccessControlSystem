@@ -27,7 +27,7 @@ namespace DB_Module
         }
 
         public DbSet<Student> Students { get; set; }
-        public DbSet<Parent> Parents { get; set; }
+        public DbSet<Guardian> Parents { get; set; }
         public DbSet<Privilege> Privileges { get; set; }
         public DbSet<Restriction> Restrictions { get; set; }
         public DbSet<Personnel> Personnel { get; set; }

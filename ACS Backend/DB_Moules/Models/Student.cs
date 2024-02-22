@@ -28,6 +28,6 @@
         public Guid ParentId { get; set; }
 
         [NotMapped]
-        public Parent Parent { get; set; }
+        public Guardian Parent { get; set; }
     }
 }

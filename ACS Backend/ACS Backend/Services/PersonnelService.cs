@@ -5,11 +5,11 @@ using ACS_Backend.Utilities;
 
 namespace ACS_Backend.Services;
 
-public class FacultyService : IFacultyService
+public class PersonnelService : IPersonnelService
 {
     private SQL _sql;
 
-    public FacultyService(SQL sql)
+    public PersonnelService(SQL sql)
     {
         _sql = sql;
     }

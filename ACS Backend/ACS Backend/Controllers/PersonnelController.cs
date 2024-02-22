@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
 
-[Route("api/v1/[controller]")]
-public class FacultyController : ControllerBase
+[Route("api/v1/Faculty")]
+public class PersonnelController : ControllerBase
 {
-    private IFacultyService _facultyService;
+    private IPersonnelService _facultyService;
 
-    public FacultyController(IFacultyService facultyService)
+    public PersonnelController(IPersonnelService facultyService)
     {
         _facultyService = facultyService;
     }
