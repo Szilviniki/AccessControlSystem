@@ -2,7 +2,7 @@
 import React from 'react';
 import {Form, Button} from "react-bootstrap"
 import {Notify} from "notiflix";
-import {, checkWorkers} from "@/actions/checkWorkersAction";
+import {checkWorkers} from "@/actions/checkWorkersAction";
 import {checkStudent} from "@/actions/checkStudentAction";
 
 export default function CheckForm() {
