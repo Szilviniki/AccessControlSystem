@@ -18,7 +18,7 @@ public class AuthService : IAuthService
         _encryptionService = encryptionService;
     }
 
-    public async Task<LoginResponseModel> Login(LoginModel login)
+    public LoginResponseModel Login(LoginModel login)
     {
         bool isEmail = _sql.Personnel.Any(a => a.Email == login.Email);
         if (isEmail)
