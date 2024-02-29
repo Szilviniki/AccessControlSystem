@@ -1,7 +1,7 @@
 ﻿namespace DB_Module.Models
 {
     [Table("Parents")]
-    public class Parent
+    public class Guardian
     {
         [Key]
         public Guid Id { get; set; }

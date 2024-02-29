@@ -18,7 +18,7 @@ export async function login(formData:FormData): Promise<LoginResponse>{
         })
 
         const data = await res.json();
-        console.log(`\n--------\n${data}`);
+
 
         return data
 

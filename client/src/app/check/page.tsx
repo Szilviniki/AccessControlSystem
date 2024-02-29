@@ -3,7 +3,7 @@ import CheckTopNavigation from "@/components/Navbar/CheckTopNavigation";
 import {Col, Row} from "react-bootstrap";
 import CheckForm from "@/components/Check/CheckForm";
 
-export default function ChekPage(){
+export default function CheckPage(){
     return(
         <Template>
       <CheckTopNavigation/>

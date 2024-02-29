@@ -1,6 +1,6 @@
 ﻿namespace ACS_Backend.Interfaces;
 
-public interface IFacultyService
+public interface IPersonnelService
 {
     public Personnel GetFaculty(Guid id);
     public Array GetAllFaculties();

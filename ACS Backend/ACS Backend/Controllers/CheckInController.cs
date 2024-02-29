@@ -2,6 +2,8 @@ using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ACS_Backend.Controllers;
 
@@ -35,6 +37,40 @@ public class CheckInController : Controller
             return StatusCode(500, res);
         }
     }
+    public bool ValidateToken(
+  string token,
+  string issuer,
+  string audience,
+  ICollection<SecurityKey> signingKeys,
+  out JwtSecurityToken jwt
+)
+    {
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = issuer,
+            ValidateAudience = true,
+            ValidAudience = audience,
+                ValidateIssuerSigningKey = true,
+            IssuerSigningKeys = signingKeys,
+            ValidateLifetime = true
+        };
+
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+            jwt = (JwtSecurityToken)validatedToken;
+
+            return true;
+        }
+        catch (SecurityTokenValidationException ex)
+        {
+            // Log the reason why the token is not valid
+            jwt = null;
+            return false;
+        }
+    }
 
     [HttpPost("CheckStudent")]
     public async Task<IActionResult> CheckStudent([FromBody] int cardId)
@@ -42,6 +78,11 @@ public class CheckInController : Controller
         Console.WriteLine(Request.Headers);
         try
         {
+            if (HttpContext.Request.Headers.TryGetValue("Authorization", out var headerAuth))
+            {
+                var jwtToken = headerAuth.First().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1];
+                
+            }
             await _checkInService.CheckStudent(cardId);
             var res = new GenericResponseModel<string> { QueryIsSuccess = true };
             return Ok(res);

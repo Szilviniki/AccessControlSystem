@@ -64,9 +64,12 @@ namespace ACS_Backend
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<ICheckInService, CheckInService>();
-            builder.Services.AddScoped<IFacultyService, FacultyService>();
+            builder.Services.AddScoped<IPersonnelService, PersonnelService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+            builder.Services.AddScoped<IGuardianService, GuardianService>();
+            builder.Services.AddScoped<IRestrictionService, RestrictionService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
+
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
             var app = builder.Build();

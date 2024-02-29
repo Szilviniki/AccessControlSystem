@@ -10,7 +10,7 @@ namespace DB_Module.Models
     [PrimaryKey("StudentId", "PrivilegeId")]
     public class StudentPrivilege
     {
-        [Required] [Column("student_id")] public Guid StudentId { get; set; }
-        [Required] [Column("privilege_id")] public int PrivilegeId { get; set; }
+        [Required] [Column("studentId")] public Guid StudentId { get; set; }
+        [Required] [Column("privilegeId")] public int PrivilegeId { get; set; }
     }
 }

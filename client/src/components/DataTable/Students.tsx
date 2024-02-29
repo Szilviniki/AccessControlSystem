@@ -8,29 +8,23 @@ function Students() {
 
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Students/GetAll`).then((res) => {
-            res.json().then((data) => {
-                seStudents(data)
-                console.log(data)
+            res.json().then((datas) => {
+                seStudents(datas.data)
+                console.log(datas)
             })
         })
 
     }, [])
 
-    const columns: TableColumn<any> = [
+    const columns: {
+        name: string;
+        selector: (row: any) => any;
+        sortable: boolean;
+    }[] = [
         {
             name: 'Név',
             selector: (row: any) => row.name,
             sortable: true
-        },
-        {
-            name: 'Osztály',
-            selector: (row: any) => row.class,
-            sortable: false
-        },
-        {
-            name: 'Csoport',
-            selector: (row: any) => row.groupId,
-            sortable: false
         },
         {
             name: 'Státusz',
@@ -39,22 +33,20 @@ function Students() {
         }
     ];
 
-    function prepareData(data: any[]) {
+    function prepareData(datas: any[]) {
 
-        return data.map((item) => {
-            const pres=item.isPresent;
-            let status:string ="jelen";
-            if (pres==false){
-               status="nincs jelen";
+        return datas.map((item) => {
+            const pres = item.isPresent;
+            let status: string = "jelen";
+            if (pres == false) {
+                status = "nincs jelen";
             } else {
-                status ="jelen";
+                status = "jelen";
             }
             return {
                 id: item.id,
                 name: item.name,
-                class:item.class,
-                groupId: item.groupId,
-                present:status
+                present: status
             }
         });
     }

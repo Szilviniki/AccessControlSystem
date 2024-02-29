@@ -18,11 +18,7 @@ public class AuthService : IAuthService
         _encryptionService = encryptionService;
     }
 
-    public bool IsAuthenticated => throw new NotImplementedException();
-
-    public Personnel CurrentUser => throw new NotImplementedException();
-
-    public LoginResponseModel Login(LoginModel login)
+    public async Task<LoginResponseModel> Login(LoginModel login)
     {
         bool isEmail = _sql.Personnel.Any(a => a.Email == login.Email);
         if (isEmail)

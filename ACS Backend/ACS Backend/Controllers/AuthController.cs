@@ -21,15 +21,21 @@ public class AuthController : ControllerBase
         try
         {
             var res = _authService.Login(loginModel);
+            var genericResponseModel = new GenericResponseModel<LoginResponseModel>
+            {
+                Data = res.Result
+            };
             return Ok(res);
         }
         catch (FailedLoginException)
         {
-            return StatusCode(401);
+            var res = new GenericResponseModel<string> { Message = "Failed login", QueryIsSuccess = false };
+            return StatusCode(401, res);
         }
         catch (Exception e)
         {
-            return StatusCode(500, e.Message);
+            var res = new GenericResponseModel<string>{Message = e.Message, QueryIsSuccess = false};
+            return StatusCode(500, res);
         }
     }
 }

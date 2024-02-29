@@ -1,20 +1,38 @@
 "use client";
 import React from 'react';
-import {Form, Button, FormGroup} from "react-bootstrap"
-import {useCookies} from "next-client-cookies";
+import {Form, Button} from "react-bootstrap"
+import {Notify} from "notiflix";
+import {checkWorkers} from "@/actions/checkWorkersAction";
+import {checkStudent} from "@/actions/checkStudentAction";
+
+export default function CheckForm() {
+    async function onCheck(formData: FormData) {
+
+        const resWorkers = await checkWorkers(formData);
+        const resStudent= await checkStudent(formData);
+
+        if (resWorkers.queryIsSuccess===true || resStudent.queryIsSuccess===true) {
+            Notify.success('Sikeres Belépés/Kilépés');
+            console.log(resWorkers)
+
+        } else {
+            Notify.failure('Sikertelen Belépés/Kilépés! ', {
+                timeout: 6000,
+            });
 
 
+        }
+    }
 
-function CheckForm() {
-    const cookies = useCookies();
     return (
-        <form>
+        <form action={onCheck}>
             <Form.Group>
                 <Form.Control
-                    type="text"
+                    type="number"
                     name="code"
                     placeholder="Belépőkód (diákigazolvány szám)"
                     className="inputFc"
+                    maxLength={10}
                 />
             </Form.Group>
             <Form.Group>
@@ -23,6 +41,3 @@ function CheckForm() {
         </form>
     );
 }
-
-
-export default CheckForm ;
