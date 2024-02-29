@@ -39,6 +39,7 @@ public class CheckInController : Controller
     [HttpPost("CheckStudent")]
     public async Task<IActionResult> CheckStudent([FromBody] int cardId)
     {
+        Console.WriteLine(Request.Headers);
         try
         {
             await _checkInService.CheckStudent(cardId);

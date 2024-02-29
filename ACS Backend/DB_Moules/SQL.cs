@@ -1,17 +1,11 @@
 ﻿using DB_Module.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DB_Module
 {
     public class SQL : DbContext
     {
         public static string connectionString { get; set; }
 
-        public SQL() : base(new DbContextOptionsBuilder().UseSqlServer(connectionString).Options)
+        public SQL() : base(new DbContextOptionsBuilder().EnableSensitiveDataLogging().UseSqlServer(connectionString).Options)
         {
         }
 

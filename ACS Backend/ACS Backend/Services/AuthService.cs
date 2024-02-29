@@ -22,23 +22,31 @@ public class AuthService : IAuthService
 
     public Personnel CurrentUser => throw new NotImplementedException();
 
-    public async Task<LoginResponseModel> Login(LoginModel login)
+    public LoginResponseModel Login(LoginModel login)
     {
-        if (this._sql.Personnel.Any(a => a.Email == login.Email))
+        bool isEmail = _sql.Personnel.Any(a => a.Email == login.Email);
+        if (isEmail)
         {
             var user = this._sql.Personnel.Single(u => u.Email == login.Email);
-            if (_encryptionService.ValidatePassword(user.Password, login.Password))
+            bool isPassword = _encryptionService.ValidatePassword(login.Password, login.Email);
+            if (isPassword)
             {
-                var role = this._sql.PersonRoles.FirstOrDefault(x => x.Id == user.RoleId)?.Name;
-                return new LoginResponseModel()
+                return new LoginResponseModel
                 {
                     Email = login.Email,
                     Name = user.Name,
-                    Role = role,
+                    Role = "something",
                     Token = _tokenService.CreateToken(user)
                 };
             }
         }
-        throw new FailedLoginException();
+
+        return new LoginResponseModel
+        {
+            Email = login.Email,
+            Name = "Invalid",
+            Role = "Invalid",
+        };
+
     }
 }

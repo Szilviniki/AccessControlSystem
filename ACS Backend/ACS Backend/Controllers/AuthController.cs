@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
         try
         {
             var res = _authService.Login(loginModel);
-            return Ok(res.Result);
+            return Ok(res);
         }
         catch (FailedLoginException)
         {

@@ -19,8 +19,5 @@
         [ForeignKey("RoleId")] public int RoleId { get; set; }
 
         public bool CanLogin { get; set; }
-
-        [NotMapped]
-        public Role? Role { get; set; }
     }
 }

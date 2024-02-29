@@ -20,10 +20,24 @@ namespace ACS_Backend.Services
 
         public bool ValidatePassword(string password, string email)
         {
-            if (_sql.Personnel.Any(a => a.Email == email)) throw new FailedLoginException();
-            var user = _sql.Personnel.Single(u => u.Email == email);
-            if (BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password)) return true;
-            else throw new FailedLoginException();
+            if (_sql.Personnel.Any(a => a.Email == email))
+            {
+                string storedPassword = _sql.Personnel.First(x => x.Email == email).Password;
+                if (BCrypt.Net.BCrypt.EnhancedVerify(password, storedPassword))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            else
+            {
+                return false;
+            }
         }
     }
+
 }

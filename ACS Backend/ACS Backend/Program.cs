@@ -79,7 +79,7 @@ namespace ACS_Backend
             }
             app.UseCors(origin);
             app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
 
             app.MapControllers();
