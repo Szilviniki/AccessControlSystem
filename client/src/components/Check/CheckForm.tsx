@@ -32,6 +32,7 @@ export default function CheckForm() {
                     name="code"
                     placeholder="Belépőkód (diákigazolvány szám)"
                     className="inputFc"
+                    maxLength={10}
                 />
             </Form.Group>
             <Form.Group>
