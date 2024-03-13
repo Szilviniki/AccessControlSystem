@@ -4,35 +4,53 @@ import {Menu, MenuItem, Sidebar, sidebarClasses, SubMenu} from "react-pro-sideba
 import {FaBars, FaHome, FaUserEdit, FaUserFriends, FaUserTie} from "react-icons/fa";
 import Link from "next/link";
 import {FaHouseLock} from "react-icons/fa6";
+import {usePathname} from "next/navigation";
+import {Col, Row} from "react-bootstrap";
 
-export default function SideMenu2() {
-    const cookies=useCookies();
+export default function SideMenu2({
+    open
+                                  } : {
+    open: boolean
+}) {
+    const cookies = useCookies();
+    const path = usePathname();
+    const isActive = (active: string) => {
+        return active === path;
+    }
 
     return (
         <Sidebar
+            collapsed={!open}
             rootStyles={{
                 [`.${sidebarClasses.container}`]: {
                     backgroundColor: "#006D77",
-                    color:"#EDF6FF"
+                    color: "#EDF6FF"
                 },
             }}>
             < Menu
-                menuItemStyles = { {
-                    button : {
-                    [ `&.active` ] : {
-                        backgroundColor : "black" ,
-                        szín : "red" , }
-                    , }
-                    , }
-                } >
-                <FaHouseLock  color="#EDF6FF" size="75%" className="m-2"/>
+                menuItemStyles={{
+                    button: {
+                        [`&.active`]: {
+                            backgroundColor: "black",
+                            szín: "red",
+                        }
+                        ,
+                    }
+                    ,
+                }
+                }>
+                <Row className={"mb-4 mt-3"}>
+                    <Col xs={12} className={"d-flex justify-content-center"}>
+                        <FaHouseLock color="#EDF6FF" size={open?100:30} />
+                    </Col>
+                </Row>
                 {/** <SubMenu label="Charts">
-                    <MenuItem> Line charts </MenuItem>
-            </SubMenu>**/}
-                <MenuItem component={<Link href="/" /> } active={true} icon={<FaHome /> } >Kezdőlap</MenuItem>
-                <MenuItem component={<Link href="/students" />} icon={<FaUserFriends />}> Diákok </MenuItem>
-                <MenuItem component={<Link href="/workers" />} icon={<FaUserTie />} > Dolgozók </MenuItem>
-                <MenuItem component={<Link href="/notes" />} icon={<FaUserEdit />}> Feljegyzések </MenuItem>
+                 <MenuItem> Line charts </MenuItem>
+                 </SubMenu>**/}
+                <MenuItem component={<Link href="/"/>} icon={<FaHome/>} active={isActive("/")}>Kezdőlap</MenuItem>
+                <MenuItem component={<Link href="/students"/>} icon={<FaUserFriends/>} active={isActive("/students")}> Diákok </MenuItem>
+                <MenuItem component={<Link href="/workers"/>} icon={<FaUserTie/>} active={isActive("/workers")}> Dolgozók </MenuItem>
+                <MenuItem component={<Link href="/notes"/>} icon={<FaUserEdit/>} active={isActive("/notes")}> Feljegyzések </MenuItem>
             </Menu>
         </Sidebar>
     )

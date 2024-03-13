@@ -1,15 +1,19 @@
 "use client";
 
-import React, {use, useEffect, useState} from 'react';
-import DataTable, {TableColumn} from "react-data-table-component";
+import React, {useEffect, useState} from 'react';
+import DataTable, {Direction} from "react-data-table-component";
+import moment from "moment";
+import {FaCheck, FaTimes} from "react-icons/fa";
 
 function Students() {
-    const [students, seStudents] = useState([])
+    const [students, setStudents] = useState([])
+    const [activedate, setactivedate] = useState(moment().locale("hu"));
+
 
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Students/GetAll`).then((res) => {
             res.json().then((datas) => {
-                seStudents(datas.data)
+                setStudents(datas.data)
                 console.log(datas)
             })
         })
@@ -27,26 +31,42 @@ function Students() {
             sortable: true
         },
         {
+            name: 'Telefonszám',
+            selector: (row: any) => row.phone,
+            sortable: true
+        },
+        {
+            name: 'Életkor',
+            selector: (row: any) => row.birthDate,
+            sortable: true
+        },
+        {
+            name: 'Gondviselő',
+            selector: (row: any) => row.phone,
+            sortable: true
+        },
+        {
+            name: 'Gondviselő telefonszáma',
+            selector: (row: any) => row.phone,
+            sortable: true
+        },
+        {
             name: 'Státusz',
             selector: (row: any) => row.present,
             sortable: false
         }
     ];
 
+
     function prepareData(datas: any[]) {
 
         return datas.map((item) => {
-            const pres = item.isPresent;
-            let status: string = "jelen";
-            if (pres == false) {
-                status = "nincs jelen";
-            } else {
-                status = "jelen";
-            }
             return {
                 id: item.id,
                 name: item.name,
-                present: status
+                birthDate: moment().diff(moment(item.birthDate), "years"),
+                phone: (<a href={`tel:${item.phone}`}>{item.phone}</a>),
+                present: item.isPresent ? (<FaCheck />) : (<FaTimes />),
             }
         });
     }
@@ -60,8 +80,9 @@ function Students() {
                 columns={columns}
                 data={transformedData}
                 fixedHeader={true}
+                direction={Direction.LTR}
                 responsive
-                expandableRows
+                striped
             />
         </>
     );

@@ -6,18 +6,17 @@ import '../style/globals.css'
 import SideMenu from "../../components/Navbar/Sidebar";
 import {cookies} from "next/headers";
 import SideMenu2 from "@/components/Navbar/Sidebar2";
+import Navigation from "@/components/Navbar/Navigation";
+import Content from "@/components/Content";
 
 export default function MainTemplate({ children }: { children: React.ReactNode }) {
 
     return (
         <Container fluid className='p-0 overflow-hidden'>
-            <div className={"d-flex p-0 overflow-hidden"} style={{height: "100vh"}}>
-                <SideMenu2 />
-                <TopNavigation/>
-                 <div className={"d-flex px-5 py-3 w-100 mt-5 overflow-auto mb-4"}>
-                    <h1></h1>
+            <div className={"d-flex p-0 overflow-hidden position-relative"} style={{height: "100vh"}}>
+                <Content>
                     {children}
-                </div>
+                </Content>
             </div>
         </Container>
     )
