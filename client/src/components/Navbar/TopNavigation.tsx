@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import {NavbarText} from "react-bootstrap";
 import React from "react";
 import {useCookies} from "next-client-cookies";
-import {FaBars, FaChevronLeft, FaChevronRight} from "react-icons/fa";
+import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
 
 
 export default function TopNavigation({

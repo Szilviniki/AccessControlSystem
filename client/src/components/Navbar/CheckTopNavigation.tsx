@@ -1,7 +1,7 @@
 'use client'
 import Navbar from "react-bootstrap/Navbar";
 import {Col, NavbarText, Row} from "react-bootstrap";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Moment from 'react-moment';
 import 'moment-timezone';
 import moment from "moment";
@@ -9,22 +9,28 @@ import {timer} from "rxjs";
 
 export default function CheckTopNavigation() {
 //let now= times
+    const [time, setTime] = useState(moment());
+
+    useEffect(() => {
+        setInterval(() => {
+            setTime(moment())
+        }, 1000)
+    }, []);
     { return(
-        <Navbar className="fixed-top Top-Nav" >
-            <Navbar.Collapse className="justify-content-end ">
-                <Row>
-                    <Col>
+        <Navbar className="fixed-top Top-Nav" style={{
+            'borderRadius': "50px 50px 0 0"
+        }}>
+            <Navbar.Collapse className="justify-content-between ">
+                    <div>
                         <NavbarText className="mx-3 justify-content-start" >
-
+                            {time.format("Y.MM.DD")}
                         </NavbarText>
-                    </Col>
-                    <Col>
+                    </div>
+                    <div>
                         <NavbarText className="mx-3 justify-content-end">
-                            <Moment interval={1000}  format="hh:mm:ss" durationFromNow />
+                            {time.format("HH:mm:ss")}
                         </NavbarText>
-                    </Col>
-                </Row>
-
+                    </div>
             </Navbar.Collapse>
         </Navbar>
     )

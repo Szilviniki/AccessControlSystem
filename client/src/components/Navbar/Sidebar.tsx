@@ -1,87 +1,47 @@
-"use client";
-
-import {
-    CDBSidebar,
-    CDBSidebarHeader,
-    CDBSidebarContent,
-    CDBSidebarMenu,
-    CDBSidebarMenuItem, CDBSidebarFooter
-} from "cdbreact";
-import Link from "next/link";
-import { FaBars } from "react-icons/fa";
-import {Col, Row} from "react-bootstrap";
-import {BsHouseLockFill} from "react-icons/bs";
+'use client'
 import {useCookies} from "next-client-cookies";
+import {Menu, MenuItem, Sidebar, sidebarClasses, SubMenu} from "react-pro-sidebar";
+import {FaBars, FaHome, FaUserEdit, FaUserFriends, FaUserTie} from "react-icons/fa";
+import Link from "next/link";
+import {FaHouseLock} from "react-icons/fa6";
+import {usePathname} from "next/navigation";
+import {Col, Row} from "react-bootstrap";
+import {IoMdSettings} from "react-icons/io";
 
-
-export default function SideMenu() {
-    const cookies=useCookies();
+export default function SideMenu({
+    open
+                                  } : {
+    open: boolean
+}) {
+    const cookies = useCookies();
+    const path = usePathname();
+    const isActive = (active: string) => {
+        return active === path;
+    }
 
     return (
-        <div
-            className="d-flex"
-            style={{height: '100vh', overflow: 'scroll initial' }}
-        >
-                <CDBSidebar className="" textColor="#EDF6FF" backgroundColor="#006D77" breakpoint={720} toggled={false} minWidth="60%" maxWidth="90%">
-                <CDBSidebarHeader prefix={<FaBars />} >
-                    <BsHouseLockFill size={40} style={{marginRight:15}}/>
-                    ACS
-                </CDBSidebarHeader>
-                <CDBSidebarContent>
-                    <CDBSidebarMenu>
-                        
-                        <Link href="/" className="Item">
-                            <CDBSidebarMenuItem icon="home" iconSize="2x" >
-                                <p className="m-4" > Kezdőlap</p>
-                            </CDBSidebarMenuItem>
-                        </Link>
-                    </CDBSidebarMenu>
-                    <CDBSidebarMenu>
-                        <Link href="/students" className="Item">
-                            <CDBSidebarMenuItem icon="user-friends" iconSize="2x" >
-                                <p className="m-4"> Diákok</p>
-                            </CDBSidebarMenuItem>
-                        </Link>
-                    </CDBSidebarMenu>
-                    <CDBSidebarMenu>
-                        <Link href="/workers" className="Item">
-                            <CDBSidebarMenuItem icon="user-tie" iconSize="2x" >
-                              <p className="m-4"> Dolgozók</p>
-                            </CDBSidebarMenuItem>
-                        </Link>
-                    </CDBSidebarMenu>
-                    <CDBSidebarMenu>
-                        <Link href="/notes" className="Item">
-                            <CDBSidebarMenuItem icon="user-edit" iconSize="2x" >
-                                <p className="m-4"> Feljegyzések</p>
-                            </CDBSidebarMenuItem>
-                        </Link>
-                    </CDBSidebarMenu>
-                    {/*<CDBSidebarMenu>
-                        <Link href="/mail" className="Item" >
-                            <CDBSidebarMenuItem icon="envelope"  iconSize="2x" >
-                                <p className="m-4"> Üzenetek</p>
-                            </CDBSidebarMenuItem>
-                        </Link>
-                    </CDBSidebarMenu>*/}
-
-                </CDBSidebarContent>
-                <CDBSidebarFooter>
-                    <Row>
-                        <Col lassName="justify-content-between mb-4">
-                            <Link href="/settings" className="Item">
-                                <CDBSidebarMenuItem icon="cog" iconSize="2x"></CDBSidebarMenuItem>
-                            </Link>
-                        </Col>
-                        <Col className="justify-content-between mb-4">
-                            <Link href="/login" className="Item" onClick={()=>{
-                                cookies.remove("user")}}>
-                                <CDBSidebarMenuItem icon="sign-out-alt" iconSize="2x" className="d-flex justify-content-between"  ></CDBSidebarMenuItem>
-                            </Link>
-                        </Col>
-                    </Row>
-                </CDBSidebarFooter>
-            </CDBSidebar>
-        </div>
+        <Sidebar
+            collapsed={!open}
+            rootStyles={{
+                [`.${sidebarClasses.container}`]: {
+                    backgroundColor: "#006D77",
+                    color: "#EDF6FF"
+                },
+            }}>
+            < Menu>
+                <Row className={"mb-4 mt-3"}>
+                    <Col xs={12} className={"d-flex justify-content-center"}>
+                        <FaHouseLock color="#EDF6FF" size={open?100:30} />
+                    </Col>
+                </Row>
+                <MenuItem component={<Link href="/"/>} icon={<FaHome/>} active={isActive("/")}>Kezdőlap</MenuItem>
+                <MenuItem component={<Link href="/students"/>} icon={<FaUserFriends/>} active={isActive("/students")}> Diákok </MenuItem>
+                <MenuItem component={<Link href="/workers"/>} icon={<FaUserTie/>} active={isActive("/workers")}> Dolgozók </MenuItem>
+                <MenuItem component={<Link href="/notes"/>} icon={<FaUserEdit/>} active={isActive("/notes")}> Feljegyzések </MenuItem>
+                <MenuItem component={<Link href="/settings"/>} icon={<IoMdSettings/>} active={isActive("/settings")}> Beálítások </MenuItem>
+                <MenuItem component={<Link href="/notes"/>} icon={<FaUserEdit/>} active={isActive("/notes")}> Feljegyzések </MenuItem>
+            </Menu>
+                
+        </Sidebar>
     )
 }

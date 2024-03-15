@@ -36,6 +36,10 @@ public class AuthService : IAuthService
                 };
             }
         }
+        else
+        {
+            throw new ItemNotFoundException();
+        }
 
         return new LoginResponseModel
         {
