@@ -33,6 +33,10 @@ public class AuthService : IAuthService
                 };
             }
         }
+        else
+        {
+            throw new ItemNotFoundException();
+        }
 
         throw new FailedLoginException();
 
