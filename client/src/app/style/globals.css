@@ -29,24 +29,24 @@ body{
 
 .inputFc{
   border-radius: 50px;
-  border-color: #D9D9D9;
+  border-color: #FAFAFA;
   margin: 5px;
   padding: 5px;
-  background: #D9D9D9;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
+  background: #FAFAFA;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10) inset;
   font-size: 20px;
 }
 .inputFc:Hover{
   border-radius: 50px;
   border-color: #006D77;
   padding: 5px;
-  background: #D9D9D9;
+  background: #FAFAFA;
 }
 .inputFc:Active {
   border-radius: 50px;
   border-color: #006D77;
   padding: 5px;
-  background: #D9D9D9;
+  background: #FAFAFA;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
 }
 .CardHP{
@@ -55,9 +55,16 @@ body{
   border:20px;
   border-radius: 50px;
   text-align: center;
-  padding: 25px;
+  padding: 10px;
   display: flex;
+  margin-bottom:5%;
 
+}
+h3{
+  font-weight: bold;
+}
+h2{
+  font-weight: bolder;
 }
 #present{
   background: #EDF6FF ;
@@ -73,9 +80,9 @@ body{
 }
 .Top-Nav{
   background: #FAFAFA;
-  height: 7%;
   z-index: 1;
- margin-bottom: 8%;
+  width: 100%;
+  position: absolute;
 }
 .Nav-Img{
   height: 20%;
@@ -116,7 +123,22 @@ h1{
   font-weight: bold;
   color: #006D77;
 }
+
 ._sidebar{
   color: #EDF6FF;
-  backgroundColor: #006D77;
+  background-color: #006D77;
+}
+
+.ps-menu-button:hover {
+  color: black!important;
+}
+
+.ps-menu-button.ps-active {
+  color: black!important;
+  background: rgba(255,255,255, .3)!important;
+}
+
+.top-nav-check{
+  background: none !important;
+ border-radius: 50px 50px 0 0 !important;
 }

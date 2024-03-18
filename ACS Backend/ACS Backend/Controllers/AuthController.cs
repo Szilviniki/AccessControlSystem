@@ -4,7 +4,7 @@ using ACS_Backend.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
-
+[ApiController]
 [Route("api/v1/[controller]")]
 public class AuthController : ControllerBase
 {

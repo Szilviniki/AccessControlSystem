@@ -30,8 +30,6 @@ function LoginForm() {
             if (!res.error) {
                 cookies.set("user", JSON.stringify(res));
 
-
-
                 location.href = "/"
             } else {
                 let message = res.messages;

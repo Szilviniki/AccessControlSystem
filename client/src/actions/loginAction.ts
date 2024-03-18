@@ -1,6 +1,7 @@
 "use server"
 
 type LoginResponse = {
+    data? : string[]|string
     error?: boolean
     messages? : string[]|string
 }
@@ -28,6 +29,6 @@ export async function login(formData:FormData): Promise<LoginResponse>{
             error: true,
             messages: "Sikertelen bejelentkezés!"
 
-        }
+       }
     }
 }
