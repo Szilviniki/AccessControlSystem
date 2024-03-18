@@ -34,12 +34,7 @@ public class AuthService : IAuthService
             }
         }
 
-        return new LoginResponseModel
-        {
-            Email = login.Email,
-            Name = "Invalid",
-            Role = "Invalid",
-        };
+        throw new FailedLoginException();
 
     }
 }
