@@ -4,17 +4,20 @@ using Microsoft.EntityFrameworkCore;
 using FluentScheduler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace ACS_Backend
 {
     public static class Program
     {
-        public static byte[] TokenEncryptionKey { get; private set; }
+        public static byte[] JwtKey { get; private set; }
+        public static string JwtIssuer { get; private set; }
+        public static string JwtAudience { get; private set; }
         public static void Main(string[] args)
         {
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
-            TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
+            JwtKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
             SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
 
 
@@ -28,22 +31,22 @@ namespace ACS_Backend
                                   });
             });
 
-            builder.Services.AddAuthentication(a =>
+            builder.Services.AddAuthentication()
+                .AddJwtBearer(a =>
             {
-                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(a =>
-            {
+                a.RequireHttpsMetadata = false;
                 a.SaveToken = true;
-                a.RequireHttpsMetadata = true;
-                a.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                a.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(TokenEncryptionKey),
-                    ValidateIssuerSigningKey = true
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(JwtKey),
+                    ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
+                    ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")
                 };
             });
-
+            builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
+                                                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2")));
             using (SQL sql = new SQL())
             {
                 foreach (Role r in sql.PersonRoles)
@@ -68,7 +71,11 @@ namespace ACS_Backend
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
+<<<<<<< Updated upstream
             builder.Services.AddSingleton<ITokenService, TokenService>();
+=======
+            builder.Services.AddSingleton<IMatchingService, MatchingService>();
+>>>>>>> Stashed changes
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
