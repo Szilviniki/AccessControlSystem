@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using FluentScheduler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using ACS_Backend.Utilities;
 
 namespace ACS_Backend
 {
@@ -11,7 +13,7 @@ namespace ACS_Backend
     {
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
-        {
+        {  
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
             TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
@@ -44,16 +46,13 @@ namespace ACS_Backend
                 };
             });
 
-            using (SQL sql = new SQL())
+
+            builder.Services.AddAuthorization(a =>
             {
-                foreach (Role r in sql.PersonRoles)
-                {
-                    builder.Services.AddAuthorization(a =>
-                    {
-                        a.AddPolicy(r.Name, o => { o.RequireRole(r.Id.ToString()); });
-                    });
-                }
-            }
+                a.AddPolicy("User", o => o.RequireClaim(ClaimTypes.Role,"1"));
+                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2"));
+            });
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -82,7 +81,7 @@ namespace ACS_Backend
             }
             app.UseCors(origin);
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
 
             app.MapControllers();

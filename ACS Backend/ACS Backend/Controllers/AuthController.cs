@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
             var res = _authService.Login(loginModel);
             var genericResponseModel = new GenericResponseModel<LoginResponseModel>
             {
-                Data = res.Result
+                Data = res
             };
             return Ok(res);
         }
