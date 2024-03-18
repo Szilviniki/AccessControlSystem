@@ -38,12 +38,7 @@ public class AuthService : IAuthService
             throw new ItemNotFoundException();
         }
 
-        return new LoginResponseModel
-        {
-            Email = login.Email,
-            Name = "Invalid",
-            Role = "Invalid",
-        };
+        throw new FailedLoginException();
 
     }
 }
