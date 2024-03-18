@@ -71,7 +71,15 @@ namespace ACS_Backend
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+            builder.Services.AddSingleton<ITokenService, TokenService>();
+=======
             builder.Services.AddSingleton<IMatchingService, MatchingService>();
+>>>>>>> Stashed changes
+=======
+            builder.Services.AddSingleton<IMatchingService, MatchingService>();
+>>>>>>> bf218d426df9898f2c1d0276eedd4195074d63ee
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
