@@ -6,7 +6,7 @@ import Link from "next/link";
 import {FaHouseLock} from "react-icons/fa6";
 import {usePathname} from "next/navigation";
 import {Col, Row} from "react-bootstrap";
-import {IoMdSettings} from "react-icons/io";
+import {IoMdExit, IoMdSettings} from "react-icons/io";
 
 export default function SideMenu({
     open
@@ -40,7 +40,7 @@ export default function SideMenu({
                 <MenuItem component={<Link href="/workers"/>} icon={<FaUserTie/>} active={isActive("/workers")}> Dolgozók </MenuItem>
                 <MenuItem component={<Link href="/notes"/>} icon={<FaUserEdit/>} active={isActive("/notes")}> Feljegyzések </MenuItem>
                 <MenuItem component={<Link href="/settings"/>} icon={<IoMdSettings/>} active={isActive("/settings")}> Beálítások </MenuItem>
-                <MenuItem component={<Link href="/notes"/>} icon={<FaUserEdit/>} active={isActive("/notes")}> Feljegyzések </MenuItem>
+                <MenuItem component={<Link href="/login"/>} icon={<IoMdExit />} ></MenuItem>
             </Menu>
                 
         </Sidebar>
