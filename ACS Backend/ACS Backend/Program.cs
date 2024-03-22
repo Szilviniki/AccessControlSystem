@@ -10,6 +10,11 @@ namespace ACS_Backend
 {
     public static class Program
     {
+
+        // public static byte[] JwtKey { get; private set; }
+        // public static string JwtIssuer { get; private set; }
+        // public static string JwtAudience { get; private set; }
+
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
         {  
