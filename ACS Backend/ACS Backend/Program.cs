@@ -45,18 +45,6 @@ namespace ACS_Backend
                     ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")
                 };
             });
-            builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
-                                                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2")));
-            using (SQL sql = new SQL())
-            {
-                foreach (Role r in sql.PersonRoles)
-                {
-                    builder.Services.AddAuthorization(a =>
-                    {
-                        a.AddPolicy(r.Name, o => { o.RequireRole(r.Id.ToString()); });
-                    });
-                }
-            }
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -71,7 +59,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
-            builder.Services.AddSingleton<ITokenService, TokenService>();
+            // builder.Services.AddSingleton<ITokenService, TokenService>();
             builder.Services.AddSingleton<IMatchingService, MatchingService>();
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
