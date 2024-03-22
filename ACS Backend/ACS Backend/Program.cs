@@ -10,14 +10,12 @@ namespace ACS_Backend
 {
     public static class Program
     {
-        public static byte[] JwtKey { get; private set; }
-        public static string JwtIssuer { get; private set; }
-        public static string JwtAudience { get; private set; }
+        public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
-        {
+        {  
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
-            JwtKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
+            TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
             SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
 
 
@@ -31,32 +29,29 @@ namespace ACS_Backend
                                   });
             });
 
-            builder.Services.AddAuthentication()
-                .AddJwtBearer(a =>
+            builder.Services.AddAuthentication(a =>
             {
-                a.RequireHttpsMetadata = false;
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(a =>
+            {
                 a.SaveToken = true;
-                a.TokenValidationParameters = new TokenValidationParameters
+                a.RequireHttpsMetadata = true;
+                a.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(JwtKey),
-                    ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
-                    ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(TokenEncryptionKey),
+                    ValidateIssuerSigningKey = true
                 };
             });
             builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
                                                 a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2")));
             using (SQL sql = new SQL())
             {
-                foreach (Role r in sql.PersonRoles)
-                {
-                    builder.Services.AddAuthorization(a =>
-                    {
-                        a.AddPolicy(r.Name, o => { o.RequireRole(r.Id.ToString()); });
-                    });
-                }
-            }
+                a.AddPolicy("User", o => o.RequireClaim(ClaimTypes.Role,"1"));
+                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2"));
+            });
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -72,7 +67,6 @@ namespace ACS_Backend
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddSingleton<IMatchingService, MatchingService>();
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
@@ -86,7 +80,7 @@ namespace ACS_Backend
             }
             app.UseCors(origin);
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
 
             app.MapControllers();
