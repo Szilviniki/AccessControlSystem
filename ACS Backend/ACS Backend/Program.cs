@@ -10,16 +10,6 @@ namespace ACS_Backend
 {
     public static class Program
     {
-
-        // public static byte[] JwtKey { get; private set; }
-        // public static string JwtIssuer { get; private set; }
-        // public static string JwtAudience { get; private set; }
-        public static void Main(string[] args)
-        {
-            const string origin = "_allowed";
-            var builder = WebApplication.CreateBuilder(args);
-            // JwtKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
-
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
         {  
@@ -39,21 +29,21 @@ namespace ACS_Backend
                                   });
             });
 
-            // builder.Services.AddAuthentication()
-            //     .AddJwtBearer(a =>
-            // {
-            //     a.RequireHttpsMetadata = false;
-            //     a.SaveToken = true;
-            //     a.TokenValidationParameters = new TokenValidationParameters
-            //     {
-            //         ValidateAudience = true,
-            //         ValidateIssuer = true,
-            //         IssuerSigningKey = new SymmetricSecurityKey(JwtKey),
-            //         ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
-            //         ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")
-            //     };
-            // });
-
+            builder.Services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(a =>
+            {
+                a.SaveToken = true;
+                a.RequireHttpsMetadata = true;
+                a.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(TokenEncryptionKey),
+                    ValidateIssuerSigningKey = true
+                };
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
