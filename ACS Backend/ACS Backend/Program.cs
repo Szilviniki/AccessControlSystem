@@ -10,6 +10,11 @@ namespace ACS_Backend
 {
     public static class Program
     {
+
+        // public static byte[] JwtKey { get; private set; }
+        // public static string JwtIssuer { get; private set; }
+        // public static string JwtAudience { get; private set; }
+
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
         {  
@@ -44,6 +49,14 @@ namespace ACS_Backend
                     ValidateIssuerSigningKey = true
                 };
             });
+            builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
+                                                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2")));
+            using (SQL sql = new SQL())
+            {
+                a.AddPolicy("User", o => o.RequireClaim(ClaimTypes.Role,"1"));
+                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2"));
+            });
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -58,9 +71,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
-            // builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddSingleton<IMatchingService, MatchingService>();
-
+            builder.Services.AddSingleton<ITokenService, TokenService>();
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
