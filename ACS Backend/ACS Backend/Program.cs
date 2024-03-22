@@ -49,13 +49,6 @@ namespace ACS_Backend
                     ValidateIssuerSigningKey = true
                 };
             });
-            builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
-                                                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2")));
-            using (SQL sql = new SQL())
-            {
-                a.AddPolicy("User", o => o.RequireClaim(ClaimTypes.Role,"1"));
-                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2"));
-            });
 
 
             builder.Services.AddControllers();
