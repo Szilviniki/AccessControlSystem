@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentScheduler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace ACS_Backend
 {
@@ -11,7 +12,7 @@ namespace ACS_Backend
     {
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
-        {
+        {  
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
             TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
@@ -44,17 +45,6 @@ namespace ACS_Backend
                 };
             });
 
-            using (SQL sql = new SQL())
-            {
-                foreach (Role r in sql.PersonRoles)
-                {
-                    builder.Services.AddAuthorization(a =>
-                    {
-                        a.AddPolicy(r.Name, o => { o.RequireRole(r.Id.ToString()); });
-                    });
-                }
-            }
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -68,7 +58,9 @@ namespace ACS_Backend
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
-            builder.Services.AddSingleton<ITokenService, TokenService>();
+            // builder.Services.AddSingleton<ITokenService, TokenService>();
+            builder.Services.AddSingleton<IMatchingService, MatchingService>();
+
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
@@ -82,7 +74,7 @@ namespace ACS_Backend
             }
             app.UseCors(origin);
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
 
             app.MapControllers();
