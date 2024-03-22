@@ -26,8 +26,5 @@
 
         [ForeignKey("ParentId")]
         public Guid ParentId { get; set; }
-
-        [NotMapped]
-        public Guardian Parent { get; set; }
     }
 }
