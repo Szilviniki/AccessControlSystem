@@ -8,10 +8,10 @@ import {useCookies} from "next-client-cookies";
 
 
 export default function SettingsPage() {
-    const email = cookies().get("email");
+    const user = cookies().get("user");
 
     if (!email) {
-        redirect("/login")
+        redirect("/user")
     }
     else {
 

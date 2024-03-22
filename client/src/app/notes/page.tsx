@@ -2,13 +2,21 @@
 import React from "react";
 
 
-export default function HomePage() {
+export default function NotesPage() {
+    const user = cookies().get("user");
 
-    return (
-        <>
+    if (!user) {
+        redirect("/login")
+    }
+    else {
 
-                <h1> Jegyzetek </h1>
+        return(
 
-        </>
-    );
+            <>
+
+                <MainTemplate>
+                    notes
+                </MainTemplate>
+            </>
+        )}
 }
