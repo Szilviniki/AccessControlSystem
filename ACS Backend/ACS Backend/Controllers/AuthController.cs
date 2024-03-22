@@ -32,11 +32,6 @@ public class AuthController : ControllerBase
             var res = new GenericResponseModel<string> { Message = "Failed login", QueryIsSuccess = false };
             return StatusCode(401, res);
         }
-        catch(ItemNotFoundException)
-        {
-            var res = new GenericResponseModel<string> { Message = "Failed login", QueryIsSuccess = false };
-            return StatusCode(401, res);
-        }
         catch (Exception e)
         {
             var res = new GenericResponseModel<string>{Message = e.Message, QueryIsSuccess = false};
