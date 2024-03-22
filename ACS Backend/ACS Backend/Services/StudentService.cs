@@ -1,6 +1,5 @@
 ﻿using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
-using ACS_Backend.Model;
 using ACS_Backend.Utilities;
 
 namespace ACS_Backend.Services;
@@ -54,7 +53,6 @@ public class StudentService : IStudentService
         {
             throw new ItemAlreadyExistsException();
         }
-
         var checkRes = _checker.IsUniqueStudent(student);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
@@ -64,35 +62,15 @@ public class StudentService : IStudentService
         await _sql.SaveChangesAsync();
     }
 
-    public async Task AddStudentWithGuardian(StudentWithParent studentWithParent)
+    public Array GetExtendedStudent(int cardId)
     {
-        var student = new Student
-        {
-            Name = studentWithParent.StudentName,
-            Email = studentWithParent.StudentEmail,
-            IsPresent = studentWithParent.IsPresent,
-            Phone = studentWithParent.StudentPhone,
-            BirthDate = studentWithParent.StudentBirthDate,
-            CardId = studentWithParent.CardId
-        };
-        var guardian = new Guardian
-        {
-            Name = studentWithParent.ParentName,
-            Email = studentWithParent.ParentEmail,
-            Phone = studentWithParent.ParentPhone
-        };
-        var match = new MatchingService();
-        if (!match.MatchPhone(student.Phone)||!match.MatchEmail(student.Email)||!match.MatchPhone(guardian.Phone)||!match.MatchEmail(guardian.Email))
-            throw new BadFormatException();
-        var checkRes = _checker.IsUniqueStudent(student);
-        if (!checkRes.QueryIsSuccess)
-            throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+        if (!_sql.Students.Any(x => x.CardId == cardId)) throw new ItemNotFoundException();
+        var info = _sql.ExtendedStudents.Where(x => x.CardId == cardId).ToArray();
+        return info;
+    }
 
-        student.Id = Guid.NewGuid();
-        guardian.Id = Guid.NewGuid();
-        student.ParentId = guardian.Id;
-        _sql.Students.Add(student);
-        _sql.Parents.Add(guardian);
-        await _sql.SaveChangesAsync();
+    public Array GetAllExtendedStudents()
+    {
+        return _sql.ExtendedStudents.ToArray();
     }
 }

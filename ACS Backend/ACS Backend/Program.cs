@@ -34,20 +34,28 @@ namespace ACS_Backend
                                   });
             });
 
-            // builder.Services.AddAuthentication()
-            //     .AddJwtBearer(a =>
-            // {
-            //     a.RequireHttpsMetadata = false;
-            //     a.SaveToken = true;
-            //     a.TokenValidationParameters = new TokenValidationParameters
-            //     {
-            //         ValidateAudience = true,
-            //         ValidateIssuer = true,
-            //         IssuerSigningKey = new SymmetricSecurityKey(JwtKey),
-            //         ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
-            //         ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")
-            //     };
-            // });
+            builder.Services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(a =>
+            {
+                a.SaveToken = true;
+                a.RequireHttpsMetadata = true;
+                a.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(TokenEncryptionKey),
+                    ValidateIssuerSigningKey = true
+                };
+            });
+            builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
+                                                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2")));
+            using (SQL sql = new SQL())
+            {
+                a.AddPolicy("User", o => o.RequireClaim(ClaimTypes.Role,"1"));
+                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2"));
+            });
 
 
             builder.Services.AddControllers();
@@ -63,9 +71,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
-            // builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddSingleton<IMatchingService, MatchingService>();
-
+            builder.Services.AddSingleton<ITokenService, TokenService>();
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
