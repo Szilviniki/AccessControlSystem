@@ -28,7 +28,7 @@ export default function SideMenu({
                     color: "#EDF6FF"
                 },
             }}>
-            
+
             < Menu>
                 <Row className={"mb-4 mt-3"}>
                     <Col xs={12} className={"d-flex justify-content-center"}>
