@@ -121,30 +121,37 @@ public class StudentsController : ControllerBase
         }
     }
 
-    [HttpPost("AddWithGuardian")]
-    public async Task<IActionResult> AddWithGuardian([FromBody] StudentWithParent studentWithParent)
+    [HttpGet("GetExtended/{id:int}")]
+    public IActionResult GetExtendedStudent(int id)
     {
         try
         {
-            await _studentService.AddStudentWithGuardian(studentWithParent);
-            return StatusCode(201);
+            var info = _studentService.GetExtendedStudent(id);
+            return Ok(info);
         }
-        catch (UniqueConstraintFailedException<List<string>> e)
+        catch (ItemNotFoundException)
         {
-            var res = new GenericResponseModel<List<string>>
-                { QueryIsSuccess = false, Message = "Unique constraint failed", Data = e.FailedOn };
-            return StatusCode(409);
-        }
-        catch (BadFormatException)
-        {
-            var res = new GenericResponseModel<string>{QueryIsSuccess = false, Message = "Bad format"};
-            return BadRequest(res);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not found" };
+            return StatusCode(404, res);
         }
         catch (Exception e)
         {
-            var res = new GenericResponseModel<List<string>> { QueryIsSuccess = false, Message = e.Message };
-            return StatusCode(500, res);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, e.Message);
         }
     }
 
+    [HttpGet("GetAllExtended")]
+    public IActionResult GetAllExtended()
+    {
+        try
+        {
+            return Ok(_studentService.GetAllExtendedStudents());
+        }
+        catch (Exception e)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(500, res);
+        }
+    }
 }
