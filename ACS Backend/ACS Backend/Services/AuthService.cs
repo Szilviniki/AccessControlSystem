@@ -9,10 +9,12 @@ public class AuthService : IAuthService
 {
     private SQL _sql;
     private IEncryptionService _encryptionService;
+    private ITokenService _tokenService;
 
-    public AuthService(SQL sql, IEncryptionService encryptionService)
+    public AuthService(SQL sql, ITokenService tokenService, IEncryptionService encryptionService)
     {
         _sql = sql;
+        _tokenService = tokenService;
         _encryptionService = encryptionService;
     }
 
@@ -29,12 +31,18 @@ public class AuthService : IAuthService
                 {
                     Email = login.Email,
                     Name = user.Name,
-                    Role = "something"
+                    Role = "something",
+                    Token = _tokenService.CreateToken(user)
                 };
             }
         }
 
-        throw new FailedLoginException();
+        return new LoginResponseModel
+        {
+            Email = login.Email,
+            Name = "Invalid",
+            Role = "Invalid",
+        };
 
     }
 }

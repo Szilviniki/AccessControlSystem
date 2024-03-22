@@ -10,14 +10,12 @@ namespace ACS_Backend
 {
     public static class Program
     {
-        public static byte[] JwtKey { get; private set; }
-        public static string JwtIssuer { get; private set; }
-        public static string JwtAudience { get; private set; }
+        public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
         {
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
-            JwtKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
+            TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
             SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
 
 
@@ -31,18 +29,19 @@ namespace ACS_Backend
                                   });
             });
 
-            builder.Services.AddAuthentication()
-                .AddJwtBearer(a =>
+            builder.Services.AddAuthentication(a =>
             {
-                a.RequireHttpsMetadata = false;
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(a =>
+            {
                 a.SaveToken = true;
-                a.TokenValidationParameters = new TokenValidationParameters
+                a.RequireHttpsMetadata = true;
+                a.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(JwtKey),
-                    ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
-                    ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(TokenEncryptionKey),
+                    ValidateIssuerSigningKey = true
                 };
             });
             builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
@@ -72,7 +71,6 @@ namespace ACS_Backend
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<IRestrictionService, RestrictionService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddSingleton<IMatchingService, MatchingService>();
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
