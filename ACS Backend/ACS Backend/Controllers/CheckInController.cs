@@ -4,9 +4,11 @@ using ACS_Backend.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Cors;
 
 namespace ACS_Backend.Controllers;
-
+[ApiController]
+[EnableCors]
 [Route("api/v1/[controller]")]
 public class CheckInController : Controller
 {

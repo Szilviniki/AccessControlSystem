@@ -8,10 +8,10 @@ namespace ACS_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize("User")]
     public class GuardianController : Controller
     {
         private IGuardianService _guardianService;
+
         public GuardianController(IGuardianService guardianService)
         {
             _guardianService = guardianService;
@@ -71,7 +71,7 @@ namespace ACS_Backend.Controllers
                 return StatusCode(500, res);
             }
         }
-        [Authorize("Admin")]
+
         [HttpPost("add")]
         public async Task<IActionResult> AddGuardian([FromBody] Guardian guardian)
         {
@@ -83,7 +83,8 @@ namespace ACS_Backend.Controllers
             }
             catch (ItemAlreadyExistsException)
             {
-                var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Guardian already exists" };
+                var res = new GenericResponseModel<string>
+                    { QueryIsSuccess = false, Message = "Guardian already exists" };
                 return StatusCode(409, res);
             }
             catch (Exception e)
@@ -92,7 +93,7 @@ namespace ACS_Backend.Controllers
                 return StatusCode(500, res);
             }
         }
-        [Authorize("Admin")]
+
         [HttpPost("update")]
         public async Task<IActionResult> UpdateGuardian([FromBody] Guardian guardian)
         {
@@ -109,7 +110,8 @@ namespace ACS_Backend.Controllers
             }
             catch (ItemAlreadyExistsException)
             {
-                var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Guardian already exists" };
+                var res = new GenericResponseModel<string>
+                    { QueryIsSuccess = false, Message = "Guardian already exists" };
                 return StatusCode(409, res);
             }
             catch (Exception e)
@@ -118,6 +120,7 @@ namespace ACS_Backend.Controllers
                 return StatusCode(500, res);
             }
         }
+
         [Authorize("Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGuardian([FromRoute] Guid id)
