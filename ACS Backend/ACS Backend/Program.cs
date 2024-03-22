@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentScheduler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace ACS_Backend
 {
@@ -43,7 +44,8 @@ namespace ACS_Backend
                     ValidateIssuerSigningKey = true
                 };
             });
-
+            builder.Services.AddAuthorization(a => a.AddPolicy("User", x => x.RequireClaim(ClaimTypes.Role, "1")),
+                                                a.AddPolicy("Admin", x => x.RequireClaim(ClaimTypes.Role, "2")));
             using (SQL sql = new SQL())
             {
                 foreach (Role r in sql.PersonRoles)
