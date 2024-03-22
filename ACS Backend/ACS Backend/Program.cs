@@ -14,11 +14,6 @@ namespace ACS_Backend
         // public static byte[] JwtKey { get; private set; }
         // public static string JwtIssuer { get; private set; }
         // public static string JwtAudience { get; private set; }
-        public static void Main(string[] args)
-        {
-            const string origin = "_allowed";
-            var builder = WebApplication.CreateBuilder(args);
-            // JwtKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
 
         public static byte[] TokenEncryptionKey { get; private set; }
         public static void Main(string[] args)
