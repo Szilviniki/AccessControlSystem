@@ -1,7 +1,9 @@
 ﻿using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
+
 using Microsoft.AspNetCore.Cors;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers
@@ -71,7 +73,6 @@ namespace ACS_Backend.Controllers
                 return StatusCode(500, res);
             }
         }
-
         [HttpPost("add")]
         public async Task<IActionResult> AddGuardian([FromBody] Guardian guardian)
         {
@@ -92,7 +93,6 @@ namespace ACS_Backend.Controllers
                 return StatusCode(500, res);
             }
         }
-
         [HttpPost("update")]
         public async Task<IActionResult> UpdateGuardian([FromBody] Guardian guardian)
         {
@@ -118,6 +118,7 @@ namespace ACS_Backend.Controllers
                 return StatusCode(500, res);
             }
         }
+
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGuardian([FromRoute] Guid id)

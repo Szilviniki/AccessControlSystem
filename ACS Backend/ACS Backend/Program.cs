@@ -10,6 +10,7 @@ namespace ACS_Backend
 {
     public static class Program
     {
+
         // public static byte[] JwtKey { get; private set; }
         // public static string JwtIssuer { get; private set; }
         // public static string JwtAudience { get; private set; }
@@ -18,6 +19,13 @@ namespace ACS_Backend
             const string origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
             // JwtKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
+
+        public static byte[] TokenEncryptionKey { get; private set; }
+        public static void Main(string[] args)
+        {  
+            var origin = "_allowed";
+            var builder = WebApplication.CreateBuilder(args);
+            TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
             SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
 
 
@@ -46,6 +54,7 @@ namespace ACS_Backend
             //     };
             // });
 
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -62,6 +71,7 @@ namespace ACS_Backend
             // builder.Services.AddSingleton<ITokenService, TokenService>();
             builder.Services.AddSingleton<IMatchingService, MatchingService>();
 
+
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
 
             var app = builder.Build();
@@ -74,7 +84,7 @@ namespace ACS_Backend
             }
             app.UseCors(origin);
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
 
             app.MapControllers();
