@@ -1,12 +1,14 @@
 ﻿using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors]
     public class GuardianController : Controller
     {
         private IGuardianService _guardianService;
@@ -116,6 +118,7 @@ namespace ACS_Backend.Controllers
                 return StatusCode(500, res);
             }
         }
+
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGuardian([FromRoute] Guid id)
         {
