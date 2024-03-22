@@ -1,13 +1,11 @@
 using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
-[EnableCors]
 public class AuthController : ControllerBase
 {
     private IAuthService _authService;
@@ -30,11 +28,6 @@ public class AuthController : ControllerBase
             return Ok(res);
         }
         catch (FailedLoginException)
-        {
-            var res = new GenericResponseModel<string> { Message = "Failed login", QueryIsSuccess = false };
-            return StatusCode(401, res);
-        }
-        catch(ItemNotFoundException)
         {
             var res = new GenericResponseModel<string> { Message = "Failed login", QueryIsSuccess = false };
             return StatusCode(401, res);

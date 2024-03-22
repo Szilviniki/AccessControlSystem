@@ -2,6 +2,6 @@
 
 public interface IMatchingService
 {
-    bool MatchEmail(string email);
-    bool MatchPhone(string phone);
+    public bool MatchEmail(string email);
+    public bool MatchPhone(string phone);
 }
