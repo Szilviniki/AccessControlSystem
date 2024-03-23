@@ -11,14 +11,13 @@ function LoginForm() {
     const cookies = useCookies();
     async function onLogin(formData: FormData) {
 
-
-        if(formData.get("email")==null) {
+        if((formData.get("email")=="")) {
             Notiflix.Report.warning(
                 'Hiba!',
                 'Az email cím megdása kötelező megadása kötelező!',
                 'Rendben',
             );
-        }if (formData.get("password")==null) {
+        }if (formData.get("password")=="") {
             Notiflix.Report.warning(
                 'Hiba!',
                 'A jelszó megadása kötelező!',
@@ -27,20 +26,21 @@ function LoginForm() {
         }
         else {
             const res = await login(formData);
-            if (!res.error) {
-                cookies.set("user", JSON.stringify(res));
-
-                location.href = "/"
-            } else {
-                let message = res.messages;
+            if (res.queryIsSuccess==false) {
+                let message = res.message;
                 if (Array.isArray(message)) {
                     message = message[0]
                 }
+
                 Notiflix.Report.warning(
                     'Valami nem jó!',
                     'Figyeljen oda, hogy minden mező helyesen legyen kitöltve!',
                     'Rendben',
                 );
+            } else {
+
+                cookies.set("user", JSON.stringify(res));
+                location.href = "/"
             }
         }
     }
