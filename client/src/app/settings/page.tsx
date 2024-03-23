@@ -5,10 +5,10 @@ import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 
 export default function SettingsPage() {
-    const user = cookies().get("user");
+    const user = cookies().get("user-name");
 
     if (!user) {
-        redirect("/user")
+        redirect("/login")
     }
     else {
 
@@ -17,27 +17,7 @@ export default function SettingsPage() {
             <>
 
                 <MainTemplate>
-                    <form>
-                        <Form.Group>
-                            <Form.Control
-                                type="email"
-                                name="email"
-                                placeholder="Email cím"
-                                className="inputFc"
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Control
-                                type="password"
-                                name="password"
-                                placeholder="Jelszó"
-                                className="inputFc"
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Button type="submit" className="mt-2 loginBt">Bejelentkezés</Button>
-                        </Form.Group>
-                    </form>
+                   settings
                 </MainTemplate>
             </>
         )

@@ -28,7 +28,7 @@ const cookies = useCookies();
                         }}/>
                     )}
                 </NavbarText>
-                <NavbarText className="mx-3" >Jó napot! {useCookies().get("user.name")}</NavbarText>
+                <NavbarText className="mx-3" >Jó napot {useCookies().get("user-name")}!</NavbarText>
             </Navbar.Collapse>
         </Navbar>
     )

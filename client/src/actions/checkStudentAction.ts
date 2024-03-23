@@ -1,12 +1,8 @@
 "use server"
 import jwt from "jsonwebtoken"
+import {ICheckResponse} from "@/interfaces/Check";
 
-type CheckResponse = {
-    data?: null
-    messages? : string[]|string
-    queryIsSuccess?:boolean
-}
-export async function checkStudent(formData:FormData): Promise<CheckResponse>{
+export async function checkStudent(formData:FormData): Promise<ICheckResponse>{
     try {
         const token = jwt.sign(
             {

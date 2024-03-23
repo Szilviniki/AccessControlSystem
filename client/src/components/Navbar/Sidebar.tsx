@@ -1,7 +1,7 @@
 'use client'
 import {useCookies} from "next-client-cookies";
-import {Menu, MenuItem, Sidebar, sidebarClasses, SubMenu} from "react-pro-sidebar";
-import {FaBars, FaHome, FaUserEdit, FaUserFriends, FaUserTie} from "react-icons/fa";
+import {Menu, MenuItem, Sidebar, sidebarClasses} from "react-pro-sidebar";
+import {FaHome, FaUserEdit, FaUserFriends, FaUserTie} from "react-icons/fa";
 import Link from "next/link";
 import {FaHouseLock} from "react-icons/fa6";
 import {usePathname} from "next/navigation";
@@ -18,6 +18,12 @@ export default function SideMenu({
     const isActive = (active: string) => {
         return active === path;
     }
+    const Logout = () => {
+        cookies.remove("user-name");
+        cookies.remove("user-email");
+        cookies.remove("user-role");
+    }
+
 
     return (
         <Sidebar
@@ -35,12 +41,12 @@ export default function SideMenu({
                         <FaHouseLock color="#EDF6FF" size={open?100:30} />
                     </Col>
                 </Row>
-                <MenuItem component={<Link href="/"/>} icon={<FaHome/>} active={isActive("/")}>Kezdőlap</MenuItem>
-                <MenuItem component={<Link href="/students"/>} icon={<FaUserFriends/>} active={isActive("/students")}> Diákok </MenuItem>
-                <MenuItem component={<Link href="/workers"/>} icon={<FaUserTie/>} active={isActive("/workers")}> Dolgozók </MenuItem>
-                <MenuItem component={<Link href="/notes"/>} icon={<FaUserEdit/>} active={isActive("/notes")}> Feljegyzések </MenuItem>
-                <MenuItem component={<Link href="/settings"/>} icon={<IoMdSettings/>} active={isActive("/settings")}> Beálítások </MenuItem>
-                <MenuItem component={<Link href="/login"/>} icon={<IoMdExit />} ></MenuItem>
+                <MenuItem className="Nav-item" component={<Link href="/"/>} icon={<FaHome/>} active={isActive("/")}>Kezdőlap</MenuItem>
+                <MenuItem className="Nav-item" component={<Link href="/students"/>} icon={<FaUserFriends/>} active={isActive("/students")}> Diákok </MenuItem>
+                <MenuItem className="Nav-item" component={<Link href="/workers"/>} icon={<FaUserTie/>} active={isActive("/workers")}> Dolgozók </MenuItem>
+                <MenuItem className="Nav-item" component={<Link href="/notes"/>} icon={<FaUserEdit/>} active={isActive("/notes")}> Feljegyzések </MenuItem>
+                <MenuItem className="Nav-item" component={<Link href="/settings"/>} icon={<IoMdSettings/>} active={isActive("/settings")}> Beálítások </MenuItem>
+                <MenuItem className="Nav-item"  icon={<IoMdExit />} onClick={Logout} component={<Link href="/login"/>} >Kilépés</MenuItem>
             </Menu>
                 
         </Sidebar>

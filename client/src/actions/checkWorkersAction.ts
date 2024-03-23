@@ -1,11 +1,13 @@
 "use server"
 
+import {ICheckResponse} from "@/interfaces/Check";
+
 type CheckResponse = {
     data?: null
     messages? : string[]|string
     queryIsSuccess?:boolean
 }
-export async function checkWorkers(formData:FormData): Promise<CheckResponse>{
+export async function checkWorkers(formData:FormData): Promise<ICheckResponse>{
     try {
         const res = await fetch(`http://localhost:4001/api/v1/CheckIn/CheckFaculty`,{
 

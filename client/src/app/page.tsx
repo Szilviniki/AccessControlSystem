@@ -13,7 +13,7 @@ import {PiListFill} from "react-icons/pi";
 
 export default function HomePage() {
 
-    const user = cookies().get("user");
+    const user = cookies().get("user-name");
 console.log(user)
     if (!user) {
         redirect("/login")

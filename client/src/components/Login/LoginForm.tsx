@@ -39,7 +39,9 @@ function LoginForm() {
                 );
             } else {
 
-                cookies.set("user", JSON.stringify(res));
+                cookies.set("user-name", JSON.stringify(res.name));
+                cookies.set("user-email", JSON.stringify(res.email));
+                cookies.set("user-role", JSON.stringify(res.role));
                 location.href = "/"
             }
         }
