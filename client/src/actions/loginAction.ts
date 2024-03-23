@@ -1,9 +1,14 @@
 "use server"
 
 type LoginResponse = {
-    data? : string[]|string
+    email? : string[]|string
+    name? : string[]|string
+    role? : string[]|string
+    token? : string[]|string
     error?: boolean
-    messages? : string[]|string
+    data?: null
+    message? : string[]|string
+    queryIsSuccess? : boolean
 }
 export async function login(formData:FormData): Promise<LoginResponse>{
     try {
@@ -26,8 +31,8 @@ export async function login(formData:FormData): Promise<LoginResponse>{
     } catch (e){
         console.log(e);
        return {
-            error: true,
-            messages: "Sikertelen bejelentkezés!"
+            queryIsSuccess: false,
+            message: "Sikertelen bejelentkezés!"
 
        }
     }
