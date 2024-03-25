@@ -3,9 +3,10 @@ namespace DB_Module
 {
     public class SQL : DbContext
     {
-        public static string connectionString { get; set; }
+        public static string connectionString { get; set; } =
+            "Server=balics-home.hu;Database=acs;User Id=sa;Password=Titok1234;TrustServerCertificate=true;";
 
-        public SQL() : base(new DbContextOptionsBuilder().EnableSensitiveDataLogging().UseSqlServer(connectionString).Options)
+        public SQL() : base(new DbContextOptionsBuilder().UseSqlServer(connectionString).Options)
         {
         }
 

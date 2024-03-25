@@ -32,15 +32,10 @@ public class AuthService : IAuthService
                     Email = login.Email,
                     Name = user.Name,
                     Role = "something",
-                    Token = _tokenService.CreateToken(user)
+                    Token = "token goes here"
                 };
             }
         }
-        else
-        {
-            throw new FailedLoginException();
-        }
-
         throw new FailedLoginException();
     }
 }
