@@ -1,6 +1,6 @@
 ﻿// Purpose: Test AddStudent method in StudentService.cs.
 
-namespace BackendTest.StudentControllerTest;
+namespace BackendTest.StudentServiceTest;
 
 [TestClass]
 public class AddStudentTest

@@ -1,6 +1,8 @@
 ﻿using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
+using ACS_Backend.Model;
 using ACS_Backend.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ACS_Backend.Services;
 
@@ -27,17 +29,37 @@ public class StudentService : IStudentService
         return _sql.Students.ToArray();
     }
 
-    public async Task UpdateStudent(Student student)
+    public async Task UpdateStudent(UpdateStudentModel student, Guid id)
     {
-        if (!_sql.Students.Any(x => x.Id == student.Id))
+
+        if (!_sql.Students.Any(x => x.Id == id))
         {
             throw new ItemNotFoundException();
         }
+        if (string.IsNullOrEmpty(student.Email) || string.IsNullOrEmpty(student.Name) || string.IsNullOrEmpty(student.Phone))
+        {
+            throw new UnprocessableEntityException();
+        }
+        if (_matchingService.MatchEmail(student.Email) == false || _matchingService.MatchPhone(student.Phone) == false)
+        {
+            throw new BadFormatException();
+        }
+        if(await _sql.Parents.AnyAsync(x=>x.Id == student.ParentId) == false)
+        {
+            throw new ReferredEntityNotFoundException();
+        }
+        var studentOld = await _sql.Students.SingleAsync(x => x.Id == id);
+        studentOld.Phone = student.Phone;
+        studentOld.Email = student.Email;
+        studentOld.Name = student.Name;
+        studentOld.ParentId = student.ParentId;
+        studentOld.BirthDate = student.BirthDate.Date;
 
-        var checkRes = _checker.IsUniqueStudent(student);
+
+        var checkRes = _checker.IsUniqueStudentOnUpdate(studentOld);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
-        _sql.Students.Update(student);
+        _sql.Students.Update(studentOld);
         await _sql.SaveChangesAsync();
     }
 

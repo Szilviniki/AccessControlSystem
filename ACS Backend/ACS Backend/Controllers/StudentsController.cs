@@ -79,7 +79,8 @@ public class StudentsController : ControllerBase
         }
         catch (ReferredEntityNotFoundException)
         {
-            var res = new GenericResponseModel<string>{QueryIsSuccess = false, Message = "Guardian entity not found"};
+            var res = new GenericResponseModel<string>
+                { QueryIsSuccess = false, Message = "Guardian entity not found" };
             return BadRequest(res);
         }
         catch (Exception e)
@@ -89,12 +90,12 @@ public class StudentsController : ControllerBase
         }
     }
 
-    [HttpPost("Update")]
-    public async Task<IActionResult> Update([FromBody] Student updatedStudent)
+    [HttpPost("Update/{id:Guid}")]
+    public async Task<IActionResult> Update([FromBody] UpdateStudentModel updatedStudent, Guid id)
     {
         try
         {
-            await _studentService.UpdateStudent(updatedStudent);
+            await _studentService.UpdateStudent(updatedStudent, id);
             return Ok();
         }
         catch (ItemNotFoundException)
@@ -110,6 +111,22 @@ public class StudentsController : ControllerBase
                 QueryIsSuccess = false
             };
             return StatusCode(409, res);
+        }
+        catch (BadFormatException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Bad format" };
+            return StatusCode(422, res);
+        }
+        catch (UnprocessableEntityException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Unprocessable entity" };
+            return StatusCode(422, res);
+        }
+        catch (ReferredEntityNotFoundException)
+        {
+            var res = new GenericResponseModel<string>
+                { QueryIsSuccess = false, Message = "Guardian entity not found" };
+            return BadRequest(res);
         }
         catch (Exception e)
         {
