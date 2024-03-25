@@ -153,6 +153,7 @@ h1{
   font-weight: bolder;
 }
 
-
-
-
+Label{
+  font-weight: bold;
+  margin-top: 2%;
+}
