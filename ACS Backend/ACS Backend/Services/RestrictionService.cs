@@ -13,6 +13,7 @@ namespace ACS_Backend.Services
 
         public async Task CreateRestriction(Restriction restriction)
         {
+            if (_sql.Restrictions.Any(restriction1 => restriction1.Name == restriction.Name)) throw new ItemAlreadyExistsException();
 
             _sql.Restrictions.Add(restriction);
             await _sql.SaveChangesAsync();
@@ -27,13 +28,13 @@ namespace ACS_Backend.Services
             }
             else
             {
-                throw new Exception("Restriction not found");
+                throw new ItemNotFoundException();
             }
         }
 
         public Restriction GetRestrictionById(int id)
         {
-            if (!_sql.Restrictions.Any(x => x.Id == id)) throw new Exception("Restriction not found");
+            if (!_sql.Restrictions.Any(x => x.Id == id)) throw new ItemNotFoundException();
             return _sql.Restrictions.Single(x => x.Id == id);
         }
 
@@ -42,11 +43,5 @@ namespace ACS_Backend.Services
             return _sql.Restrictions.ToArray();
         }
 
-        public async Task UpdateRestriction(Restriction restriction)
-        {
-            if (_sql.Restrictions.Any(y => y.Id == restriction.Id)) throw new ItemNotFoundException();
-            _sql.Restrictions.Update(restriction);
-            await _sql.SaveChangesAsync();
-        }
     }
 }
