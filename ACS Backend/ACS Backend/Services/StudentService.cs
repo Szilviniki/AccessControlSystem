@@ -8,6 +8,7 @@ public class StudentService : IStudentService
 {
     private SQL _sql;
     private UniquenessChecker _checker = new UniquenessChecker(new SQL());
+    private MatchingService _matchingService = new MatchingService();
 
     public StudentService(SQL sql)
     {
@@ -49,10 +50,16 @@ public class StudentService : IStudentService
 
     public async Task AddStudent(Student student)
     {
-        if (_sql.Students.Any(x => x.CardId == student.CardId))
+        if (string.IsNullOrEmpty(student.Name) || string.IsNullOrEmpty(student.Email) || string.IsNullOrEmpty(student.Phone) || student.CardId == 0)
         {
-            throw new ItemAlreadyExistsException();
+            throw new NotAddedException();
         }
+        if(_matchingService.MatchEmail(student.Email) == false|| _matchingService.MatchPhone(student.Phone) == false)
+        {
+            throw new BadFormatException();
+        }
+
+        if (!_sql.Parents.Any(x => x.Id == student.ParentId)) throw new ReferredEntityNotFoundException();
         var checkRes = _checker.IsUniqueStudent(student);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
@@ -62,15 +69,4 @@ public class StudentService : IStudentService
         await _sql.SaveChangesAsync();
     }
 
-    public Array GetExtendedStudent(int cardId)
-    {
-        if (!_sql.Students.Any(x => x.CardId == cardId)) throw new ItemNotFoundException();
-        var info = _sql.ExtendedStudents.Where(x => x.CardId == cardId).ToArray();
-        return info;
-    }
-
-    public Array GetAllExtendedStudents()
-    {
-        return _sql.ExtendedStudents.ToArray();
-    }
 }

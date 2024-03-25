@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 namespace ACS_Backend.Controllers;
+
 [ApiController]
 [EnableCors]
 [Route("api/v1/[controller]")]
@@ -35,7 +36,6 @@ public class StudentsController : ControllerBase
             return StatusCode(404, res);
         }
     }
-
 
 
     [HttpGet("GetAll")]
@@ -66,6 +66,21 @@ public class StudentsController : ControllerBase
             var res = new GenericResponseModel<List<string>>
                 { QueryIsSuccess = false, Message = "Unique constraint failed", Data = e.FailedOn };
             return StatusCode(409);
+        }
+        catch (NotAddedException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not added" };
+            return StatusCode(400, res);
+        }
+        catch (BadFormatException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Bad format" };
+            return StatusCode(422, res);
+        }
+        catch (ReferredEntityNotFoundException)
+        {
+            var res = new GenericResponseModel<string>{QueryIsSuccess = false, Message = "Guardian entity not found"};
+            return BadRequest(res);
         }
         catch (Exception e)
         {
@@ -115,40 +130,6 @@ public class StudentsController : ControllerBase
         {
             var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not found" };
             return StatusCode(404, res);
-        }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-            return StatusCode(500, res);
-        }
-    }
-
-    [HttpGet("GetExtended/{id:int}")]
-    public IActionResult GetExtendedStudent(int id)
-    {
-        try
-        {
-            var info = _studentService.GetExtendedStudent(id);
-            return Ok(info);
-        }
-        catch (ItemNotFoundException)
-        {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not found" };
-            return StatusCode(404, res);
-        }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-            return StatusCode(500, e.Message);
-        }
-    }
-
-    [HttpGet("GetAllExtended")]
-    public IActionResult GetAllExtended()
-    {
-        try
-        {
-            return Ok(_studentService.GetAllExtendedStudents());
         }
         catch (Exception e)
         {
