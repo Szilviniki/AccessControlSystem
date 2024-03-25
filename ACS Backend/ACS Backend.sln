@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACS Backend", "ACS Backend\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB_Module", "DB_Moules\DB_Module.csproj", "{9AED226C-3388-443A-AA36-75BA90AF5D65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendTest", "BackendTest\BackendTest.csproj", "{50D15D34-EF5E-4052-BD80-1874DE0E6D8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9AED226C-3388-443A-AA36-75BA90AF5D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AED226C-3388-443A-AA36-75BA90AF5D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AED226C-3388-443A-AA36-75BA90AF5D65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50D15D34-EF5E-4052-BD80-1874DE0E6D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50D15D34-EF5E-4052-BD80-1874DE0E6D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50D15D34-EF5E-4052-BD80-1874DE0E6D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50D15D34-EF5E-4052-BD80-1874DE0E6D8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
