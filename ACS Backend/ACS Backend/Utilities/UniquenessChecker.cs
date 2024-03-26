@@ -15,8 +15,26 @@ public class UniquenessChecker
     {
         var fails = new List<string>();
         if (_sql.Students.Any(x => student.CardId == x.CardId)) fails.Add("Kártyaszám");
-        if(_sql.Students.Any(x=>x.Phone == student.Phone)) fails.Add("Telefonszám");
-        if(_sql.Personnel.Any(x=>x.CardId==student.CardId)||_sql.Students.Any(x=>x.CardId==student.CardId)) fails.Add("Kártyaszám");
+        if (_sql.Students.Any(x => x.Phone == student.Phone)) fails.Add("Telefonszám");
+        if (_sql.Personnel.Any(x => x.CardId == student.CardId) || _sql.Students.Any(x => x.CardId == student.CardId))
+            fails.Add("Kártyaszám");
+        return fails.Count != 0
+            ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
+            : new GenericResponseModel<List<string>> { Message = "Minden ok" };
+    }
+
+
+    public GenericResponseModel<List<string>> IsUniqueStudentOnUpdate(Student student)
+    {
+        var oldStudent = _sql.Students.Single(x => x.Id == student.Id);
+        var fails = new List<string>();
+
+        if (_sql.Students.Any(x => x.Phone == student.Phone)) fails.Add("Telefonszám");
+
+        if ((_sql.Personnel.Any(x => x.CardId == student.CardId) ||
+             _sql.Students.Any(x => x.CardId == student.CardId)) &&
+            oldStudent.CardId != student.CardId) fails.Add("Kártyaszám");
+
         return fails.Count != 0
             ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
             : new GenericResponseModel<List<string>> { Message = "Minden ok" };
