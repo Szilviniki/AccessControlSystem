@@ -4,7 +4,6 @@
     public class Student
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
 
         
@@ -29,5 +28,11 @@
 
         [NotMapped]
         public Guardian Parent { get; set; }
+
+        //
+        // public ICollection<StudentLockRule> StudentLockRules { get; set; }
+        //
+        //
+        // public ICollection<StudentParoleRule> StudentParoleRules { get; set; }
     }
 }

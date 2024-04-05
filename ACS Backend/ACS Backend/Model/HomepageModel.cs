@@ -2,8 +2,9 @@
 
 public class HomepageModel
 {
-    public List<string> AbsentStudents { get; set; } = new List<string>();
+    public int PresentStudents { get; set; } = 0;
+    public int AbsentStudents { get; set; } = 0;
     public List<GateLog> LastLogs { get; set; } = new List<GateLog>();
-    public List<string> NaughtyStudents { get; set; } = new List<string>();
-    public List<string> NiceStudents { get; set; } = new List<string>();
+    public int NaughtyStudents { get; set; } =0;
+    public List<string> Notices { get; set; } = new List<string>();
 }

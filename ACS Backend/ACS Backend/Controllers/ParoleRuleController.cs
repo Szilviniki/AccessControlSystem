@@ -23,7 +23,7 @@ public class ParoleRuleController : Controller
         {
             try
             {
-                var res = new GenericResponseModel<Privilege>
+                var res = new GenericResponseModel<ParoleRule>
                 {
                     Data = _paroleRuleService.GetParoleRuleById(id),
                     QueryIsSuccess = true
@@ -59,11 +59,11 @@ public class ParoleRuleController : Controller
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Create([FromBody] Privilege privilege)
+        public async Task<IActionResult> Create([FromBody] ParoleRule paroleRule)
         {
             try
             {
-                await _paroleRuleService.CreateParoleRule(privilege);
+                await _paroleRuleService.CreateParoleRule(paroleRule);
                 var res = new GenericResponseModel<string> { QueryIsSuccess = true };
                 return StatusCode(201, res);
             }

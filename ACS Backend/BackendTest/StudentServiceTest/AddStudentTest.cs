@@ -12,9 +12,10 @@ public class AddStudentTest
     [TestInitialize]
     public void StudentInit()
     {
-        if (_sql.Students.Any(x => x.Email == "test.thomas@email.com"))
+        if (_sql.Students.Any(x => x.CardId == _cardId))
         {
-            _sql.Students.Remove(_sql.Students.Single(x => x.Email == "test.thomas@email.com"));
+            _sql.Students.Remove(_sql.Students.Single(x => x.CardId == _cardId));
+            _sql.SaveChanges();
         }
     }
 
@@ -49,7 +50,7 @@ public class AddStudentTest
                 Name = "Test Student",
                 Email = "test.thomas@email.com",
                 Phone = "+36305678943",
-                CardId = new Random().Next(100000, 999999),
+                CardId = _cardId,
                 ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
                 BirthDate = new DateTime(2009, 08, 12).Date
             };
@@ -121,6 +122,8 @@ public class AddStudentTest
                 ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
                 BirthDate = new DateTime(2009, 08, 12).Date
             };
+            _sql.Students.Add(student);
+            await _sql.SaveChangesAsync();
             await _studentService.AddStudent(student);
             Assert.Fail();
         }
@@ -152,6 +155,15 @@ public class AddStudentTest
         }
         catch (ReferredEntityNotFoundException)
         {
+        }
+    }
+    [TestCleanup]
+    public async Task StudentCleanup()
+    {
+        if (_sql.Students.Any(x => x.CardId == _cardId))
+        {
+            _sql.Students.Remove(_sql.Students.Single(x => x.CardId == _cardId));
+            await _sql.SaveChangesAsync();
         }
     }
 }

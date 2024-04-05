@@ -9,11 +9,11 @@ namespace ACS_Backend.Controllers;
 [Route("api/v1/[controller]")]
 public class RestrictionController : Controller
 {
-    private RestrictionService _restrictionService;
+    private LockRuleService _lockRuleService;
 
-    public RestrictionController(RestrictionService restrictionService)
+    public RestrictionController(LockRuleService lockRuleService)
     {
-        _restrictionService = restrictionService;
+        _lockRuleService = lockRuleService;
     }
 
     [HttpGet("Get/{id:int}")]
@@ -21,9 +21,9 @@ public class RestrictionController : Controller
     {
         try
         {
-            var res = new GenericResponseModel<Restriction>
+            var res = new GenericResponseModel<LockRule>
             {
-                Data = _restrictionService.GetRestrictionById(id),
+                Data = _lockRuleService.GetRestrictionById(id),
                 QueryIsSuccess = true
             };
             return Ok(res);
@@ -44,7 +44,7 @@ public class RestrictionController : Controller
     {
         try
         {
-            var res = new GenericResponseModel<Array> { Data = _restrictionService.GetRestrictions() };
+            var res = new GenericResponseModel<Array> { Data = _lockRuleService.GetRestrictions() };
             return Ok(res);
         }
         catch (Exception e)
@@ -55,23 +55,28 @@ public class RestrictionController : Controller
     }
 
     [HttpPost("Add")]
-    public async Task<IActionResult> Create([FromBody] Restriction restriction)
+    public async Task<IActionResult> Create([FromBody] LockRule lockRule, [FromBody] Guid studentID)
     {
         try
         {
-            await _restrictionService.CreateRestriction(restriction);
+            await _lockRuleService.CreateRestriction(lockRule, studentID);
             var res = new GenericResponseModel<string> { QueryIsSuccess = true };
             return StatusCode(201, res);
         }
         catch (ItemAlreadyExistsException e)
         {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Item already exists" };
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Erre a diákra ez már ki van szabva"};
             return BadRequest(res);
         }
-        catch (Exception e)
+        catch (ReferredEntityNotFoundException e)
         {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-            return StatusCode(500, res);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Nem található a diák"};
+            return StatusCode(400,res);
+        }
+        catch (UnprocessableEntityException e)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Hibás adatok"};
+            return StatusCode(412,res);
         }
     }
 
@@ -80,7 +85,7 @@ public class RestrictionController : Controller
     {
         try
         {
-            await _restrictionService.DeleteRestriction(id);
+            await _lockRuleService.DeleteRestriction(id);
             var res = new GenericResponseModel<string> { QueryIsSuccess = true };
             return Ok(res);
         }

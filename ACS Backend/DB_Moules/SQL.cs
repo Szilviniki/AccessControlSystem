@@ -1,4 +1,5 @@
 ﻿using DB_Module.Models;
+
 namespace DB_Module
 {
     public class SQL : DbContext
@@ -16,26 +17,42 @@ namespace DB_Module
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StudentRestriction>().HasKey(x => new { x.StudentId, x.RestrictionId });
             modelBuilder.Entity<StudentExtended>(ex =>
-            {
-                ex.HasNoKey();
-                ex.ToView("StudentExtended");
-            }
+                {
+                    ex.HasNoKey();
+                    ex.ToView("StudentExtended");
+                }
             );
-
+            modelBuilder.Entity<ActiveRule>(ar =>
+            {
+                ar.HasNoKey();
+                ar.ToView("ActiveRules");
+            });
+            modelBuilder.Entity<ActiveParoleRule>(ar =>
+            {
+                ar.HasNoKey();
+                ar.ToView("ActiveParoleRules");
+            });
+            
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Guardian> Parents { get; set; }
-        public DbSet<Privilege> Privileges { get; set; }
-        public DbSet<Restriction> Restrictions { get; set; }
+        public DbSet<ParoleRule> ParoleRules { get; set; }
+        public DbSet<LockRule> LockRules { get; set; }
         public DbSet<Personnel> Personnel { get; set; }
         public DbSet<Role> PersonRoles { get; set; }
         public DbSet<GateLog> GateLogs { get; set; }
-        public DbSet<StudentRestriction> StudentRestrictions { get; set; }
-        public DbSet<StudentPrivilege> StudentPrivileges { get; set; }
+
+        public DbSet<StudentLockRule> StudentsLockRules { get; set; }
+        
+        public DbSet<StudentParoleRule> StudentsParoleRules { get; set; }
+        
         public DbSet<StudentExtended> ExtendedStudents { get; set; }
+        
+        public DbSet<ActiveRule> ActiveRules { get; set; }
+        
+        public DbSet<ActiveParoleRule> ActiveParoleRules { get; set; }
     }
 }

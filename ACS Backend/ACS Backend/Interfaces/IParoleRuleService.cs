@@ -2,8 +2,8 @@
 
 public interface IParoleRuleService
 {
-    public Privilege GetParoleRuleById(int id);
+    public ParoleRule GetParoleRuleById(int id);
     public Array GetParoleRules();
-    public Task CreateParoleRule(Privilege paroleRule);
+    public Task CreateParoleRule(ParoleRule paroleRule);
     public Task DeleteParoleRule(int id);
 }

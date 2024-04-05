@@ -12,30 +12,30 @@ public class ParoleRuleService : IParoleRuleService
         _sql = sql;
     }
 
-    public Privilege GetParoleRuleById(int id)
+    public ParoleRule GetParoleRuleById(int id)
     {
-        if (_sql.Privileges.Any(x => x.Id == id)) throw new ItemNotFoundException();
-        return _sql.Privileges.First(x => x.Id == id);
+        if (_sql.ParoleRules.Any(x => x.Id == id)) throw new ItemNotFoundException();
+        return _sql.ParoleRules.First(x => x.Id == id);
     }
 
     public Array GetParoleRules()
     {
-        return _sql.Privileges.ToArray();
+        return _sql.ParoleRules.ToArray();
     }
 
-    public async Task CreateParoleRule(Privilege paroleRule)
+    public async Task CreateParoleRule(ParoleRule paroleRule)
     {
-        if (_sql.Restrictions.Any(restriction1 => restriction1.Name == paroleRule.Name))
+        if (_sql.LockRules.Any(restriction1 => restriction1.Name == paroleRule.Name))
             throw new ItemAlreadyExistsException();
-        _sql.Privileges.Add(paroleRule);
+        _sql.ParoleRules.Add(paroleRule);
         await _sql.SaveChangesAsync();
     }
 
     public Task DeleteParoleRule(int id)
     {
-        if (_sql.Privileges.Any(x => x.Id == id))
+        if (_sql.ParoleRules.Any(x => x.Id == id))
         {
-            _sql.Remove(_sql.Privileges.First(x => x.Id == id));
+            _sql.Remove(_sql.ParoleRules.First(x => x.Id == id));
             return _sql.SaveChangesAsync();
         }
         else

@@ -2,5 +2,5 @@
 
 public class UnprocessableEntityException : Exception
 {
-    
+    public string? Details { get; set; }
 }

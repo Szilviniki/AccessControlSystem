@@ -63,7 +63,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IPersonnelService, PersonnelService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
-            builder.Services.AddScoped<IRestrictionService, RestrictionService>();
+            builder.Services.AddScoped<ILockRuleService, LockRuleService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
 
             // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
