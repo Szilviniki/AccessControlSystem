@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React from 'react';
 import { Form, Button } from "react-bootstrap"
 import Notiflix from "notiflix";
@@ -65,7 +65,7 @@ function LoginForm() {
                 />
             </Form.Group>
             <Form.Group>
-                <Button type="submit" className="mt-2 loginBt">Bejelentkezés</Button>
+                <Button type="submit" className="mt-2 loginBt">Mentés</Button>
             </Form.Group>
         </form>
     );
