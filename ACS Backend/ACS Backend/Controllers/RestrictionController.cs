@@ -55,7 +55,7 @@ public class RestrictionController : Controller
     }
 
     [HttpPost("Add")]
-    public async Task<IActionResult> Create([FromBody] LockRule lockRule, [FromBody] Guid studentID)
+    public async Task<IActionResult> Create([FromBody] LockRule lockRule, Guid studentID)
     {
         try
         {

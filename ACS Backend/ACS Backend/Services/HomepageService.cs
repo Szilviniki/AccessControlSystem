@@ -35,7 +35,7 @@ public class HomepageService : IHomepageService
         {
             if (DateTime.Now.TimeOfDay >= rule.StartTime && DateTime.Now.TimeOfDay <= rule.EndTime)
             {
-                notices.Add($"{rule.StudentName} jelenleg nincs bent {rule.ParoleName} miatt! Eddig lehet kint: \n\r {rule.EndTime.Hours}:{rule.EndTime.Minutes}");
+                notices.Add($"{rule.StudentName} jelenleg nincs bent {rule.ParoleName} miatt! Eddig lehet kint: {rule.EndTime.Hours}:{rule.EndTime.Minutes}");
             }
             else
             {
