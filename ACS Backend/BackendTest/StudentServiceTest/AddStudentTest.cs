@@ -1,12 +1,14 @@
 ﻿// Purpose: Test AddStudent method in StudentService.cs.
 
+using ACS_Backend.Utilities;
+
 namespace BackendTest.StudentServiceTest;
 
 [TestClass]
 public class AddStudentTest
 {
     private static SQL _sql = new SQL();
-    private StudentService _studentService = new StudentService(_sql);
+    private StudentService _studentService = new StudentService(_sql, new UniquenessChecker(_sql), new MatchingService());
     private int _cardId = 883269;
 
     [TestInitialize]

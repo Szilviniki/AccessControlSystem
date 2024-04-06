@@ -58,4 +58,14 @@ public class UniquenessChecker
             ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
             : new GenericResponseModel<List<string>> { Message = "Minden ok" };
     }
+    
+    public GenericResponseModel<List<string>> IsUniqueGuardian(Guardian guardian)
+    {
+        var fails = new List<string>();
+        if (_sql.Parents.Any(x => guardian.Phone == x.Phone)) fails.Add("Telefonszám");
+        if (_sql.Parents.Any(x => x.Email == guardian.Email)) fails.Add("Email cím");
+        return fails.Count != 0
+            ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
+            : new GenericResponseModel<List<string>> { Message = "Minden ok" };
+    }
 }
