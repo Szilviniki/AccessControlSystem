@@ -26,7 +26,7 @@ public class StudentService : IStudentService
 
     public Array GetAllStudents()
     {
-        return _sql.Students.ToArray();
+        return _sql.Students.Include(x=>x.Parent).ToArray();
     }
 
     public async Task UpdateStudent(UpdateStudentModel student, Guid id)

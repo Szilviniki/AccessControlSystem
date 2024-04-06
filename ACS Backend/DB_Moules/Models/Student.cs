@@ -26,13 +26,7 @@
         [ForeignKey("ParentId")]
         public Guid ParentId { get; set; }
 
-        [NotMapped]
+       
         public Guardian Parent { get; set; }
-
-        //
-        // public ICollection<StudentLockRule> StudentLockRules { get; set; }
-        //
-        //
-        // public ICollection<StudentParoleRule> StudentParoleRules { get; set; }
     }
 }

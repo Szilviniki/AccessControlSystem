@@ -17,7 +17,5 @@
         public int DayOfWeek { get; set; }
 
         public ICollection<StudentLockRule> StudentLockRules { get; }
-        
-        public ICollection<Student> Students { get; }
     }
 }
