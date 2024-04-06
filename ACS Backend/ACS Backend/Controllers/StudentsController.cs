@@ -1,8 +1,6 @@
-using System.Data;
 using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
-using ACS_Backend.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -91,7 +89,7 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost("Update/{id:Guid}")]
-    public async Task<IActionResult> Update([FromBody] UpdateStudentModel updatedStudent, Guid id)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateStudentModel updatedStudent)
     {
         try
         {
@@ -152,6 +150,43 @@ public class StudentsController : ControllerBase
         {
             var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
             return StatusCode(500, res);
+        }
+    }
+
+    [HttpPut("AddWithParent")]
+    public async Task<IActionResult> AddWithParent([FromBody] Student student, [FromBody] Guardian parent)
+    {
+        try
+        {
+            await _studentService.AddStudentWithParent(student, parent);
+            return StatusCode(201);
+        }
+        catch (UniqueConstraintFailedException<List<string>> e)
+        {
+            var res = new GenericResponseModel<List<string>>
+                { QueryIsSuccess = false, Message = "Unique constraint failed", Data = e.FailedOn };
+            return StatusCode(409);
+        }
+        catch (NotAddedException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Not added" };
+            return StatusCode(400, res);
+        }
+        catch (BadFormatException)
+        {
+            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Bad format" };
+            return StatusCode(422, res);
+        }
+        catch (ReferredEntityNotFoundException)
+        {
+            var res = new GenericResponseModel<string>
+                { QueryIsSuccess = false, Message = "Guardian entity not found" };
+            return BadRequest(res);
+        }
+        catch (ArgumentException e)
+        {
+            var res = new GenericResponseModel<List<string>> { QueryIsSuccess = false, Message = e.Message };
+            return StatusCode(422, res);
         }
     }
 }

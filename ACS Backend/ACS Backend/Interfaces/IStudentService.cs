@@ -10,4 +10,6 @@ public interface IStudentService
     public Task RemoveStudent(Guid id);
 
     public Task AddStudent(Student student);
+    
+    public Task AddStudentWithParent(Student student, Guardian parent);
 }
