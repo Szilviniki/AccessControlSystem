@@ -20,13 +20,13 @@ public class StudentService : IStudentService
     public Student GetStudent(Guid id)
     {
         if (!_sql.Students.Any(x => x.Id == id)) throw new ItemNotFoundException();
-        var student = _sql.Students.Single(x => x.Id == id);
+        var student = _sql.Students.Include(x=>x.Parent).Single(x => x.Id == id);
         return student;
     }
 
     public Array GetAllStudents()
     {
-        return _sql.Students.ToArray();
+        return _sql.Students.Include(x=>x.Parent).ToArray();
     }
 
     public async Task UpdateStudent(UpdateStudentModel student, Guid id)

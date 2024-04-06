@@ -1,6 +1,5 @@
 ﻿using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace ACS_Backend.Services;
 
