@@ -1,8 +1,9 @@
-﻿using ACS_Backend.Model;
+﻿using ACS_Backend.Interfaces;
+using ACS_Backend.Model;
 
 namespace ACS_Backend.Utilities;
 
-public class UniquenessChecker
+public class UniquenessChecker : IUniquenessChecker
 {
     private SQL _sql;
 
@@ -54,6 +55,16 @@ public class UniquenessChecker
         var fails = new List<string>();
         if (_sql.Personnel.Any(x => faculty.CardId == x.CardId)) fails.Add("Kártyaszám");
         if (_sql.Personnel.Any(x => x.Email == faculty.Email)) fails.Add("Email cím");
+        return fails.Count != 0
+            ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
+            : new GenericResponseModel<List<string>> { Message = "Minden ok" };
+    }
+    
+    public GenericResponseModel<List<string>> IsUniqueGuardian(Guardian guardian)
+    {
+        var fails = new List<string>();
+        if (_sql.Parents.Any(x => guardian.Phone == x.Phone)) fails.Add("Telefonszám");
+        if (_sql.Parents.Any(x => x.Email == guardian.Email)) fails.Add("Email cím");
         return fails.Count != 0
             ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
             : new GenericResponseModel<List<string>> { Message = "Minden ok" };

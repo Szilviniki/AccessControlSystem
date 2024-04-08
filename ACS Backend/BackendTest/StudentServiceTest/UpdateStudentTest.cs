@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ACS_Backend.Utilities;
 
 namespace BackendTest.StudentServiceTest;
 
@@ -6,7 +7,7 @@ namespace BackendTest.StudentServiceTest;
 public class UpdateStudentTest
 {
     private static SQL _sql = new();
-    private StudentService _studentService = new(_sql);
+    private StudentService _studentService = new StudentService(_sql);
 
     private Student _studentOld = new()
     {

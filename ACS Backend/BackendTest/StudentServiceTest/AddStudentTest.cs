@@ -1,5 +1,7 @@
 ﻿// Purpose: Test AddStudent method in StudentService.cs.
 
+using ACS_Backend.Utilities;
+
 namespace BackendTest.StudentServiceTest;
 
 [TestClass]

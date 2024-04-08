@@ -17,6 +17,11 @@ public class StudentService : IStudentService
         _sql = sql;
     }
 
+    private bool _IsItFilledOut(Student student)
+    {
+        return !string.IsNullOrEmpty(student.Name) && !string.IsNullOrEmpty(student.Email) && !string.IsNullOrEmpty(student.Phone);
+    }
+    
     public Student GetStudent(Guid id)
     {
         if (!_sql.Students.Any(x => x.Id == id)) throw new ItemNotFoundException();
@@ -26,7 +31,7 @@ public class StudentService : IStudentService
 
     public Array GetAllStudents()
     {
-        return _sql.Students.Include(x=>x.Parent).ToArray();
+        return _sql.Students.ToArray();
     }
 
     public async Task UpdateStudent(UpdateStudentModel student, Guid id)
@@ -36,10 +41,9 @@ public class StudentService : IStudentService
         {
             throw new ItemNotFoundException();
         }
-        if (string.IsNullOrEmpty(student.Email) || string.IsNullOrEmpty(student.Name) || string.IsNullOrEmpty(student.Phone))
-        {
-            throw new UnprocessableEntityException();
-        }
+        var tempS = new Student(){Email = student.Email, Phone = student.Phone, Name = student.Name, ParentId = student.ParentId, BirthDate = student.BirthDate};
+        if(!_IsItFilledOut(tempS))
+               throw new ArgumentException("Nincs minden szükséges mező kitöltve!");
         if (_matchingService.MatchEmail(student.Email) == false || _matchingService.MatchPhone(student.Phone) == false)
         {
             throw new BadFormatException();
@@ -54,8 +58,7 @@ public class StudentService : IStudentService
         studentOld.Name = student.Name;
         studentOld.ParentId = student.ParentId;
         studentOld.BirthDate = student.BirthDate.Date;
-
-
+        
         var checkRes = _checker.IsUniqueStudentOnUpdate(studentOld);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
@@ -91,4 +94,51 @@ public class StudentService : IStudentService
         await _sql.SaveChangesAsync();
     }
 
+    public async Task AddStudentWithParent(Student student, Guardian parent)
+    {
+        await using var transaction = await _sql.Database.BeginTransactionAsync();
+        try
+        {
+            if (string.IsNullOrEmpty(student.Name) || string.IsNullOrEmpty(student.Email) || string.IsNullOrEmpty(student.Phone) || student.CardId == 0)
+            {
+                throw new ArgumentException("Diák mező(i) hiányzik/hiányoznak");
+
+            }
+            if (string.IsNullOrEmpty(parent.Name) || string.IsNullOrEmpty(parent.Phone)|| string.IsNullOrEmpty(parent.Email))
+            {
+                throw new ArgumentException("Törvényes Képviselő mezője/hiányoznak hiányzik/hiányoznak");
+            }
+            if (_matchingService.MatchEmail(student.Email) == false || _matchingService.MatchPhone(student.Phone) == false)
+            {
+                throw new BadFormatException();
+            }
+            if (_matchingService.MatchPhone(parent.Phone) == false|| _matchingService.MatchEmail(parent.Email) == false)
+            {
+                throw new BadFormatException();
+            }
+            
+            
+            var checkRes = _checker.IsUniqueStudent(student);
+            if (!checkRes.QueryIsSuccess)
+                throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+            
+            var uniqueParent = _checker.IsUniqueGuardian(parent);
+            if (!uniqueParent.QueryIsSuccess)
+                throw new UniqueConstraintFailedException<List<string>> { FailedOn = uniqueParent.Data };
+            
+            student.Id = Guid.NewGuid();
+            parent.Id = Guid.NewGuid();
+            student.BirthDate = student.BirthDate.Date;
+            student.ParentId = parent.Id;
+            _sql.Students.Add(student);
+            _sql.Parents.Add(parent);
+            await _sql.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch 
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
 }
