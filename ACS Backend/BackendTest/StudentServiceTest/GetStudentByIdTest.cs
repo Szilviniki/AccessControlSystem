@@ -8,7 +8,7 @@ public class GetStudentByIdTest
     private static SQL _sql = new SQL();
 
     private StudentService _studentService =
-        new StudentService(_sql, new UniquenessChecker(_sql), new MatchingService());
+        new StudentService(_sql);
 
 
     private Student _student = new()

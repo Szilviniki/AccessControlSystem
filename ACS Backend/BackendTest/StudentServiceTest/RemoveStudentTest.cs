@@ -6,7 +6,7 @@ namespace BackendTest.StudentServiceTest;
 public class RemoveStudentTest
 {
     private static SQL _sql = new SQL();
-    private StudentService _studentService = new StudentService(_sql, new UniquenessChecker(_sql), new MatchingService());
+    private StudentService _studentService = new StudentService(_sql);
     private Guid? StudentId;
 
     private Student _student = new Student

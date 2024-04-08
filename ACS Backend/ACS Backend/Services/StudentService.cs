@@ -9,14 +9,12 @@ namespace ACS_Backend.Services;
 public class StudentService : IStudentService
 {
     private SQL _sql;
-    private UniquenessChecker _checker;
-    private MatchingService _matchingService;
+    private UniquenessChecker _checker = new UniquenessChecker(new SQL());
+    private MatchingService _matchingService = new MatchingService();
 
-    public StudentService(SQL sql, UniquenessChecker checker, MatchingService matchingService)
+    public StudentService(SQL sql)
     {
         _sql = sql;
-        _checker = checker;
-        _matchingService = matchingService;
     }
 
     private bool _IsItFilledOut(Student student)
@@ -33,7 +31,7 @@ public class StudentService : IStudentService
 
     public Array GetAllStudents()
     {
-        return _sql.Students.Include(x=>x.Parent).ToArray();
+        return _sql.Students.ToArray();
     }
 
     public async Task UpdateStudent(UpdateStudentModel student, Guid id)

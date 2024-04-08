@@ -1,8 +1,9 @@
-﻿using ACS_Backend.Model;
+﻿using ACS_Backend.Interfaces;
+using ACS_Backend.Model;
 
 namespace ACS_Backend.Utilities;
 
-public class UniquenessChecker
+public class UniquenessChecker : IUniquenessChecker
 {
     private SQL _sql;
 

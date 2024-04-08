@@ -5,6 +5,7 @@ using FluentScheduler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using ACS_Backend.Utilities;
 
 namespace ACS_Backend
 {
@@ -56,6 +57,9 @@ namespace ACS_Backend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<SQL>(a => { a.UseSqlServer(SQL.connectionString); });
+
+            builder.Services.AddScoped<IUniquenessChecker, UniquenessChecker>();
+
             builder.Services.AddTransient<IHomepageService, HomepageService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
@@ -65,9 +69,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<ILockRuleService, LockRuleService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
-
-            // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
-
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

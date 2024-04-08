@@ -154,10 +154,32 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPut("AddWithParent")]
-    public async Task<IActionResult> AddWithParent([FromBody] Student student, [FromBody] Guardian parent)
+    public async Task<IActionResult> AddWithParent([FromBody] AddStudentWithParentModel model)
     {
         try
         {
+
+            var parent = new Guardian()
+            {
+                Email = model.ParentEmail,
+                Phone = model.ParentPhone,
+                Name = model.ParentName,
+                Id = Guid.NewGuid()
+            };
+
+            Random random = new Random();
+
+            var cardID = random.Next(100000,999999);
+
+            var student = new Student()
+            {
+                Name = model.StudentName,
+                Email = model.StudentName,
+                Phone = model.StudentPhone,
+                BirthDate = model.StudentBirthDate,
+                CardId = cardID
+            };
+
             await _studentService.AddStudentWithParent(student, parent);
             return StatusCode(201);
         }
