@@ -1,12 +1,9 @@
-
 import {Card, Col, Container, Row} from "react-bootstrap";
 import React from "react";
-import {getCookies} from "next-client-cookies/server";
 import MainTemplate from "@/app/templates/MainTemplate";
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
-import {useCookies} from "next-client-cookies";
-import {FaSchool, FaStar, FaUserCheck} from "react-icons/fa";
+import {FaStar} from "react-icons/fa";
 import {RiUserFollowFill, RiUserForbidFill, RiUserUnfollowFill} from "react-icons/ri";
 import {PiListFill} from "react-icons/pi";
 

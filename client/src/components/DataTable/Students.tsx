@@ -3,11 +3,14 @@
 import React, {useEffect, useState} from 'react';
 import DataTable, {Direction} from "react-data-table-component";
 import moment from "moment";
-import {FaCheck, FaTimes} from "react-icons/fa";
+import {FaUserCheck, FaUserTimes} from "react-icons/fa";
+import {Row, Col, Container, ButtonGroup} from "react-bootstrap";
+import DeleteStudent from "@/components/DeleteUser/DeleteStudent";
+import EditStudent from "@/components/EditUser/EditStudent";
 
 function Students() {
     const [students, setStudents] = useState([])
-    const [activedate, setactivedate] = useState(moment().locale("hu"));
+
 
 
     useEffect(() => {
@@ -20,6 +23,56 @@ function Students() {
 
     }, [])
 
+    function prepareData(datas: any[]) {
+
+        return datas ? datas.map((item) => {
+            return {
+
+                id: item.id,
+                name: item.name,
+                email:(<a href={`mailto:${item.email}`}>{item.email}</a>),
+                age: moment().diff(moment(item.birthDate), "years"),
+                birthDate: moment(item.birthDate).format("YYYY.MM.DD"),
+                phone: (<a href={`tel:${item.phone}`}>{item.phone}</a>),
+                present: item.isPresent ? (<FaUserCheck size="8%" color="#006D77" />) : (<FaUserTimes size="8%" color="E29578"/>),
+            }
+        }) : [];
+    }
+
+    const transformedData = prepareData(students);
+
+    const ExpandedComponent = ({ data }:any) => <pre>{
+        <Container>
+            <Row>
+                <Col className="expanded">
+                        <h6>Diák adatai</h6>
+                        Születési dátum: {data.birthDate}
+                         <br/>
+                        Email cím: {data.email}
+                        <br/>
+                        Telefonszám: {data.phone}
+                </Col>
+                <Col className="expanded">
+
+                    <h6>Szülő adatai</h6>
+                    Név: Szülő Szilvia
+                    <br/>
+                    Email cím: {data.id}
+                    <br/>
+                    Telefonszám: +36301234567
+                </Col>
+                <Col className="expanded">
+                    <ButtonGroup aria-label="Basic example">
+                        <EditStudent id={data.id}/>
+                        <DeleteStudent id={data.id}/>
+                    </ButtonGroup>
+                </Col>
+
+            </Row>
+        </Container>
+
+    }</pre>;
+
     const columns: {
         name: string;
         selector: (row: any) => any;
@@ -31,48 +84,17 @@ function Students() {
             sortable: true
         },
         {
-            name: 'Telefonszám',
-            selector: (row: any) => row.phone,
-            sortable: true
-        },
-        {
             name: 'Életkor',
-            selector: (row: any) => row.birthDate,
-            sortable: true
-        },
-        {
-            name: 'Gondviselő',
-            selector: (row: any) => row.phone,
-            sortable: true
-        },
-        {
-            name: 'Gondviselő telefonszáma',
-            selector: (row: any) => row.phone,
+            selector: (row: any) => row.age,
             sortable: true
         },
         {
             name: 'Státusz',
             selector: (row: any) => row.present,
             sortable: false
+
         }
     ];
-
-
-    function prepareData(datas: any[]) {
-
-        return datas.map((item) => {
-            return {
-                id: item.id,
-                name: item.name,
-                birthDate: moment().diff(moment(item.birthDate), "years"),
-                phone: (<a href={`tel:${item.phone}`}>{item.phone}</a>),
-                present: item.isPresent ? (<FaCheck />) : (<FaTimes />),
-            }
-        });
-    }
-
-    const transformedData = prepareData(students);
-    console.log(prepareData(students))
 
     return (
         <>
@@ -83,6 +105,8 @@ function Students() {
                 direction={Direction.LTR}
                 responsive
                 striped
+                expandableRows
+                expandableRowsComponent={ExpandedComponent}
             />
         </>
     );

@@ -5,7 +5,6 @@ import Modal from 'react-bootstrap/Modal';
 import { FaPlusCircle } from "react-icons/fa";
 import {Col, Container, Form, Row} from "react-bootstrap";
 
-
 function AddNewStudentForm(props: any) {
     return (
         <Modal
@@ -53,7 +52,7 @@ function AddNewStudentForm(props: any) {
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Control
-                                        type="data"
+                                        type="date"
                                         name="birthday"
                                         placeholder="Diák születési dátum"
                                         className="inputFc m-4"

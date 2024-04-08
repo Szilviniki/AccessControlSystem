@@ -1,9 +1,7 @@
 import {Card, Col, Container, Row} from "react-bootstrap";
-import TopNavigation from "@/components/Navbar/TopNavigation";
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/globals.css'
-import SideMenu from "../../components/Navbar/Sidebar";
 
 export default function Template({ children }: { children: React.ReactNode }) {
 

@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import { Form, Button } from "react-bootstrap"
-import Notiflix from "notiflix";
 import {useCookies} from "next-client-cookies";
 import NewPassword from "@/app/newpassword/page";
 
