@@ -15,7 +15,8 @@ namespace DB_Module.Models
         [Required]
         public string Name { get; set; }
 
-        [System.ComponentModel.DataAnnotations.EmailAddress]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         

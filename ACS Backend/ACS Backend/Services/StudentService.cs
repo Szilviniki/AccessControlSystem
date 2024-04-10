@@ -12,17 +12,13 @@ public class StudentService : IStudentService
     private SQL _sql;
     private UniquenessChecker _checker = new UniquenessChecker(new SQL());
     private ValidatorService _validatorService = new ValidatorService();
+    private ObjectValidatorService _objectValidatorService = new ObjectValidatorService();
 
     public StudentService(SQL sql)
     {
         _sql = sql;
     }
 
-    private bool _IsItFilledOut(Student student)
-    {
-        return !string.IsNullOrEmpty(student.Name) && !string.IsNullOrEmpty(student.Email) &&
-               !string.IsNullOrEmpty(student.Phone);
-    }
 
     public Student GetStudent(Guid id)
     {
@@ -38,7 +34,8 @@ public class StudentService : IStudentService
 
     public async Task UpdateStudent(UpdateStudentModel student, Guid id)
     {
-        if (student.ParentId==null || student.Name.IsNullOrEmpty() || student.Email.IsNullOrEmpty() || student.Phone.IsNullOrEmpty() || student.BirthDate == null)
+        if (student.ParentId == null && student.Name.IsNullOrEmpty() && student.Email.IsNullOrEmpty() &&
+            student.Phone.IsNullOrEmpty() && student.BirthDate == null)
             throw new ArgumentException("Nem adtál meg módosítandó adatot");
 
         if (!_sql.Students.Any(x => x.Id == id))
@@ -46,21 +43,20 @@ public class StudentService : IStudentService
             throw new ItemNotFoundException();
         }
 
+        var studentOld = await _sql.Students.SingleAsync(x => x.Id == id);
+
         if (student.ParentId != null && !_sql.Parents.Any(x => x.Id == student.ParentId))
             throw new ReferredEntityNotFoundException();
 
-        var studentOld = await _sql.Students.SingleAsync(x => x.Id == id);
+
         if (!student.Email.IsNullOrEmpty())
         {
-            if (!_validatorService.ValidateEmail(student.Email))
-                throw new BadFormatException() { Message = "Email cím formátuma nem megfelelő" };
             studentOld.Email = student.Email;
         }
 
+
         if (!student.Phone.IsNullOrEmpty())
         {
-            if (!_validatorService.ValidatePhone(student.Phone))
-                throw new BadFormatException() { Message = "Telefonszám formátuma nem megfelelő" };
             studentOld.Phone = student.Phone;
         }
 
@@ -81,6 +77,10 @@ public class StudentService : IStudentService
 
         studentOld.Id = id;
 
+        var checkValid = _objectValidatorService.Validate(studentOld);
+        if (!checkValid.QueryIsSuccess)
+            throw new ArgumentException(string.Join('|', checkValid.Data));
+
         var checkRes = _checker.IsUniqueStudentOnUpdate(studentOld);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
@@ -97,30 +97,19 @@ public class StudentService : IStudentService
 
     public async Task AddStudent(Student student)
     {
-        if (!_IsItFilledOut(student))
-        {
-            throw new NotAddedException();
-        }
-
-        if (!_validatorService.ValidateEmail(student.Email))
-        {
-            throw new BadFormatException() { Message = "Email cím formátuma nem megfelelő" };
-        }
-
-        if (!_validatorService.ValidatePhone(student.Email))
-        {
-            throw new BadFormatException() { Message = "Telefonszám formátuma nem megfelelő" };
-        }
-
-        if (!_validatorService.ValidateBirthDate(student.BirthDate))
-        {
-            throw new BadFormatException() { Message = "Születési dátum formátuma nem megfelelő" };
-        }
-
         if (!_sql.Parents.Any(x => x.Id == student.ParentId)) throw new ReferredEntityNotFoundException();
+
+        var valRes = _objectValidatorService.Validate(student);
+        if (!valRes.QueryIsSuccess)
+        {
+            throw new ArgumentException(string.Join('|', valRes.Data));
+        }
+
         var checkRes = _checker.IsUniqueStudent(student);
         if (!checkRes.QueryIsSuccess)
+        {
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+        }
 
         student.Id = Guid.NewGuid();
         student.BirthDate = student.BirthDate.Date;
@@ -135,31 +124,30 @@ public class StudentService : IStudentService
         await using var transaction = await _sql.Database.BeginTransactionAsync();
         try
         {
-            if (string.IsNullOrEmpty(student.Name) || string.IsNullOrEmpty(student.Email) ||
-                string.IsNullOrEmpty(student.Phone) || student.CardId == 0)
+            bool diditfail = false;
+            string failed = "";
+            var valResStudent = _objectValidatorService.Validate(student);
+            var valResParent = _objectValidatorService.Validate(parent);
+            
+            if (!valResStudent.QueryIsSuccess)
             {
-                throw new ArgumentException("Diák mező(i) hiányzik/hiányoznak");
+                diditfail = true;
+                failed += $"Student: {string.Join(';', valResStudent.Data)}";
             }
 
-            if (string.IsNullOrEmpty(parent.Name) || string.IsNullOrEmpty(parent.Phone) ||
-                string.IsNullOrEmpty(parent.Email))
+            if (!valResParent.QueryIsSuccess)
             {
-                throw new ArgumentException("Törvényes Képviselő mezője/hiányoznak hiányzik/hiányoznak");
+                if(diditfail)
+                    failed += " | ";
+                diditfail = true;
+                failed += $"Parent: {string.Join(';', valResParent.Data)}";
             }
 
-            if (_validatorService.ValidateEmail(student.Email) == false ||
-                _validatorService.ValidatePhone(student.Phone) == false)
+            if (diditfail)
             {
-                throw new BadFormatException(){Message = "Email cím vagy telefonszám formátuma nem megfelelő diáknál"};
+                throw new ArgumentException(failed);
             }
-
-            if (_validatorService.ValidatePhone(parent.Phone) == false ||
-                _validatorService.ValidateEmail(parent.Email) == false)
-            {
-                throw new BadFormatException();
-            }
-
-
+            
             var checkRes = _checker.IsUniqueStudent(student);
             if (!checkRes.QueryIsSuccess)
                 throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };

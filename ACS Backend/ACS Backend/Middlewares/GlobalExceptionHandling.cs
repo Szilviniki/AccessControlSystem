@@ -1,4 +1,5 @@
 ﻿using ACS_Backend.Model;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ACS_Backend.Middlewares;
 
@@ -50,6 +51,13 @@ public class GlobalExceptionHandling : IMiddleware
         }
         catch (ArgumentException e)
         {
+            if (e.Message.IsNullOrEmpty())
+            {
+                res.Message = "Bad request";
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsJsonAsync(res);
+            }
+
             res.Message = e.Message;
             context.Response.StatusCode = 400;
             await context.Response.WriteAsJsonAsync(res);

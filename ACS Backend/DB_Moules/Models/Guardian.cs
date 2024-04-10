@@ -13,6 +13,7 @@
         [PhoneNumber]
         public string Phone { get; set; }
 
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
     }
