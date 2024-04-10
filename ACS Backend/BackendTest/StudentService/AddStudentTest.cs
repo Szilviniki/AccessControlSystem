@@ -9,7 +9,7 @@ public class AddStudentTest
 {
     private static SQL _sql = new SQL();
     private static Student _student = new MockStudent().Student;
-    private static Guardian _guardian = new MockParent().Parent;
+    private static Guardian _guardian = new MockGuardian().Parent;
     private StudentService _studentService = new StudentService(_sql);
     private int _cardId = _student.CardId;
 

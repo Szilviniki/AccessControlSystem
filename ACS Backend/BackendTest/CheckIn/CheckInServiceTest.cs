@@ -1,12 +1,12 @@
 ﻿using DB_Module.MockData;
 
-namespace BackendTest;
+namespace BackendTest.CheckIn;
 
 [TestClass]
 public class CheckInServiceTest
 {
     private static Student _student = new MockStudent().Student;
-    private static Guardian _guardian = new MockParent().Parent;
+    private static Guardian _guardian = new MockGuardian().Parent;
     private static Personnel _worker = new MockPersonnel().Worker;
     private static Role _role = new MockPersonnel().MockRole;
     private static SQL _sql = new SQL();

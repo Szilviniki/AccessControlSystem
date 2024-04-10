@@ -8,7 +8,7 @@ public class RemoveStudentTest
     private static SQL _sql = new SQL();
     private StudentService _studentService = new StudentService(_sql);
     private static Student _student = new MockStudent().Student;
-    private static Guardian _guardian = new MockParent().Parent;
+    private static Guardian _guardian = new MockGuardian().Parent;
 
     [TestInitialize]
     public void StudentInit()

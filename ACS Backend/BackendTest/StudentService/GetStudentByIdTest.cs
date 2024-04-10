@@ -10,7 +10,7 @@ public class GetStudentByIdTest
 
     private StudentService _studentService = new(_sql);
     private static Student _student = new MockStudent().Student;
-    private static Guardian _guardian = new MockParent().Parent;
+    private static Guardian _guardian = new MockGuardian().Parent;
 
     [TestInitialize]
     public void StudentInit()

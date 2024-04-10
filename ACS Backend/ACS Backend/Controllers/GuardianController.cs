@@ -20,33 +20,12 @@ namespace ACS_Backend.Controllers
         [HttpGet("get/{id}")]
         public IActionResult GetGuardian([FromRoute] Guid id)
         {
-            try
-            {
                 var res = new GenericResponseModel<Guardian>
                 {
                     Data = _guardianService.GetGuardian(id),
                     QueryIsSuccess = true
                 };
                 return Ok(res);
-            }
-            catch (ItemNotFoundException)
-            {
-                var res = new GenericResponseModel<Guardian>
-                {
-                    QueryIsSuccess = false,
-                    Message = "Guardian not found"
-                };
-                return NotFound(res);
-            }
-            catch (Exception e)
-            {
-                var res = new GenericResponseModel<Guardian>
-                {
-                    QueryIsSuccess = false,
-                    Message = e.Message
-                };
-                return StatusCode(500, res);
-            }
         }
 
         [HttpGet("getAll")]
