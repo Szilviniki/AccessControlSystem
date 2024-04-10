@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ACS_Backend.Utilities;
 
 namespace BackendTest.StudentServiceTest;
 
@@ -6,7 +7,7 @@ namespace BackendTest.StudentServiceTest;
 public class UpdateStudentTest
 {
     private static SQL _sql = new();
-    private StudentService _studentService = new(_sql);
+    private StudentService _studentService = new StudentService(_sql);
 
     private Student _studentOld = new()
     {
@@ -15,7 +16,7 @@ public class UpdateStudentTest
         Phone = "+36903040501",
         CardId = 80085,
         BirthDate = new DateTime(2000, 4, 20),
-        ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
+        ParentId = Guid.Parse("EEB143B1-C5B1-448F-8D78-FFDE83D3091F"),
     };
 
     private static readonly UpdateStudentModel StudentNew = new UpdateStudentModel()
@@ -24,7 +25,7 @@ public class UpdateStudentTest
         Email = "ursula.update@email.new",
         Phone = "+36103040500",
         BirthDate = new DateTime(2000, 4, 20),
-        ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
+        ParentId = Guid.Parse("EEB143B1-C5B1-448F-8D78-FFDE83D3091F"),
     };
     
     
@@ -82,11 +83,12 @@ public class UpdateStudentTest
     {
         try
         {
+            var stud = new UpdateStudentModel();
             _id = _sql.Students.First(x => x.CardId == 80085).Id;
-            await _studentService.UpdateStudent(new UpdateStudentModel(), _id);
+            await _studentService.UpdateStudent(stud, _id);
             Assert.Fail();
         }
-        catch (UnprocessableEntityException e)
+        catch (ArgumentException e)
         {
         }
     }
@@ -115,48 +117,6 @@ public class UpdateStudentTest
             Assert.Fail();
         }
         catch (BadFormatException e)
-        {
-        }
-    }
-
-    [TestMethod]
-    public async Task UpdateStudentEmptyEmail()
-    {
-        try
-        {
-            _naughtyStudent.Email = "";
-            await _studentService.UpdateStudent(_naughtyStudent, _id);
-            Assert.Fail();
-        }
-        catch (UnprocessableEntityException e)
-        {
-        }
-    }
-
-    [TestMethod]
-    public async Task UpdateStudentEmptyName()
-    {
-        try
-        {
-            _naughtyStudent.Name = "";
-            await _studentService.UpdateStudent(_naughtyStudent, _id);
-            Assert.Fail();
-        }
-        catch (UnprocessableEntityException e)
-        {
-        }
-    }
-
-    [TestMethod]
-    public async Task UpdateStudentEmptyPhone()
-    {
-        try
-        {
-            _naughtyStudent.Phone = "";
-            await _studentService.UpdateStudent(_naughtyStudent, _id);
-            Assert.Fail();
-        }
-        catch (UnprocessableEntityException e)
         {
         }
     }

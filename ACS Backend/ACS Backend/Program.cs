@@ -1,10 +1,10 @@
 using ACS_Backend.Interfaces;
 using ACS_Backend.Services;
 using Microsoft.EntityFrameworkCore;
-using FluentScheduler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
+using ACS_Backend.Middlewares;
+using ACS_Backend.Utilities;
 
 namespace ACS_Backend
 {
@@ -56,6 +56,14 @@ namespace ACS_Backend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<SQL>(a => { a.UseSqlServer(SQL.connectionString); });
+            
+            //middleware
+            builder.Services.AddTransient<GlobalExceptionHandling>();
+            
+            //services
+
+            builder.Services.AddScoped<IUniquenessChecker, UniquenessChecker>();
+
             builder.Services.AddTransient<IHomepageService, HomepageService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
@@ -64,9 +72,13 @@ namespace ACS_Backend
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<ILockRuleService, LockRuleService>();
+            
+            //utilities
+            builder.Services.AddScoped<IObjectValidatorService, ObjectValidatorService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
-
-            // builder.Services.AddSingleton<IScheduledTasksService, SchedueldTaskService>();
+            builder.Services.AddSingleton<IValidatorService, ValidatorService>();
+            
+            
 
             var app = builder.Build();
 
@@ -79,8 +91,9 @@ namespace ACS_Backend
             app.UseCors(origin);
             app.UseAuthentication();
             app.UseAuthorization();
-
-
+            
+            app.UseMiddleware<GlobalExceptionHandling>();
+            
             app.MapControllers();
             app.Run();
         }

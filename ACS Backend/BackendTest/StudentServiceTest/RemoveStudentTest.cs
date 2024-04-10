@@ -1,4 +1,6 @@
-﻿namespace BackendTest.StudentServiceTest;
+﻿using ACS_Backend.Utilities;
+
+namespace BackendTest.StudentServiceTest;
 
 [TestClass]
 public class RemoveStudentTest
