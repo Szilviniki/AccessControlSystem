@@ -2,5 +2,5 @@
 
 public class BadFormatException : Exception
 {
-    
+ public string Message { get; set; } = "Bad format";
 }

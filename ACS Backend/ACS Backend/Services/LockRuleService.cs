@@ -88,11 +88,11 @@ namespace ACS_Backend.Services
 
                 if (lockRule.StartTime > lockRule.EndTime)
                     throw new UnprocessableEntityException()
-                        { Details = "A kezdési idő nem lehet nagyobb mint a befejezési idő!" };
+                        { Message = "A kezdési idő nem lehet nagyobb mint a befejezési idő!" };
 
                 if (lockRule.DayOfWeek < 1 || lockRule.DayOfWeek > 5)
                     throw new UnprocessableEntityException()
-                        { Details = "A hét napjának számának 1 és 5 között kell lennie!" };
+                        { Message = "A hét napjának számának 1 és 5 között kell lennie!" };
 
                 if (_sql.LockRules.Any(x =>
                         x.DayOfWeek == lockRule.DayOfWeek && x.StartTime == lockRule.StartTime &&
@@ -154,11 +154,11 @@ namespace ACS_Backend.Services
 
                     if (rule.StartTime > rule.EndTime)
                         throw new UnprocessableEntityException()
-                            { Details = "A kezdési idő nem lehet nagyobb mint a befejezési idő!" };
+                            { Message = "A kezdési idő nem lehet nagyobb mint a befejezési idő!" };
 
                     if (rule.DayOfWeek < 1 || rule.DayOfWeek > 5)
                         throw new UnprocessableEntityException()
-                            { Details = "A hét napjának számának 1 és 5 között kell lennie!" };
+                            { Message = "A hét napjának számának 1 és 5 között kell lennie!" };
 
                     if (_sql.LockRules.Any(x =>
                         x.DayOfWeek == rule.DayOfWeek && x.StartTime == rule.StartTime &&
