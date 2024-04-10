@@ -1,6 +1,6 @@
 ﻿// Purpose: Test AddStudent method in StudentService.cs.
 
-using ACS_Backend.Utilities;
+using DB_Module.MockData;
 
 namespace BackendTest.StudentServiceTest;
 
@@ -8,8 +8,10 @@ namespace BackendTest.StudentServiceTest;
 public class AddStudentTest
 {
     private static SQL _sql = new SQL();
+    private static Student _student = new MockStudent().Student;
+    private static Guardian _guardian = new MockParent().Parent;
     private StudentService _studentService = new StudentService(_sql);
-    private int _cardId = 883269;
+    private int _cardId = _student.CardId;
 
     [TestInitialize]
     public void StudentInit()
@@ -17,6 +19,13 @@ public class AddStudentTest
         if (_sql.Students.Any(x => x.CardId == _cardId))
         {
             _sql.Students.Remove(_sql.Students.Single(x => x.CardId == _cardId));
+            _sql.SaveChanges();
+        }
+
+        if (_sql.Parents.Any(x=>x.Id == _guardian.Id))
+        {
+            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
+            _sql.Parents.Add(_guardian);
             _sql.SaveChanges();
         }
     }
@@ -30,7 +39,7 @@ public class AddStudentTest
             await _studentService.AddStudent(student);
             Assert.Fail();
         }
-        catch (NotAddedException e)
+        catch (ArgumentException e)
         {
         }
     }
@@ -40,24 +49,9 @@ public class AddStudentTest
     {
         try
         {
-            if (_sql.Students.Any(x => x.Email == "test.thomas@email.com"||"+36305678943" == x.Phone))
-            {
-                _sql.Students.Remove(_sql.Students.Single(x =>
-                    x.Email == "test.thomas@email.com" || "+36305678943" == x.Phone));
-               await _sql.SaveChangesAsync();
-            }
-
-            var student = new Student
-            {
-                Name = "Test Student",
-                Email = "test.thomas@email.com",
-                Phone = "+36305678943",
-                CardId = _cardId,
-                ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
-                BirthDate = new DateTime(2009, 08, 12).Date
-            };
-            _cardId = student.CardId;
-            await _studentService.AddStudent(student);
+            _sql.Parents.Add(_guardian);
+            await _sql.SaveChangesAsync();
+            await _studentService.AddStudent(_student);
         }
         catch (Exception e)
         {
@@ -70,19 +64,12 @@ public class AddStudentTest
     {
         try
         {
-            var student = new Student
-            {
-                Name = "Test Student",
-                Email = "rossz.email",
-                Phone = "+36305678943",
-                CardId = new Random().Next(100000, 999999),
-                ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
-                BirthDate = new DateTime(2009, 08, 12).Date
-            };
-            await _studentService.AddStudent(student);
+            var bad = new MockStudent().DeepCopy();
+            bad.Email = "asd@asd";
+            await _studentService.AddStudent(bad);
             Assert.Fail();
         }
-        catch (BadFormatException)
+        catch (ArgumentException)
         {
         }
     }
@@ -92,19 +79,12 @@ public class AddStudentTest
     {
         try
         {
-            var student = new Student
-            {
-                Name = "Test Student",
-                Email = "jo.email@adat.teszt",
-                Phone = "36305678943",
-                CardId = new Random().Next(100000, 999999),
-                ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
-                BirthDate = new DateTime(2009, 08, 12).Date
-            };
-            await _studentService.AddStudent(student);
+            var bad = new MockStudent().DeepCopy();
+            bad.Phone = "asd";
+            await _studentService.AddStudent(bad);
             Assert.Fail();
         }
-        catch (BadFormatException)
+        catch (ArgumentException)
         {
         }
     }
@@ -115,26 +95,13 @@ public class AddStudentTest
     {
         try
         {
-            var student = new Student
-            {
-                Name = "Test Student",
-                Email = "test.jonathan@email.com",
-                Phone = "+36305678944",
-                CardId = _cardId,
-                ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
-                BirthDate = new DateTime(2009, 08, 12).Date
-            };
-            _sql.Students.Add(student);
-            await _sql.SaveChangesAsync();
-            await _studentService.AddStudent(student);
+            var bad = new MockStudent().DeepCopy();
+            bad.CardId = _sql.Students.First().CardId;
+            await _studentService.AddStudent(bad);
             Assert.Fail();
         }
         catch (UniqueConstraintFailedException<List<string>> e)
         {
-            foreach (var msg in e.FailedOn)
-            {
-                Console.Write($" {msg}");
-            }
         }
     }
 
@@ -143,28 +110,27 @@ public class AddStudentTest
     {
         try
         {
-            var student = new Student
-            {
-                Name = "Test Student",
-                Email = "test.jonathan@email.com",
-                Phone = "+36305678944",
-                CardId = _cardId,
-                ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132010"),
-                BirthDate = new DateTime(2009, 08, 12).Date
-            };
-            await _studentService.AddStudent(student);
+            var bad = new MockStudent().DeepCopy();
+            bad.ParentId = Guid.NewGuid();
+            await _studentService.AddStudent(bad);
             Assert.Fail();
         }
         catch (ReferredEntityNotFoundException)
         {
         }
     }
+
     [TestCleanup]
     public async Task StudentCleanup()
     {
         if (_sql.Students.Any(x => x.CardId == _cardId))
         {
             _sql.Students.Remove(_sql.Students.Single(x => x.CardId == _cardId));
+            await _sql.SaveChangesAsync();
+        }
+        if(_sql.Parents.Any(x=>x.Id== _guardian.Id))
+        {
+            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
             await _sql.SaveChangesAsync();
         }
     }

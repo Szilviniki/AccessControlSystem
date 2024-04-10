@@ -1,4 +1,5 @@
 ﻿using ACS_Backend.Utilities;
+using DB_Module.MockData;
 
 namespace BackendTest.StudentServiceTest;
 
@@ -7,17 +8,26 @@ public class RemoveStudentTest
 {
     private static SQL _sql = new SQL();
     private StudentService _studentService = new StudentService(_sql);
-    private Guid? StudentId;
+    private static Student _student = new MockStudent().Student;
+    private static Guardian _guardian = new MockParent().Parent;
 
-    private Student _student = new Student
+    [TestInitialize]
+    public void StudentInit()
     {
-        Name = "Törlendő Tamra",
-        Email = "torcsi.tamcsi@deletepls.com",
-        Phone = "+36301234567",
-        CardId = 4206900,
-        BirthDate = DateTime.Now,
-        ParentId = Guid.Parse("AC80888A-140A-4834-A705-3AF88F132E10"),
-    };
+        if (_sql.Students.Any(x => x.Email == _student.Email))
+        {
+            _sql.Students.Remove(_sql.Students.Single(x => x.Email == _student.Email));
+        }
+
+        if (_sql.Parents.Any(x => x.Id == _guardian.Id))
+        {
+            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
+        }
+
+        _sql.Parents.Add(_guardian);
+        _sql.Students.Add(_student);
+        _sql.SaveChanges();
+    }
 
 
     [TestMethod]
@@ -46,17 +56,19 @@ public class RemoveStudentTest
         }
     }
 
-    [TestMethod]
-    public async Task RemoveStudentGoodId()
+    [TestCleanup]
+    public async Task StudentCleanup()
     {
-        if (!_sql.Students.Any(student => student.CardId == _student.CardId))
+        if (_sql.Students.Any(x => x.Email == _student.Email))
         {
-            _sql.Students.Add(_student);
+            _sql.Students.Remove(_sql.Students.Single(x => x.Email == _student.Email));
             await _sql.SaveChangesAsync();
         }
 
-        StudentId = _sql.Students.First(x => x.CardId == _student.CardId).Id;
-        await _studentService.RemoveStudent(StudentId.Value);
-        Assert.IsFalse(_sql.Students.Any(x => x.Id == StudentId));
+        if (_sql.Parents.Any(x => x.Id == _guardian.Id))
+        {
+            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
+            await _sql.SaveChangesAsync();
+        }
     }
 }

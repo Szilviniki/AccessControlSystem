@@ -97,8 +97,6 @@ public class StudentService : IStudentService
 
     public async Task AddStudent(Student student)
     {
-        if (!_sql.Parents.Any(x => x.Id == student.ParentId)) throw new ReferredEntityNotFoundException();
-
         var valRes = _objectValidatorService.Validate(student);
         if (!valRes.QueryIsSuccess)
         {
@@ -110,6 +108,8 @@ public class StudentService : IStudentService
         {
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
         }
+
+        if (!_sql.Parents.Any(x => x.Id == student.ParentId)) throw new ReferredEntityNotFoundException();
 
         student.Id = Guid.NewGuid();
         student.BirthDate = student.BirthDate.Date;
@@ -128,7 +128,7 @@ public class StudentService : IStudentService
             string failed = "";
             var valResStudent = _objectValidatorService.Validate(student);
             var valResParent = _objectValidatorService.Validate(parent);
-            
+
             if (!valResStudent.QueryIsSuccess)
             {
                 diditfail = true;
@@ -137,7 +137,7 @@ public class StudentService : IStudentService
 
             if (!valResParent.QueryIsSuccess)
             {
-                if(diditfail)
+                if (diditfail)
                     failed += " | ";
                 diditfail = true;
                 failed += $"Parent: {string.Join(';', valResParent.Data)}";
@@ -147,7 +147,7 @@ public class StudentService : IStudentService
             {
                 throw new ArgumentException(failed);
             }
-            
+
             var checkRes = _checker.IsUniqueStudent(student);
             if (!checkRes.QueryIsSuccess)
                 throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
