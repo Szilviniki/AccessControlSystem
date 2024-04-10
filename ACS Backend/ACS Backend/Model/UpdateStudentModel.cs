@@ -6,8 +6,8 @@ public class UpdateStudentModel
     public string? Email { get; set; }
     public string? Phone { get; set; }
 
-    public Guid ParentId { get; set; }
-    public DateTime BirthDate { get; set; }
+    public Guid? ParentId { get; set; }
+    public DateTime? BirthDate { get; set; }
     public UpdateStudentModel DeepCopy()
     {
         return new UpdateStudentModel
@@ -15,7 +15,7 @@ public class UpdateStudentModel
             Name = this.Name,
             Email = this.Email,
             Phone = this.Phone,
-            BirthDate = new DateTime(this.BirthDate.Ticks),
+            BirthDate = new DateTime(this.BirthDate.Value.Ticks),
             ParentId = this.ParentId
         };
     }
