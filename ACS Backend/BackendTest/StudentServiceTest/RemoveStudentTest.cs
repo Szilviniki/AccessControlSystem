@@ -1,5 +1,4 @@
-﻿using ACS_Backend.Utilities;
-using DB_Module.MockData;
+﻿using DB_Module.MockData;
 
 namespace BackendTest.StudentServiceTest;
 

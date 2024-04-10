@@ -12,13 +12,13 @@ namespace ACS_Backend.Services
             _sql = sql;
         }
 
-        public string HashPassword(string password)
+        public string Encrypt(string password)
         {
             var hash = BCrypt.Net.BCrypt.EnhancedHashPassword(password);
             return hash;
         }
 
-        public bool ValidatePassword(string password, string email)
+        public bool Valdiate(string password, string email)
         {
             if (_sql.Personnel.Any(a => a.Email == email))
             {

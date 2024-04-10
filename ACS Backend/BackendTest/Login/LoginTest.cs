@@ -1,5 +1,7 @@
 // Purpose: Test for the Login function in the AuthService class.
 
+using DB_Module.MockData;
+
 namespace BackendTest.Login;
 
 [TestClass]
@@ -7,6 +9,8 @@ public class LoginTest
 {
     private static SQL _sql = new SQL();
     private AuthService _authService = new AuthService(_sql, new TokenService(), new EncryptionService(_sql));
+    private EncryptionService _encryptionService = new EncryptionService(_sql);
+    private static Personnel _personnel = new MockPersonnel().Faculty;
 
     [TestMethod]
     public void NoDataLogin()

@@ -24,7 +24,7 @@ public class CheckInController : Controller
     {
         try
         {
-            await _checkInService.CheckFaculty(cardId);
+            await _checkInService.CheckPersonnel(cardId);
             var res = new GenericResponseModel<string> { QueryIsSuccess = true };
             return Ok(res);
         }

@@ -2,7 +2,7 @@
 {
     public interface IEncryptionService
     {
-        public bool ValidatePassword(string password, string email);
-        public string HashPassword(string password);
+        public bool Valdiate(string password, string email);
+        public string Encrypt(string password);
     }
 }
