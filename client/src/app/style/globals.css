@@ -1,159 +1,199 @@
-body{
-  background: #E5E4E2;
-  height: 100vh;
+body {
+    font-family: Arial;
+    background: #E5E4E2;
+    height: 100vh;
 }
 
-.loginC{
-  background-image: url("../../../public/images/house-lock.svg");
-  background-repeat: no-repeat;
-  background-size: 45%;
-  background-position:center center;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  border:20px;
-  text-align: center;
-  padding: 25px;
-  display: flex;
-  border-radius: 50px;
-  height: 70%;
+.loginC {
+    background-image: url("../../../public/images/house-lock.svg");
+    background-repeat: no-repeat;
+    background-size: 45%;
+    background-position: center center;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border: 20px;
+    text-align: center;
+    padding: 25px;
+    display: flex;
+    border-radius: 50px;
+    height: 70%;
 
 }
-.loginBt, .loginBt:hover{
-  background: #006D77;
-  border:1px;
-  border-radius: 50px;
-  width: 100%;
-  margin-left: 5px;
-  font-size: 20px;
-  font-weight: bold;
+
+.loginBt, .loginBt:hover {
+    background: #006D77;
+    border: 1px;
+    border-radius: 50px;
+    width: 100%;
+    margin-left: 5px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.inputFc{
-  border-radius: 50px;
-  border-color: #FAFAFA;
-  margin: 5px;
-  padding: 5px;
-  background: #FAFAFA;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10) inset;
-  font-size: 20px;
+.inputFc {
+    border-radius: 50px;
+    border-color: #FAFAFA;
+    margin: 5px;
+    padding: 5px;
+    background: #FAFAFA;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10) inset;
+    font-size: 20px;
 }
-.inputFc:Hover{
-  border-radius: 50px;
-  border-color: #006D77;
-  padding: 5px;
-  background: #FAFAFA;
+
+.inputFc:Hover {
+    border-radius: 50px;
+    border-color: #006D77;
+    padding: 5px;
+    background: #FAFAFA;
 }
+
 .inputFc:Active {
-  border-radius: 50px;
-  border-color: #006D77;
-  padding: 5px;
-  background: #FAFAFA;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
-}
-.CardHP{
-  background: #FAFAFA;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  border:20px;
-  border-radius: 50px;
-  text-align: center;
-  padding: 10px;
-  display: flex;
-  margin-bottom:5%;
-
-}
-h3{
-  font-weight: bold;
-}
-h2{
-  font-weight: bolder;
-}
-#present{
-  background: #EDF6FF ;
-}
-#not-present{
-  background: #FFDDD2 ;
-}
-#problematic{
-  background: #E29578 ;
-}
-.Nav{
-  background: #FAFAFA;
-}
-.Top-Nav{
-  background: #FAFAFA;
-  z-index: 1;
-  width: 100%;
-  position: absolute;
-}
-.Nav-Img{
-  height: 20%;
-  margin-bottom: 10px;
-  margin-top: 20px ;
-}
-.margin{
-  margin-top: 5%;
-  margin-right: 1%;
-  margin-left: 1%;
-
-}
-.NavLink{
-  color: #FAFAFA;
-}
-.table{
-  padding: 5px 5px 5px 5px;
-border-radius: 50px;
-}
-.key{
-  color: #83C5BE;
-  margin-bottom: 5px;
-}
-.table{
-  border-radius: 50px;
-  height: min-content;
-}
-._new, ._new:hover{
-  background: #006D77;
-  border:1px;
-  border-radius: 50px;
-  margin-left: 5px;
-  font-size: 20px;
-  font-weight: bold;
+    border-radius: 50px;
+    border-color: #006D77;
+    padding: 5px;
+    background: #FAFAFA;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25) inset;
 }
 
-h1{
-  font-weight: bold;
-  color: #006D77;
+.CardHP {
+    background: #FAFAFA;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border: 20px;
+    border-radius: 50px;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    margin-bottom: 5%;
+
 }
 
-._sidebar{
-  color: #EDF6FF;
-  background-color: #006D77;
+h3 {
+    font-weight: bold;
+}
+
+h2 {
+    font-weight: bolder;
+}
+
+#present {
+    background: #EDF6FF;
+}
+
+#not-present {
+    background: #FFDDD2;
+}
+
+#problematic {
+    background: #E29578;
+}
+
+.Nav {
+    background: #FAFAFA;
+}
+
+.Top-Nav {
+    background: #FAFAFA;
+    z-index: 1;
+    width: 100%;
+    position: absolute;
+}
+
+.Nav-Img {
+    height: 20%;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.margin {
+    margin-top: 5%;
+    margin-right: 1%;
+    margin-left: 1%;
+
+}
+
+.NavLink {
+    color: #FAFAFA;
+}
+
+.table {
+    padding: 5px 5px 5px 5px;
+    border-radius: 50px;
+}
+
+.key {
+    color: #83C5BE;
+    margin-bottom: 5px;
+}
+
+.table {
+    border-radius: 50px;
+    height: min-content;
+}
+
+._new, ._new:hover {
+    background: #006D77;
+    border: 1px;
+    border-radius: 50px;
+    margin-left: 5px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h1 {
+    font-weight: bold;
+    color: #006D77;
+}
+
+._sidebar {
+    color: #EDF6FF;
+    background-color: #006D77;
 }
 
 .ps-menu-button:hover {
-  color: #006D77 !important;
-  background: #83C5BE !important;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+    color: #006D77 !important;
+    background: #83C5BE !important;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 .ps-menu-button.ps-active {
-  color: #006D77 !important;
-  background: #E5E4E2 ;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+    color: #006D77 !important;
+    background: #E5E4E2;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
-.top-nav-check{
-  background: none !important;
- border-radius: 50px 50px 0 0 !important;
+.top-nav-check {
+    background: none !important;
+    border-radius: 50px 50px 0 0 !important;
 }
 
-.Nav-item{
-  font-size: large !important;
-  font-weight: bolder;
+.Nav-item {
+    font-size: large !important;
+    font-weight: bolder;
 }
 
-Label{
-  font-weight: bold;
-  margin-top: 2%;
+Label {
+    font-weight: bold;
+    margin-top: 2%;
+}
+
+a {
+    color: #006D77;
+    font-weight: bold;
+    padding: 0;
+}
+
+.expanded {
+    margin-left: 2%;
+    margin-top: 1%;
+}
+.buttonedit{
+    background-color: #006D77;
+    color: #83C5BE;
+    border: 0 ;
+}
+.buttondelete{
+    background-color: #E29578;
+    color: #FFDDD2;
+    border: 0;
 }

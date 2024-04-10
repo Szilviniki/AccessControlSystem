@@ -5,10 +5,8 @@ import React, {useEffect, useState} from "react";
 import Moment from 'react-moment';
 import 'moment-timezone';
 import moment from "moment";
-import {timer} from "rxjs";
 
 export default function CheckTopNavigation() {
-//let now= times
     const [time, setTime] = useState(moment());
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React, {use} from 'react';
+import React from 'react';
 import MainTemplate from '@/app/templates/MainTemplate';
 import {Card, Col, Container, Row} from 'react-bootstrap';
 import Faculities from "@/components/DataTable/Faculities";

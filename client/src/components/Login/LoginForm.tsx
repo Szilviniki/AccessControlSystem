@@ -5,20 +5,18 @@ import Notiflix from "notiflix";
 import {login} from "@/actions/loginAction";
 import {useCookies} from "next-client-cookies";
 
-
-
 function LoginForm() {
     const cookies = useCookies();
     async function onLogin(formData: FormData) {
 
         if((formData.get("email")=="")) {
-            Notiflix.Report.warning(
+            Notiflix.Report.failure(
                 'Hiba!',
                 'Az email cím megdása kötelező megadása kötelező!',
                 'Rendben',
             );
         }if (formData.get("password")=="") {
-            Notiflix.Report.warning(
+            Notiflix.Report.failure(
                 'Hiba!',
                 'A jelszó megadása kötelező!',
                 'Rendben',
@@ -32,7 +30,7 @@ function LoginForm() {
                     message = message[0]
                 }
 
-                Notiflix.Report.warning(
+                Notiflix.Report.failure(
                     'Valami nem jó!',
                     'Figyeljen oda, hogy minden mező helyesen legyen kitöltve!',
                     'Rendben',
