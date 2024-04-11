@@ -16,7 +16,7 @@ public class UniquenessChecker : IUniquenessChecker
     public GenericResponseModel<List<string>> IsUniqueStudent(Student student)
     {
         var fails = new List<string>();
-        
+
         if (_sql.Students.Any(x => student.CardId == x.CardId)) fails.Add("Kártyaszám");
         if (_sql.Students.Any(x => x.Phone == student.Phone)) fails.Add("Telefonszám");
         if (_sql.Personnel.Any(x => x.CardId == student.CardId) || _sql.Students.Any(x => x.CardId == student.CardId))
@@ -32,20 +32,20 @@ public class UniquenessChecker : IUniquenessChecker
         var fails = new List<string>();
 
         var oldStudent = _sql.Students.Find(student.Id);
-        
-        if (!student.Phone.IsNullOrEmpty()&&student.Phone!=oldStudent.Phone)
+
+        if (!student.Phone.IsNullOrEmpty() && student.Phone != oldStudent.Phone)
         {
-            if (_sql.Students.Any(x => x.Phone == student.Phone)) fails.Add("Telefonszám");
+            if (_sql.Students.Any(x => x.Phone == student.Phone && x.Id != student.Id)) fails.Add("Telefonszám");
         }
 
-        if (!student.Email.IsNullOrEmpty()&&oldStudent.Email!=student.Email)
+        if (!student.Email.IsNullOrEmpty() && oldStudent.Email != student.Email)
         {
-            if(_sql.Students.Any(x=>x.Email == student.Email)) fails.Add("Email cím");
+            if (_sql.Students.Any(x => x.Email == student.Email && x.Id != student.Id)) fails.Add("Email cím");
         }
 
-        if (!student.Name.IsNullOrEmpty()&&oldStudent.Name!=student.Name)
+        if (!student.Name.IsNullOrEmpty() && oldStudent.Name != student.Name)
         {
-            if (_sql.Students.Any(x => x.Name == student.Name)) fails.Add("Név");
+            if (_sql.Students.Any(x => x.Name == student.Name && x.Id != student.Id)) fails.Add("Név");
         }
 
         return fails.Count != 0

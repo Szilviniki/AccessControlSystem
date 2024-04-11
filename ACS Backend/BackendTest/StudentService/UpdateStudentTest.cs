@@ -27,9 +27,8 @@ public class UpdateStudentTest
         BirthDate = new DateTime(2000, 4, 20),
         ParentId = Guid.Parse("EEB143B1-C5B1-448F-8D78-FFDE83D3091F"),
     };
-    
-    
-    
+
+
     private Guid _id = Guid.NewGuid();
 
     private UpdateStudentModel _naughtyStudent = StudentNew.DeepCopy();
@@ -102,7 +101,7 @@ public class UpdateStudentTest
             await _studentService.UpdateStudent(_naughtyStudent, _id);
             Assert.Fail();
         }
-        catch (BadFormatException e)
+        catch (ArgumentException e)
         {
         }
     }
@@ -116,7 +115,7 @@ public class UpdateStudentTest
             await _studentService.UpdateStudent(_naughtyStudent, _id);
             Assert.Fail();
         }
-        catch (BadFormatException e)
+        catch (ArgumentException e)
         {
         }
     }
@@ -143,8 +142,16 @@ public class UpdateStudentTest
         try
         {
             _naughtyStudent = StudentNew;
-            _naughtyStudent.Phone = _sql.Students.First(x => x.CardId > 0).Phone;
+            var fooStudent = _sql.Students.First(x => x.CardId > 0&&x.Email!=_studentOld.Email);
+
+            Console.WriteLine($"{_naughtyStudent.Email} -> {fooStudent.Email}");
+            Console.WriteLine($"{_naughtyStudent.Phone} -> {fooStudent.Phone}");
+            
+            _naughtyStudent.Phone = fooStudent.Phone;
+            _naughtyStudent.Email = fooStudent.Email;
             await _studentService.UpdateStudent(_naughtyStudent, _id);
+
+
             Assert.Fail();
         }
         catch (UniqueConstraintFailedException<List<string>> e)
