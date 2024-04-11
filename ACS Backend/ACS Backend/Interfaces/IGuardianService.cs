@@ -7,7 +7,7 @@
 
         public Array GetAllGuardians();
 
-        public Task UpdateGuardian(Guardian guardian);
+        public Task UpdateGuardian(Guardian guardian, Guid id);
 
         public Task DeleteGuardian(Guid id);
     }

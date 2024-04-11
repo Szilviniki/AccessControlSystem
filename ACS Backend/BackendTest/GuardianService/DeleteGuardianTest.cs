@@ -1,13 +1,14 @@
 ﻿namespace BackendTest.GuardianService;
 
 [TestClass]
-public class GetGuardianTest
+public class DeleteGuardianTest
 {
+    
     private static Guardian _guardian = new MockGuardian().Parent;
     private static SQL _sql = new SQL();
 
-    private ACS_Backend.Services.GuardianService _parentService =
-        new(_sql, new ObjectValidatorService(), new UniquenessChecker(_sql));
+    private ACS_Backend.Services.GuardianService _service = new(_sql, new ObjectValidatorService(),
+        new UniquenessChecker(_sql));
 
 
     [TestInitialize]
@@ -22,55 +23,58 @@ public class GetGuardianTest
         _sql.Parents.Add(_guardian);
         await _sql.SaveChangesAsync();
     }
-    
+
     [TestCleanup]
-    public async Task GuardianCleanup()
+    public async Task GuradianCleanup()
     {
-        if (_sql.Parents.Any(x => x.Phone == _guardian.Phone))
+        if (_sql.Parents.Any(x => x.Id == _guardian.Id))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Phone == _guardian.Phone));
+            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
             await _sql.SaveChangesAsync();
         }
     }
-    
+
     [TestMethod]
-    public void GetGuardianGoodId()
+    public async Task DeleteGuardianNoId()
     {
         try
         {
-            var guardian = _parentService.GetGuardian(_guardian.Id);
-            Assert.AreEqual(_guardian, guardian);
+            await _service.DeleteGuardian(Guid.Empty);
+            Assert.Fail();
+
         }
-        catch (Exception e)
+        catch (ArgumentException e)
         {
-            Assert.Fail(e.Message);
         }
     }
-    
     [TestMethod]
-    public void GetGuardianBadId()
+    public async Task DeleteGuardianBadId()
     {
         try
         {
-            _parentService.GetGuardian(Guid.NewGuid());
+            await _service.DeleteGuardian(Guid.NewGuid());
             Assert.Fail();
+
         }
         catch (ItemNotFoundException e)
         {
         }
     }
     [TestMethod]
-    public void GetGuardianNoId()
+    public async Task DeleteGuardianGoodId()
     {
         try
         {
-            _parentService.GetGuardian(Guid.Empty);
+            await _service.DeleteGuardian(_guardian.Id);
+            
+
+        }
+        catch (ItemNotFoundException e)
+        {
             Assert.Fail();
         }
-        catch (ArgumentException e)
-        {
-        }
     }
+    
     
     
 }

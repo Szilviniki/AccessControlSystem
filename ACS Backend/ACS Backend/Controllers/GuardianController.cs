@@ -20,87 +20,40 @@ namespace ACS_Backend.Controllers
         [HttpGet("get/{id}")]
         public IActionResult GetGuardian([FromRoute] Guid id)
         {
-                var res = new GenericResponseModel<Guardian>
-                {
-                    Data = _guardianService.GetGuardian(id),
-                    QueryIsSuccess = true
-                };
-                return Ok(res);
+            var res = new GenericResponseModel<Guardian>
+            {
+                Data = _guardianService.GetGuardian(id),
+                QueryIsSuccess = true
+            };
+            return Ok(res);
         }
 
         [HttpGet("getAll")]
         public IActionResult GetAllGuardians()
         {
-            try
+            var res = new GenericResponseModel<Array>
             {
-                var res = new GenericResponseModel<Array>
-                {
-                    Data = _guardianService.GetAllGuardians(),
-                    QueryIsSuccess = true
-                };
-                return Ok(res);
-            }
-            catch (Exception e)
-            {
-                var res = new GenericResponseModel<Array>
-                {
-                    QueryIsSuccess = false,
-                    Message = e.Message
-                };
-                return StatusCode(500, res);
-            }
+                Data = _guardianService.GetAllGuardians(),
+                QueryIsSuccess = true
+            };
+            return Ok(res);
         }
 
         [HttpPost("add")]
         public async Task<IActionResult> AddGuardian([FromBody] Guardian guardian)
         {
-            try
-            {
-                await _guardianService.AddGuardian(guardian);
-                var res = new GenericResponseModel<string> { QueryIsSuccess = true };
-                return Ok(res);
-            }
-            catch (ItemAlreadyExistsException)
-            {
-                var res = new GenericResponseModel<string>
-                    { QueryIsSuccess = false, Message = "Guardian already exists" };
-                return StatusCode(409, res);
-            }
-            catch (Exception e)
-            {
-                var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-                return StatusCode(500, res);
-            }
+            await _guardianService.AddGuardian(guardian);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = true };
+            return Ok(res);
         }
 
-        [HttpPost("update")]
-        public async Task<IActionResult> UpdateGuardian([FromBody] Guardian guardian)
+        [HttpPost("update/{id:guid}")]
+        public async Task<IActionResult> UpdateGuardian(Guid id, [FromBody] Guardian guardian)
         {
-            try
-            {
-                await _guardianService.UpdateGuardian(guardian);
-                var res = new GenericResponseModel<string> { QueryIsSuccess = true };
-                return Ok(res);
-            }
-            catch (ItemNotFoundException)
-            {
-                var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Guardian not found" };
-                return NotFound(res);
-            }
-            catch (ItemAlreadyExistsException)
-            {
-                var res = new GenericResponseModel<string>
-                    { QueryIsSuccess = false, Message = "Guardian already exists" };
-                return StatusCode(409, res);
-            }
-            catch (Exception e)
-            {
-                var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-                return StatusCode(500, res);
-            }
+            await _guardianService.UpdateGuardian(guardian, id);
+            return Ok();
         }
 
-        [Authorize("Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGuardian([FromRoute] Guid id)
         {
