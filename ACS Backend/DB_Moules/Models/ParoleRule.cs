@@ -6,8 +6,7 @@
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required] [MaxLength(100)] public string Name { get; set; } = "";
         
         
         public TimeSpan? StartTime { get; set; }
@@ -16,11 +15,5 @@
 
         [Required]
         public int DayOfWeek { get; set; }
-        
-        [NotMapped]
-        public ICollection<StudentParoleRule> StudentParoleRules { get; }
-
-        [NotMapped]
-        public ICollection<Student> Students { get; }
     }
 }

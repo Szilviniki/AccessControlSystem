@@ -6,8 +6,7 @@
         [Key]
         public int LockRuleId { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required] [MaxLength(100)] public string Name { get; set; } = "";
 
         public TimeSpan? StartTime { get; set; }
 
@@ -16,6 +15,6 @@
         [Required]
         public int DayOfWeek { get; set; }
 
-        public ICollection<StudentLockRule> StudentLockRules { get; }
+        public ICollection<StudentLockRule>? StudentLockRules { get; set; }
     }
 }

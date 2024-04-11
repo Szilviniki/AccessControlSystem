@@ -17,12 +17,6 @@ namespace DB_Module
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StudentExtended>(ex =>
-                {
-                    ex.HasNoKey();
-                    ex.ToView("StudentExtended");
-                }
-            );
             modelBuilder.Entity<ActiveRule>(ar =>
             {
                 ar.HasNoKey();
@@ -33,7 +27,7 @@ namespace DB_Module
                 ar.HasNoKey();
                 ar.ToView("ActiveParoleRules");
             });
-            
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -46,13 +40,11 @@ namespace DB_Module
         public DbSet<GateLog> GateLogs { get; set; }
 
         public DbSet<StudentLockRule> StudentsLockRules { get; set; }
-        
+
         public DbSet<StudentParoleRule> StudentsParoleRules { get; set; }
-        
-        public DbSet<StudentExtended> ExtendedStudents { get; set; }
-        
+
         public DbSet<ActiveRule> ActiveRules { get; set; }
-        
+
         public DbSet<ActiveParoleRule> ActiveParoleRules { get; set; }
     }
 }

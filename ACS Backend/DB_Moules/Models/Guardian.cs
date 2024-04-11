@@ -3,18 +3,20 @@
     [Table("Parents")]
     public class Guardian
     {
-        [Key]
-        public Guid Id { get; set; }
+        [Key] public Guid Id { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required] 
+        [MaxLength(50)]
+        public string Name { get; set; } = "";
 
         [Required]
         [PhoneNumber]
-        public string Phone { get; set; }
+        [MaxLength(13)]
+        public string Phone { get; set; } = "";
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        [MaxLength(100)]
+        public string Email { get; set; } = "";
     }
 }

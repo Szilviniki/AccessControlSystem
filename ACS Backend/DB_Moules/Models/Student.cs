@@ -12,19 +12,20 @@ namespace DB_Module.Models
         
         public int CardId {  get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required] [MaxLength(50)] public string Name { get; set; } = "";
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        [MaxLength(100)]
+        public string Email { get; set; } = "";
 
         
         public bool IsPresent { get; set; }
 
         [Required]
         [PhoneNumber]
-        public string Phone { get; set; }
+        [MaxLength(13)]
+        public string Phone { get; set; } = "";
 
         [Required]
         [BirthDate]

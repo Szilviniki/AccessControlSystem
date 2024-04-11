@@ -26,9 +26,23 @@ public class MockPersonnel : Personnel
         CardId = 200003,
         RoleId = 99
     };
-    
+
     public Role MockRole = new Role()
     {
         Name = "MockRole"
     };
+
+    public Personnel DeepCopyWorker()
+    {
+        return new Personnel()
+        {
+            Id = Worker.Id,
+            Name = Worker.Name,
+            Phone = Worker.Phone,
+            Email = Worker.Email,
+            CanLogin = Worker.CanLogin,
+            CardId = Worker.CardId,
+            RoleId = Worker.RoleId
+        };
+    }
 }

@@ -9,9 +9,12 @@ public class PersonnelService : IPersonnelService
 {
     private SQL _sql;
 
-    public PersonnelService(SQL sql)
+    private EncryptionService _encryptionService;
+
+    public PersonnelService(SQL sql, EncryptionService encryptionService)
     {
         _sql = sql;
+        _encryptionService = encryptionService;
     }
 
     private UniquenessChecker _checker = new UniquenessChecker(new SQL());
@@ -44,13 +47,16 @@ public class PersonnelService : IPersonnelService
         {
             throw new ItemAlreadyExistsException();
         }
+
         var checkRes = _checker.IsUniqueFaculty(faculty);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
         if (faculty.CanLogin)
         {
-            faculty.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(faculty.Password);
+            if (string.IsNullOrWhiteSpace(faculty.Password)) throw new ArgumentException("Password cannot be empty");
+            faculty.Password = _encryptionService.Encrypt(faculty.Password);
         }
+
         _sql.Personnel.Add(faculty);
         await _sql.SaveChangesAsync();
     }
