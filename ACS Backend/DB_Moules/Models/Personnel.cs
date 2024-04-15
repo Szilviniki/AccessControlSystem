@@ -17,6 +17,8 @@
         [Column("present")] public bool IsPresent { get; set; }
 
         [ForeignKey("RoleId")] public int RoleId { get; set; }
+        
+        public Role? Role { get; set; }
 
         public bool CanLogin { get; set; }
     }

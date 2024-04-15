@@ -12,7 +12,7 @@ public class PersonnelService : IPersonnelService
     private IEncryptionService _encryptionService;
     private IObjectValidatorService _objectValidatorService;
 
-    public PersonnelService(SQL sql, EncryptionService encryptionService,
+    public PersonnelService(SQL sql, IEncryptionService encryptionService,
         IObjectValidatorService objectValidatorService)
     {
         _sql = sql;

@@ -12,8 +12,8 @@ namespace ACS_Backend.Services
         private IObjectValidatorService _objectValidatorService;
         private IUniquenessChecker _uniquenessChecker;
 
-        public GuardianService(SQL sql, ObjectValidatorService objectValidatorService,
-            UniquenessChecker uniquenessChecker)
+        public GuardianService(SQL sql, IObjectValidatorService objectValidatorService,
+            IUniquenessChecker uniquenessChecker)
         {
             _sql = sql;
             _objectValidatorService = objectValidatorService;
