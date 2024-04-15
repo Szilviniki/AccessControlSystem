@@ -45,4 +45,18 @@ public class MockPersonnel : Personnel
             RoleId = Worker.RoleId
         };
     }
+    
+    public Personnel DeepCopyFaculty()
+    {
+        return new Personnel()
+        {
+            Id = Faculty.Id,
+            Name = Faculty.Name,
+            Phone = Faculty.Phone,
+            Email = Faculty.Email,
+            CanLogin = Faculty.CanLogin,
+            CardId = Faculty.CardId,
+            RoleId = Faculty.RoleId
+        };
+    }
 }

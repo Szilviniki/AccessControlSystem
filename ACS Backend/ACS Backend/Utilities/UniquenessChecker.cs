@@ -66,7 +66,10 @@ public class UniquenessChecker : IUniquenessChecker
     {
         var fails = new List<string>();
         if (_sql.Personnel.Any(x => faculty.CardId == x.CardId)) fails.Add("Kártyaszám");
-        if (_sql.Personnel.Any(x => x.Email == faculty.Email)) fails.Add("Email cím");
+        if (string.IsNullOrWhiteSpace(faculty.Email) ==false && _sql.Personnel.Any(x => x.Email == faculty.Email))
+            fails.Add("Email cím");
+        if (string.IsNullOrWhiteSpace(faculty.Phone) ==false && _sql.Personnel.Any(x => x.Phone == faculty.Phone))
+            fails.Add("Telefonszám");
         return fails.Count != 0
             ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
             : new GenericResponseModel<List<string>> { Message = "Minden ok" };

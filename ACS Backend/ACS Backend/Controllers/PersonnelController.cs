@@ -92,12 +92,12 @@ public class PersonnelController : ControllerBase
         }
     }
 
-    [HttpPost("Update")]
-    public async Task<IActionResult> Update([FromBody] Personnel faculty)
+    [HttpPost("Update/{id:guid}")]
+    public async Task<IActionResult> Update(Guid id,[FromBody] Personnel faculty)
     {
         try
         {
-            await _facultyService.UpdateFaculty(faculty);
+            await _facultyService.UpdateFaculty(faculty, id);
             return Ok();
         }
         catch (ItemNotFoundException)

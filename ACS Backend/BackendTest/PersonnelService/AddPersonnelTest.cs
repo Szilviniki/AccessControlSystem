@@ -6,11 +6,14 @@ using ACS_Backend.Services;
 public class AddPersonnelTest
 {
     private static SQL _sql = new SQL();
-    private static PersonnelService _service = new PersonnelService(_sql, new EncryptionService(_sql));
+
+    private static PersonnelService _service =
+        new PersonnelService(_sql, new EncryptionService(_sql), new ObjectValidatorService());
+
     private static MockPersonnel _mock = new MockPersonnel();
     private Personnel _worker = _mock.Worker;
     private Personnel _faculty = _mock.Faculty;
-    private Role _role = new Role();
+    private Role _role = new MockPersonnel().MockRole;
 
     [TestInitialize]
     public async Task PersonnelInit()
@@ -33,13 +36,16 @@ public class AddPersonnelTest
             await _sql.SaveChangesAsync();
         }
 
+        
+        
         _sql.PersonRoles.Add(_role);
         await _sql.SaveChangesAsync();
-        _worker.RoleId = _sql.PersonRoles.Find(_role.Name).Id;
-        _faculty.RoleId = _sql.PersonRoles.Find(_role.Name).Id;
+        _worker.RoleId = _sql.PersonRoles.First(x => x.Name == _role.Name).Id;
+        _faculty.RoleId = _sql.PersonRoles.First(x => x.Name == _role.Name).Id;
+        
     }
 
-    [TestCleanup]
+    
     public async Task PersonnelCleanup()
     {
         if (_sql.Personnel.Any(x => x.Phone == _worker.Phone))
@@ -75,11 +81,11 @@ public class AddPersonnelTest
     }
 
     [TestMethod]
-    public async Task AddPersonnelNoRole()
+    public async Task AddPersonnelFacultyNoRoleId()
     {
         try
         {
-            var v = new MockPersonnel().Worker;
+            var v = new MockPersonnel().DeepCopyFaculty();
             v.RoleId = 0;
             await _service.AddFaculty(_worker);
             Assert.Fail();
@@ -90,17 +96,76 @@ public class AddPersonnelTest
     }
 
     [TestMethod]
-    public async Task AddPersonnelBadEmail()
+    public async Task AddPersonnelFacultyBadEmail()
     {
         try
         {
-            var v = _mock.DeepCopyWorker();
+            var v = _mock.DeepCopyFaculty();
             v.Email = "asd@asd";
             await _service.AddFaculty(v);
             Assert.Fail();
         }
         catch (ArgumentException)
         {
+        }
+    }
+
+    [TestMethod]
+    public async Task AddPersonnelFacultyBadPhone()
+    {
+        try
+        {
+            var v = _mock.DeepCopyFaculty();
+            v.Phone = "asd@asd";
+            await _service.AddFaculty(v);
+            Assert.Fail();
+        }
+        catch (ArgumentException)
+        {
+        }
+    }
+
+    [TestMethod]
+    public async Task AddPersonnelFacultyBadPassword()
+    {
+        try
+        {
+            var v = _mock.DeepCopyFaculty();
+            v.Password = "";
+            await _service.AddFaculty(v);
+            Assert.Fail();
+        }
+        catch (ArgumentException e)
+        {
+        }
+    }
+
+    [TestMethod]
+    public async Task AddPersonnelFaculty()
+    {
+        try
+        {
+            await _service.AddFaculty(_faculty);
+            Assert.IsTrue(_sql.Personnel.Any(x => x.Phone == _faculty.Phone));
+        }
+        catch (Exception e)
+        {
+            Assert.Fail();
+        }
+    }
+    
+    [TestMethod]
+    public async Task TaskAddPersonnelFacultyTwice()
+    {
+        try
+        {
+            await _service.AddFaculty(_faculty);
+            await _service.AddFaculty(_faculty);
+            Assert.Fail();
+        }
+        catch (UniqueConstraintFailedException<List<string>> e)
+        {
+            Assert.IsTrue(e.FailedOn.Contains("Kártyaszám"));
         }
     }
 }

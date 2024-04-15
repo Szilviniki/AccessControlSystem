@@ -1,6 +1,4 @@
-﻿using DB_Module.Attributes;
-
-namespace DB_Module.Models
+﻿namespace DB_Module.Models
 {
     
     [Table("Students")]

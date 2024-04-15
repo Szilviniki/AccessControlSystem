@@ -33,14 +33,14 @@ public class ObjectValidatorService : IObjectValidatorService
                 }
                 else if (attribute is EmailAddressAttribute)
                 {
-                    if (value == null || !_validator.ValidateEmail(value.ToString()))
+                    if (value != null || !_validator.ValidateEmail(value.ToString()))
                     {
                         fails.Add($"{propertyInfo.Name} is not a valid email address");
                     }
                 }
                 else if (attribute is PhoneNumberAttribute)
                 {
-                    if (value == null || !_validator.ValidatePhone(value.ToString()))
+                    if (value != null || !_validator.ValidatePhone(value.ToString()))
                     {
                         fails.Add($"{propertyInfo.Name} is not a valid phone number");
                     }

@@ -9,15 +9,19 @@ public class PersonnelService : IPersonnelService
 {
     private SQL _sql;
 
-    private EncryptionService _encryptionService;
+    private IEncryptionService _encryptionService;
+    private IObjectValidatorService _objectValidatorService;
 
-    public PersonnelService(SQL sql, EncryptionService encryptionService)
+    public PersonnelService(SQL sql, EncryptionService encryptionService,
+        IObjectValidatorService objectValidatorService)
     {
         _sql = sql;
         _encryptionService = encryptionService;
+        _objectValidatorService = objectValidatorService;
     }
 
     private UniquenessChecker _checker = new UniquenessChecker(new SQL());
+
 
     public Personnel GetFaculty(Guid id)
     {
@@ -31,9 +35,10 @@ public class PersonnelService : IPersonnelService
         return _sql.Personnel.ToArray();
     }
 
-    public async Task UpdateFaculty(Personnel faculty)
+    public async Task UpdateFaculty(Personnel faculty, Guid id)
     {
-        if (!_sql.Personnel.Any(x => x.Id == faculty.Id)) throw new ItemNotFoundException();
+        //TODO: Update Method
+        if (!_sql.Personnel.Any(x => x.Id == id)) throw new ItemNotFoundException();
         var checkRes = _checker.IsUniqueFaculty(faculty);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
@@ -43,17 +48,18 @@ public class PersonnelService : IPersonnelService
 
     public async Task AddFaculty(Personnel faculty)
     {
-        if (_sql.Personnel.Any(x => x.CardId == faculty.CardId))
-        {
-            throw new ItemAlreadyExistsException();
-        }
-
-        var checkRes = _checker.IsUniqueFaculty(faculty);
-        if (!checkRes.QueryIsSuccess)
-            throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+        faculty.CardId = new Random().Next(100000, 999999);
         if (faculty.CanLogin)
         {
+            var checkRes = _checker.IsUniqueFaculty(faculty);
+            if (!checkRes.QueryIsSuccess)
+                throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+            
+            var uRes = _objectValidatorService.Validate(faculty);
+            if (uRes.QueryIsSuccess == false) throw new ArgumentException(string.Join(", ", uRes.Data));
+            
             if (string.IsNullOrWhiteSpace(faculty.Password)) throw new ArgumentException("Password cannot be empty");
+            
             faculty.Password = _encryptionService.Encrypt(faculty.Password);
         }
 
