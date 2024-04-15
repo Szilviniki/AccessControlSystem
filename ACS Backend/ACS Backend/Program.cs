@@ -1,10 +1,10 @@
 using ACS_Backend.Interfaces;
-using ACS_Backend.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using ACS_Backend.Middlewares;
+using ACS_Backend.Services;
 using ACS_Backend.Utilities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ACS_Backend
 {
@@ -41,7 +41,7 @@ namespace ACS_Backend
             {
                 a.SaveToken = true;
                 a.RequireHttpsMetadata = true;
-                a.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                a.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
@@ -60,10 +60,15 @@ namespace ACS_Backend
             //middleware
             builder.Services.AddTransient<GlobalExceptionHandling>();
             
+            //utilities
+            builder.Services.AddScoped<IObjectValidatorService, ObjectValidatorService>();
+            builder.Services.AddSingleton<ITokenService, TokenService>();
+            builder.Services.AddSingleton<IValidatorService, ValidatorService>();
+            builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+
+            
             //services
-
             builder.Services.AddScoped<IUniquenessChecker, UniquenessChecker>();
-
             builder.Services.AddTransient<IHomepageService, HomepageService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
@@ -73,11 +78,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IGuardianService, GuardianService>();
             builder.Services.AddScoped<ILockRuleService, LockRuleService>();
             
-            //utilities
-            builder.Services.AddScoped<IObjectValidatorService, ObjectValidatorService>();
-            builder.Services.AddSingleton<ITokenService, TokenService>();
-            builder.Services.AddSingleton<IValidatorService, ValidatorService>();
-            
+         
             
 
             var app = builder.Build();

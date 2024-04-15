@@ -23,7 +23,7 @@ public class AuthService : IAuthService
         bool isEmail = _sql.Personnel.Any(a => a.Email == login.Email);
         if (isEmail)
         {
-            var user = this._sql.Personnel.Single(u => u.Email == login.Email);
+            var user = this._sql.Personnel.Include(x => x.Role).Single(u => u.Email == login.Email);
             bool isPassword = _encryptionService.Valdiate(login.Password, login.Email);
             if (isPassword)
             {
@@ -31,8 +31,8 @@ public class AuthService : IAuthService
                 {
                     Email = login.Email,
                     Name = user.Name,
-                    Role = "something",
-                    Token = "token goes here"
+                    Role = user.Role.Name,
+                    Token = _tokenService.CreateToken(user)
                 };
             }
         }
