@@ -1,5 +1,6 @@
 ﻿using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
+using ACS_Backend.Model;
 
 namespace ACS_Backend.Services;
 
@@ -23,11 +24,19 @@ public class ParoleRuleService : IParoleRuleService
         return _sql.ParoleRules.ToArray();
     }
 
-    public async Task CreateParoleRule(ParoleRule paroleRule)
+    public async Task CreateParoleRule(NewNoteModel paroleRule)
     {
-        if (_sql.LockRules.Any(restriction1 => restriction1.Name == paroleRule.Name))
+        if (_sql.ParoleRules.Any(rule => rule.Name == paroleRule.Name))
             throw new ItemAlreadyExistsException();
-        _sql.ParoleRules.Add(paroleRule);
+        var note = new ParoleRule()
+        {
+            Name = paroleRule.Name,
+            DayOfWeek = paroleRule.DayOfWeek,
+            StartTime = null,
+            EndTime = null
+        };
+        
+        _sql.ParoleRules.Add(note);
         await _sql.SaveChangesAsync();
     }
 

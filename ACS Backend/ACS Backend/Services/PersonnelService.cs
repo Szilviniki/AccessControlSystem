@@ -39,9 +39,17 @@ public class PersonnelService : IPersonnelService
     {
         //TODO: Update Method
         if (!_sql.Personnel.Any(x => x.Id == id)) throw new ItemNotFoundException();
-        var checkRes = _checker.IsUniqueFaculty(faculty);
-        if (!checkRes.QueryIsSuccess)
-            throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+        if(faculty.CanLogin && string.IsNullOrWhiteSpace(faculty.Password) ==false)
+        {
+            if (string.IsNullOrWhiteSpace(faculty.Password)) throw new ArgumentException("Password cannot be empty");
+            faculty.Password = _encryptionService.Encrypt(faculty.Password);
+        }
+
+        var valRes = _objectValidatorService.Validate(faculty);
+        if (valRes.QueryIsSuccess == false) throw new ArgumentException(string.Join(", ", valRes.Data));
+        // var checkRes = _checker.IsUniqueFaculty(faculty);
+        // if (!checkRes.QueryIsSuccess)
+        //     throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
         _sql.Personnel.Update(faculty);
         await _sql.SaveChangesAsync();
     }
@@ -49,6 +57,7 @@ public class PersonnelService : IPersonnelService
     public async Task AddFaculty(Personnel faculty)
     {
         faculty.CardId = new Random().Next(100000, 999999);
+        faculty.Id = Guid.NewGuid();
         if (faculty.CanLogin)
         {
             var checkRes = _checker.IsUniqueFaculty(faculty);
