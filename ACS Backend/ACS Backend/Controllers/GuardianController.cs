@@ -8,6 +8,7 @@ namespace ACS_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class GuardianController : Controller
     {
         private IGuardianService _guardianService;

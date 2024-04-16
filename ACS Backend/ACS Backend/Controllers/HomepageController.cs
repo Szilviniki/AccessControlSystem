@@ -7,6 +7,7 @@ namespace ACS_Backend.Controllers;
 
 [Controller]
 [Route("api/v1/[controller]")]
+[Authorize]
 public class HomepageController : ControllerBase
 {
     private IHomepageService _homepageService;

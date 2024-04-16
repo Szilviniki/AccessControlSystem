@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Cors;
 
 namespace ACS_Backend.Controllers;
 [ApiController]
-[EnableCors]
 [Route("api/v1/[controller]")]
 public class CheckInController : Controller
 {

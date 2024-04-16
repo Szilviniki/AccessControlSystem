@@ -1,12 +1,14 @@
 ﻿using ACS_Backend.Exceptions;
 using ACS_Backend.Model;
 using ACS_Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
+[Authorize]
 public class RestrictionController : Controller
 {
     private LockRuleService _lockRuleService;

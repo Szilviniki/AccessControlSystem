@@ -2,6 +2,7 @@
 using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
 using ACS_Backend.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
