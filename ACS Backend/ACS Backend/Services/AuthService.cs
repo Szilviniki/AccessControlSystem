@@ -29,6 +29,7 @@ public class AuthService : IAuthService
             {
                 return new LoginResponseModel
                 {
+                    Id = user.Id,
                     Email = login.Email,
                     Name = user.Name,
                     Role = user.Role.Name,

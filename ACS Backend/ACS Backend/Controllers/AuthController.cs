@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
+
 [ApiController]
 [EnableCors]
 [Route("api/v1/[controller]")]
@@ -20,24 +21,11 @@ public class AuthController : ControllerBase
     [HttpPost("Check")]
     public IActionResult Check([FromBody] LoginModel loginModel)
     {
-        try
+        var res = _authService.Login(loginModel);
+        var genericResponseModel = new GenericResponseModel<LoginResponseModel>
         {
-            var res = _authService.Login(loginModel);
-            var genericResponseModel = new GenericResponseModel<LoginResponseModel>
-            {
-                Data = res
-            };
-            return Ok(res);
-        }
-        catch (FailedLoginException)
-        {
-            var res = new GenericResponseModel<string> { Message = "Failed login", QueryIsSuccess = false };
-            return StatusCode(401, res);
-        }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<string>{Message = e.Message, QueryIsSuccess = false};
-            return StatusCode(500, res);
-        }
+            Data = res
+        };
+        return Ok(res);
     }
 }
