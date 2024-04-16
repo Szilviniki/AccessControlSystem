@@ -21,19 +21,11 @@ public class HomepageController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        try
+        var res = new GenericResponseModel<HomepageModel>
         {
-            var res = new GenericResponseModel<HomepageModel>
-            {
-                Data = _homepageService.GetHomepageData(),
-                QueryIsSuccess = true
-
-            };
-            return Ok(res);
-        }catch (Exception e)
-        {
-            var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-            return StatusCode(500, res);
-        }
+            Data = _homepageService.GetHomepageData(),
+            QueryIsSuccess = true
+        };
+        return Ok(res);
     }
 }

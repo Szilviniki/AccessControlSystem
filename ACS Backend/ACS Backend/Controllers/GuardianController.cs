@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACS_Backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [Authorize]
     public class GuardianController : Controller
     {
@@ -58,22 +58,9 @@ namespace ACS_Backend.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGuardian([FromRoute] Guid id)
         {
-            try
-            {
-                await _guardianService.DeleteGuardian(id);
-                var res = new GenericResponseModel<string> { QueryIsSuccess = true };
-                return Ok(res);
-            }
-            catch (ItemNotFoundException)
-            {
-                var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = "Guardian not found" };
-                return NotFound(res);
-            }
-            catch (Exception e)
-            {
-                var res = new GenericResponseModel<string> { QueryIsSuccess = false, Message = e.Message };
-                return StatusCode(500, res);
-            }
+            await _guardianService.DeleteGuardian(id);
+            var res = new GenericResponseModel<string> { QueryIsSuccess = true };
+            return Ok(res);
         }
     }
 }

@@ -37,20 +37,27 @@ public class PersonnelService : IPersonnelService
 
     public async Task UpdateFaculty(Personnel faculty, Guid id)
     {
-        //TODO: Update Method
         if (!_sql.Personnel.Any(x => x.Id == id)) throw new ItemNotFoundException();
+        
+        var old = await _sql.Personnel.FindAsync(id);
+        
+        old.Name  =faculty.Name;
+        old.Email = faculty.Email;
+        old.Phone = faculty.Phone;
+        old.CanLogin = faculty.CanLogin;
+        old.RoleId = faculty.RoleId;
+        
+        
         if(faculty.CanLogin && string.IsNullOrWhiteSpace(faculty.Password) ==false)
         {
-            if (string.IsNullOrWhiteSpace(faculty.Password)) throw new ArgumentException("Password cannot be empty");
-            faculty.Password = _encryptionService.Encrypt(faculty.Password);
+            var password = faculty.Password;
+            old.Password = _encryptionService.Encrypt(password);
         }
 
         var valRes = _objectValidatorService.Validate(faculty);
         if (valRes.QueryIsSuccess == false) throw new ArgumentException(string.Join(", ", valRes.Data));
-        // var checkRes = _checker.IsUniqueFaculty(faculty);
-        // if (!checkRes.QueryIsSuccess)
-        //     throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
-        _sql.Personnel.Update(faculty);
+        
+        _sql.Personnel.Update(old);
         await _sql.SaveChangesAsync();
     }
 

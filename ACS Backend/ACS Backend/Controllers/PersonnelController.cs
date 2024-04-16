@@ -21,138 +21,44 @@ public class PersonnelController : ControllerBase
     [HttpGet("Get/{id}")]
     public IActionResult Get(Guid id)
     {
-        try
+        var res = new GenericResponseModel<Personnel>
         {
-            var res = new GenericResponseModel<Personnel>
-            {
-                Data = _facultyService.GetFaculty(id)
-            };
-            return Ok(res);
-        }
-        catch (ItemNotFoundException)
-        {
-            var res = new GenericResponseModel<Personnel>
-            {
-                Message = "Not found",
-                QueryIsSuccess = false
-            };
-            return StatusCode(404, res);
-        }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<Personnel>
-            {
-                QueryIsSuccess = false,
-                Message = e.Message
-            };
-            return StatusCode(500, res);
-        }
+            Data = _facultyService.GetFaculty(id)
+        };
+        return Ok(res);
     }
 
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
-        var res = new GenericResponseModel<Array>();
-        try
+        var res = new GenericResponseModel<Array>
         {
-            res.Data = _facultyService.GetAllFaculties();
-            return Ok(res);
-        }
-        catch (Exception e)
-        {
-            res.QueryIsSuccess = false;
-            res.Message = e.Message;
-            return StatusCode(500, res);
-        }
+            Data = _facultyService.GetAllFaculties()
+        };
+        return Ok(res);
     }
 
     [HttpPut("Add")]
     public async Task<IActionResult> Add([FromBody] Personnel faculty)
     {
         var res = new GenericResponseModel<Personnel>();
-        try
-        {
             await _facultyService.AddFaculty(faculty);
-            return Ok();
-        }
-        catch (ItemAlreadyExistsException)
-        {
-            res.QueryIsSuccess = false;
-            res.Message = "Already exists";
+            res.QueryIsSuccess = true;
             res.Data = faculty;
-            return StatusCode(409, res);
-        }
-        catch (UniqueConstraintFailedException<List<string>>)
-        {
-            res.QueryIsSuccess = false;
-            res.Message = "Failed on unique constraint";
-            res.Data = faculty;
-            return StatusCode(409, res);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, e.Message);
-        }
+            return Ok(res);
     }
 
     [HttpPost("Update/{id:guid}")]
-    public async Task<IActionResult> Update(Guid id,[FromBody] Personnel faculty)
+    public async Task<IActionResult> Update(Guid id, [FromBody] Personnel faculty)
     {
-        try
-        {
-            await _facultyService.UpdateFaculty(faculty, id);
-            return Ok();
-        }
-        catch (ItemNotFoundException)
-        {
-            var res = new GenericResponseModel<List<string>>
-            {
-                QueryIsSuccess = false,
-                Message = "User not found"
-            };
-            return StatusCode(404, res);
-        }
-        catch (UniqueConstraintFailedException<List<string>> ux)
-        {
-            var res = new GenericResponseModel<List<string>>
-            {
-                QueryIsSuccess = false,
-                Message = "Failed on unique constraint",
-                Data = ux.FailedOn
-            };
-            return StatusCode(409, res);
-        }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<List<string>>
-            {
-                QueryIsSuccess = false,
-                Message = e.Message
-            };
-            return StatusCode(500, res);
-        }
+        await _facultyService.UpdateFaculty(faculty, id);
+        return Ok();
     }
 
     [HttpDelete("Delete/{id:guid}")]
     public async Task<IActionResult> Update(Guid id)
     {
-        try
-        {
-            await _facultyService.RemoveFaculty(id);
-            return Ok("Deleted successfully");
-        }
-        catch (ItemNotFoundException)
-        {
-            return StatusCode(404);
-        }
-        catch (Exception e)
-        {
-            var res = new GenericResponseModel<string>
-            {
-                QueryIsSuccess = false,
-                Message = e.Message
-            };
-            return StatusCode(500, res);
-        }
+        await _facultyService.RemoveFaculty(id);
+        return Ok();
     }
 }
