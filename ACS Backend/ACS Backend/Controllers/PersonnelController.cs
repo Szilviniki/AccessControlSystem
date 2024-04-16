@@ -1,11 +1,14 @@
 using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACS_Backend.Controllers;
 
+[ApiController]
 [Route("api/v1/Faculty")]
+[Authorize]
 public class PersonnelController : ControllerBase
 {
     private IPersonnelService _facultyService;
@@ -130,7 +133,7 @@ public class PersonnelController : ControllerBase
         }
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("Delete/{id:guid}")]
     public async Task<IActionResult> Update(Guid id)
     {
         try
