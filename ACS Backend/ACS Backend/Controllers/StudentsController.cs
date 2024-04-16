@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace ACS_Backend.Controllers;
+namespace ACS_Backend.Controllers { 
 
 [ApiController]
 [EnableCors]
@@ -71,18 +71,19 @@ public class StudentsController : ControllerBase
 
         Random random = new Random();
 
-        var cardID = random.Next(100000, 999999);
+            var cardID = random.Next(100000,999999);
 
-        var student = new Student()
-        {
-            Name = model.StudentName,
-            Email = model.StudentEmail,
-            Phone = model.StudentPhone,
-            BirthDate = model.StudentBirthDate,
-            CardId = cardID
-        };
+            var student = new Student()
+            {
+                Name = model.StudentName,
+                Email = model.StudentEmail,
+                Phone = model.StudentPhone,
+                BirthDate = model.StudentBirthDate,
+                CardId = cardID
+            };
 
-        await _studentService.AddStudentWithParent(student, parent);
-        return StatusCode(201);
+            await _studentService.AddStudentWithParent(student, parent);
+            return StatusCode(201);
+        }
     }
 }

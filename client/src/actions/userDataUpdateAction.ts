@@ -8,12 +8,16 @@ export async function login(formData:FormData): Promise<ILoginResponse>{
 
             method: "POST",
             headers:{
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
+                "Access-Control-Allow-Origin": "*",
             },
+            mode:"cors",
             body:JSON.stringify({ Id: formData.get("id"),
                                         Name: formData.get("name"),
                                         Phone: formData.get("phone"),
-                                        Email: formData.get("email"),})
+                                        Email: formData.get("email"),
+                                        Password: formData.get("password"),})
 
 
         })

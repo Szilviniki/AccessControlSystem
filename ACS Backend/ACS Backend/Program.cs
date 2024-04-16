@@ -23,11 +23,12 @@ namespace ACS_Backend
             // Add services to the container.
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy(name: origin,
-                                  policy =>
-                                  {
-                                      policy.WithOrigins("127.0.0.1", "localhost");
-                                  });
+                options.AddPolicy(name: origin, policy =>
+                {
+                    policy.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod().AllowCredentials();
+                });
             });
 
             builder.Services.AddAuthentication(a =>
@@ -46,7 +47,7 @@ namespace ACS_Backend
                     ValidateIssuerSigningKey = true
                 };
             });
-
+            builder.Services.AddAuthorization();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

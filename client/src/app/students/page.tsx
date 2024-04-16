@@ -5,7 +5,7 @@ import React from "react";
 import AddNewStudent from "@/components/NewUser/AddNewStudent";
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
-
+import NewNote from "@/components/NewNote/NewNote";
 
 export default function StudentPage() {
     const user = cookies().get("user-name");
@@ -14,13 +14,13 @@ export default function StudentPage() {
         redirect("/user")
     } else {
         return (
-
             <MainTemplate>
                 <Container>
                     <Row>
                         <Col className="m-2 ">
-                            <AddNewStudent title="Új diák hozzáadása" content="<AddNewStudentForm/>"/>
+                            <AddNewStudent/>
                         </Col>
+
                     </Row>
                     <Row>
                         <Col>

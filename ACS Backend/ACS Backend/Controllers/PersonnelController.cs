@@ -8,7 +8,7 @@ namespace ACS_Backend.Controllers;
 
 [ApiController]
 [Route("api/v1/Faculty")]
-[Authorize]
+
 public class PersonnelController : ControllerBase
 {
     private IPersonnelService _facultyService;

@@ -8,10 +8,18 @@ import {login} from "@/actions/loginAction";
 
 function settings() {
     const cookies = useCookies();
+    const id = (cookies.get("user-id") as string);
+    const token = (cookies.get("user-token") as string);
     const [data, setData] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/Guardian/{${cookies.get("user-email")}}`).then((res) => {
+        fetch(`http://localhost:4001/api/v1/Guardian/get/`+id,{
+            headers: {
+            "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
+                "Access-Control-Allow-Origin": "*",
+        },
+        mode: "cors",}
+        ).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
             })
@@ -68,6 +76,7 @@ function settings() {
                                     Név
                                 </Form.Label>
                                 <Form.Control
+
                                     type="name"
                                     name="text"
                                     placeholder="Név"

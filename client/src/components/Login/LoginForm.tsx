@@ -24,6 +24,8 @@ function LoginForm() {
         }
         else {
             const res = await login(formData);
+            console.log(res)
+            alert(JSON.stringify(res))
             if (res.queryIsSuccess==false) {
                 let message = res.message;
                 if (Array.isArray(message)) {
@@ -40,6 +42,8 @@ function LoginForm() {
                 cookies.set("user-name", JSON.stringify(res.name));
                 cookies.set("user-email", JSON.stringify(res.email));
                 cookies.set("user-role", JSON.stringify(res.role));
+                cookies.set("user-id", JSON.stringify(res.id));
+                cookies.set("user-token", JSON.stringify(res.token));
                 location.href = "/"
             }
         }

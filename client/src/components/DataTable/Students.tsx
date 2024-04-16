@@ -7,17 +7,25 @@ import {FaUserCheck, FaUserTimes} from "react-icons/fa";
 import {Row, Col, Container, ButtonGroup} from "react-bootstrap";
 import DeleteStudent from "@/components/DeleteUser/DeleteStudent";
 import EditStudent from "@/components/EditUser/EditStudent";
+import {useCookies} from "next-client-cookies";
+
 
 function Students() {
     const [students, setStudents] = useState([])
-
-
+    const cookies = useCookies();
+    const token = (cookies.get("user-token") as string);
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/v1/Students/GetAll`).then((res) => {
+        fetch(`http://localhost:4001/api/v1/Students/GetAll`,{
+            headers: {
+                "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
+                "Access-Control-Allow-Origin": "*",
+            },
+            mode: "cors",
+        }).then((res) => {
+
             res.json().then((datas) => {
                 setStudents(datas.data)
-                console.log(datas)
             })
         })
 
@@ -66,6 +74,7 @@ function Students() {
                         <EditStudent id={data.id}/>
                         <DeleteStudent id={data.id}/>
                     </ButtonGroup>
+
                 </Col>
 
             </Row>

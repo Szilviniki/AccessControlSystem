@@ -6,14 +6,23 @@ import {FaUserCheck, FaUserTimes} from "react-icons/fa";
 import {ButtonGroup, Col, Container, Row} from "react-bootstrap";
 import EditFaculties from "@/components/EditUser/EditFaculties";
 import DeleteFaculties from "@/components/DeleteUser/DeleteFaculties";
+import {useCookies} from "next-client-cookies";
 
 
 function Faculities() {
     const [faculties, setData] = useState([])
     const transformedData = prepareData(faculties)
+    const cookies = useCookies();
+    const token = (cookies.get("user-token") as string);
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/v1/Faculty/GetAll`).then((res) => {
+        fetch(`http://localhost:4001/api/v1/Faculty/GetAll`,{
+            headers:{
+                "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
+                "Access-Control-Allow-Origin": "*",
+            },
+            mode: "cors",
+        }).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
             })

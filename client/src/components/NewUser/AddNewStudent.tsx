@@ -1,9 +1,11 @@
-'use client'
-import React from 'react';
+'use client';
+
+import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FaPlusCircle } from "react-icons/fa";
 import {Col, Container, Form, Row} from "react-bootstrap";
+import {save} from "@/actions/NewStudentAction";
 
 function AddNewStudentForm(props: any) {
     return (
@@ -22,7 +24,7 @@ function AddNewStudentForm(props: any) {
             </Modal.Header>
             <Modal.Body>
                 <Container className="justify-content-center">
-                    <form>
+                    <form action={save}>
                         <Row className="justify-content-center">
                             <Col className="justify-content-center">
                                 <h2 className="m-4">Diák adatai</h2>
@@ -64,7 +66,7 @@ function AddNewStudentForm(props: any) {
                                 <Form.Group>
                                     <Form.Control
                                         type="text"
-                                        name="name"
+                                        name="parentname"
                                         placeholder="Szülő neve"
                                         className="inputFc m-4"
                                     />
@@ -72,7 +74,7 @@ function AddNewStudentForm(props: any) {
                                 <Form.Group>
                                     <Form.Control
                                         type="email"
-                                        name="email"
+                                        name="parentemail"
                                         placeholder="Szülő email cím"
                                         className="inputFc m-4"
                                     />
@@ -80,7 +82,7 @@ function AddNewStudentForm(props: any) {
                                 <Form.Group>
                                     <Form.Control
                                         type="text"
-                                        name="phone"
+                                        name="parentphone"
                                         placeholder="Szülő telefonszám"
                                         className="inputFc m-4"
                                     />
@@ -103,7 +105,7 @@ function AddNewStudentForm(props: any) {
 }
 
 export default function AddNewStudent(props: any) {
-    const [modalShow, setModalShow] = React.useState(false);
+    const [modalShow, setModalShow] = useState(false);
 
     return (
         <>
