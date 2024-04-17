@@ -14,7 +14,7 @@ namespace ACS_Backend.Services
                 new Claim(ClaimTypes.Name, user.Name),
             });
 
-            identity.AddClaim(new Claim(ClaimTypes.Role, user.RoleId.ToString()));
+            identity.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor

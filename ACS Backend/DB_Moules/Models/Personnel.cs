@@ -16,9 +16,8 @@
         [PhoneNumber] [MaxLength(13)] public string Phone { get; set; } = "";
         [Column("present")] public bool IsPresent { get; set; }
 
-        [ForeignKey("RoleId")] public int RoleId { get; set; }
-        
-        public Role? Role { get; set; }
+
+        public int Role { get; set; }
 
         public bool CanLogin { get; set; }
     }

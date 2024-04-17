@@ -26,21 +26,33 @@ public class ObjectValidatorService : IObjectValidatorService
                 if (attribute is RequiredAttribute)
                 {
                     if (value == null || string.IsNullOrWhiteSpace(value.ToString()) ||
-                        propertyInfo.PropertyType == typeof(Guid) && (Guid)value == Guid.Empty)
+                        propertyInfo.PropertyType == typeof(Guid) && (Guid)value == Guid.Empty ||
+                        propertyInfo.PropertyType == typeof(DateTime) && (DateTime)value == DateTime.MinValue ||
+                        propertyInfo.PropertyType == typeof(int) && (int)value == 0 ||
+                        propertyInfo.PropertyType == typeof(decimal) && (decimal)value == 0 ||
+                        propertyInfo.PropertyType == typeof(double) && (double)value == 0 ||
+                        propertyInfo.PropertyType == typeof(float) && (float)value == 0 ||
+                        propertyInfo.PropertyType == typeof(long) && (long)value == 0 ||
+                        propertyInfo.PropertyType == typeof(short) && (short)value == 0 ||
+                        propertyInfo.PropertyType == typeof(byte) && (byte)value == 0 ||
+                        propertyInfo.PropertyType == typeof(bool) && (bool)value == false ||
+                        propertyInfo.PropertyType == typeof(char) && (char)value == '\0')
                     {
                         fails.Add($"{propertyInfo.Name} is required");
                     }
                 }
                 else if (attribute is EmailAddressAttribute)
                 {
-                    if (string.IsNullOrWhiteSpace(value.ToString()) ==false && !_validator.ValidateEmail(value.ToString()))
+                    if (string.IsNullOrWhiteSpace(value.ToString()) == false &&
+                        !_validator.ValidateEmail(value.ToString()))
                     {
                         fails.Add($"{propertyInfo.Name} is not a valid email address");
                     }
                 }
                 else if (attribute is PhoneNumberAttribute)
                 {
-                    if (string.IsNullOrWhiteSpace(value.ToString())==false&& !_validator.ValidatePhone(value.ToString()))
+                    if (string.IsNullOrWhiteSpace(value.ToString()) == false &&
+                        !_validator.ValidatePhone(value.ToString()))
                     {
                         fails.Add($"{propertyInfo.Name} is not a valid phone number");
                     }

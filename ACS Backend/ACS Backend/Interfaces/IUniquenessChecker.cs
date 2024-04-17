@@ -6,8 +6,7 @@ namespace ACS_Backend.Interfaces
     {
         public GenericResponseModel<List<string>> IsUniqueStudent(Student student);
         public GenericResponseModel<List<string>> IsUniqueStudentOnUpdate(Student student);
-
-        public GenericResponseModel<List<string>> IsUniqueRole(Role role);
+        
 
         public GenericResponseModel<List<string>> IsUniqueFaculty(Personnel faculty);
 

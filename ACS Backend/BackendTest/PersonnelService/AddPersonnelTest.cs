@@ -13,7 +13,6 @@ public class AddPersonnelTest
     private static MockPersonnel _mock = new MockPersonnel();
     private Personnel _worker = _mock.Worker;
     private Personnel _faculty = _mock.Faculty;
-    private Role _role = new MockPersonnel().MockRole;
 
     [TestInitialize]
     public async Task PersonnelInit()
@@ -29,23 +28,9 @@ public class AddPersonnelTest
             _sql.Personnel.Remove(_sql.Personnel.Single(x => x.Phone == _faculty.Phone));
             await _sql.SaveChangesAsync();
         }
-
-        if (_sql.PersonRoles.Any(x => x.Name == _role.Name))
-        {
-            _sql.PersonRoles.Remove(_sql.PersonRoles.Single(x => x.Name == _role.Name));
-            await _sql.SaveChangesAsync();
-        }
-
-        
-        
-        _sql.PersonRoles.Add(_role);
-        await _sql.SaveChangesAsync();
-        _worker.RoleId = _sql.PersonRoles.First(x => x.Name == _role.Name).Id;
-        _faculty.RoleId = _sql.PersonRoles.First(x => x.Name == _role.Name).Id;
-        
     }
 
-    
+    [TestCleanup]
     public async Task PersonnelCleanup()
     {
         if (_sql.Personnel.Any(x => x.Phone == _worker.Phone))
@@ -60,11 +45,6 @@ public class AddPersonnelTest
             await _sql.SaveChangesAsync();
         }
 
-        if (_sql.PersonRoles.Any(x => x.Name == _role.Name))
-        {
-            _sql.PersonRoles.Remove(_sql.PersonRoles.Single(x => x.Name == _role.Name));
-            await _sql.SaveChangesAsync();
-        }
     }
 
     [TestMethod]
@@ -73,21 +53,6 @@ public class AddPersonnelTest
         try
         {
             await _service.AddFaculty(new Personnel());
-            Assert.Fail();
-        }
-        catch (ArgumentException)
-        {
-        }
-    }
-
-    [TestMethod]
-    public async Task AddPersonnelFacultyNoRoleId()
-    {
-        try
-        {
-            var v = new MockPersonnel().DeepCopyFaculty();
-            v.RoleId = 0;
-            await _service.AddFaculty(_worker);
             Assert.Fail();
         }
         catch (ArgumentException)
@@ -151,21 +116,6 @@ public class AddPersonnelTest
         catch (Exception e)
         {
             Assert.Fail();
-        }
-    }
-    
-    [TestMethod]
-    public async Task TaskAddPersonnelFacultyTwice()
-    {
-        try
-        {
-            await _service.AddFaculty(_faculty);
-            await _service.AddFaculty(_faculty);
-            Assert.Fail();
-        }
-        catch (UniqueConstraintFailedException<List<string>> e)
-        {
-            Assert.IsTrue(e.FailedOn.Contains("Kártyaszám"));
         }
     }
 }

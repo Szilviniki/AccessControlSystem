@@ -52,16 +52,7 @@ public class UniquenessChecker : IUniquenessChecker
             ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
             : new GenericResponseModel<List<string>> { Message = "Minden ok" };
     }
-
-    public GenericResponseModel<List<string>> IsUniqueRole(Role role)
-    {
-        var fails = new List<string>();
-        if (_sql.PersonRoles.Any(x => role.Name == x.Name)) fails.Add("Név");
-        return fails.Count != 0
-            ? new GenericResponseModel<List<string>> { Data = fails, QueryIsSuccess = false }
-            : new GenericResponseModel<List<string>> { Message = "Minden ok" };
-    }
-
+    
     public GenericResponseModel<List<string>> IsUniqueFaculty(Personnel faculty)
     {
         var fails = new List<string>();

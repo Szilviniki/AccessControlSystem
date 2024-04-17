@@ -32,7 +32,7 @@ public class AuthService : IAuthService
                     Id = user.Id,
                     Email = login.Email,
                     Name = user.Name,
-                    Role = user.Role.Name,
+                    Role = user.Role+"",
                     Token = _tokenService.CreateToken(user)
                 };
             }

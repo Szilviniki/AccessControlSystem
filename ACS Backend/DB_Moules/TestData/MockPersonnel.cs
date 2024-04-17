@@ -13,7 +13,7 @@ public class MockPersonnel : Personnel
         CanLogin = true,
         CardId = 200002,
         Password = "apple",
-        RoleId = 99
+        Role = 2
     };
 
     public Personnel Worker = new Personnel()
@@ -24,13 +24,9 @@ public class MockPersonnel : Personnel
         Email = "worker@mock.dat",
         CanLogin = false,
         CardId = 200003,
-        RoleId = 99
+        Role = 4
     };
 
-    public Role MockRole = new Role()
-    {
-        Name = "MockRole"
-    };
 
     public Personnel DeepCopyWorker()
     {
@@ -42,7 +38,7 @@ public class MockPersonnel : Personnel
             Email = Worker.Email,
             CanLogin = Worker.CanLogin,
             CardId = Worker.CardId,
-            RoleId = Worker.RoleId
+            Role = 4
         };
     }
     
@@ -56,7 +52,7 @@ public class MockPersonnel : Personnel
             Email = Faculty.Email,
             CanLogin = Faculty.CanLogin,
             CardId = Faculty.CardId,
-            RoleId = Faculty.RoleId
+            Role = 2
         };
     }
 }
