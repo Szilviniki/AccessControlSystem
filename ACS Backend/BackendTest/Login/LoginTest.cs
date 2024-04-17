@@ -42,6 +42,6 @@ public class LoginTest
             Email = "jelszo@teszt.com",
             Password = "jelszo"
         };
-        Assert.AreEqual(_authService.Login(loginModel).Name, "Jelszó János");
+        Assert.AreEqual(_authService.Login(loginModel).Name, "Jelszó jános");
     }
 }

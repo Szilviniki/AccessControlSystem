@@ -17,34 +17,18 @@ namespace DB_Module
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ActiveRule>(ar =>
-            {
-                ar.HasNoKey();
-                ar.ToView("ActiveRules");
-            });
-            modelBuilder.Entity<ActiveParoleRule>(ar =>
-            {
-                ar.HasNoKey();
-                ar.ToView("ActiveParoleRules");
-            });
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Guardian> Parents { get; set; }
-        public DbSet<ParoleRule> ParoleRules { get; set; }
-        public DbSet<LockRule> LockRules { get; set; }
+
         public DbSet<Personnel> Personnel { get; set; }
-        public DbSet<Role> PersonRoles { get; set; }
+        
         public DbSet<GateLog> GateLogs { get; set; }
-
-        public DbSet<StudentLockRule> StudentsLockRules { get; set; }
-
-        public DbSet<StudentParoleRule> StudentsParoleRules { get; set; }
-
-        public DbSet<ActiveRule> ActiveRules { get; set; }
-
-        public DbSet<ActiveParoleRule> ActiveParoleRules { get; set; }
+        
+        
+        
     }
 }

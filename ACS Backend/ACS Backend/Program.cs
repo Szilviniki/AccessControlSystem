@@ -11,7 +11,7 @@ namespace ACS_Backend
     public static class Program
     {
         
-        public static byte[] TokenEncryptionKey { get; private set; }
+        public static byte[] TokenEncryptionKey { get; private set; } = Encoding.UTF8.GetBytes("secretkeyneedstobeatleast32charactersor128bitshoweverthisisnotsecureatall");
         public static void Main(string[] args)
         {  
             var origin = "_allowed";
@@ -73,7 +73,6 @@ namespace ACS_Backend
             builder.Services.AddScoped<IPersonnelService, PersonnelService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
-            builder.Services.AddScoped<ILockRuleService, LockRuleService>();
             
          
             

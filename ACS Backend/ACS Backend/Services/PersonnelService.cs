@@ -45,7 +45,7 @@ public class PersonnelService : IPersonnelService
         old.Email = faculty.Email;
         old.Phone = faculty.Phone;
         old.CanLogin = faculty.CanLogin;
-        old.RoleId = faculty.RoleId;
+        old.Role = faculty.Role;
         
         
         if(faculty.CanLogin && string.IsNullOrWhiteSpace(faculty.Password) ==false)
@@ -65,8 +65,7 @@ public class PersonnelService : IPersonnelService
     {
         faculty.CardId = new Random().Next(100000, 999999);
         faculty.Id = Guid.NewGuid();
-        if (faculty.CanLogin)
-        {
+
             var checkRes = _checker.IsUniqueFaculty(faculty);
             if (!checkRes.QueryIsSuccess)
                 throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
@@ -74,10 +73,9 @@ public class PersonnelService : IPersonnelService
             var uRes = _objectValidatorService.Validate(faculty);
             if (uRes.QueryIsSuccess == false) throw new ArgumentException(string.Join(", ", uRes.Data));
             
-            if (string.IsNullOrWhiteSpace(faculty.Password)) throw new ArgumentException("Password cannot be empty");
+            if (string.IsNullOrWhiteSpace(faculty.Password)&&faculty.CanLogin) throw new ArgumentException("Password cannot be empty");
             
             faculty.Password = _encryptionService.Encrypt(faculty.Password);
-        }
 
         _sql.Personnel.Add(faculty);
         await _sql.SaveChangesAsync();
