@@ -34,7 +34,7 @@ public class HomepageService : IHomepageService
             AbsentStudents = _sql.Students.Count(x => x.IsPresent == false),
             LastLogs = _sql.GateLogs.OrderByDescending(x => x.Stamp).Take(15).ToList(),
             NoteCount = _sql.Notes.Count(),
-            Notes = new List<string>()
+            Notes = notes
         };
         return model;
     }
