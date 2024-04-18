@@ -25,6 +25,7 @@ public class StudentService : IStudentService
     {
         if (!_sql.Students.Any(x => x.Id == id)) throw new ItemNotFoundException();
         var student = _sql.Students.Include(x => x.Parent).Single(x => x.Id == id);
+        student.Notes = _sql.Notes.Where(x => x.StudentId == student.Id).IgnoreAutoIncludes().ToList();
         return student;
     }
 
