@@ -1,4 +1,3 @@
-'use client'
 import {Col, Row} from "react-bootstrap";
 import LoginForm from "@/components/Login/LoginForm";
 import Template from "@/app/templates/Template";

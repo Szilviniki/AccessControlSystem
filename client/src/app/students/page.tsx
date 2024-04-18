@@ -3,21 +3,24 @@ import Students from "@/components/DataTable/Students";
 import {Card, Col, Container, Row} from "react-bootstrap";
 import React from "react";
 import AddNewStudent from "@/components/NewUser/AddNewStudent";
-import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
-import NewNote from "@/components/NewNote/NewNote";
+import {cookies} from "next/headers";
+
 
 export default function StudentPage() {
+
     const user = cookies().get("user-name");
 
+
     if (!user) {
-        redirect("/user")
+        redirect("/login")
     } else {
         return (
             <MainTemplate>
                 <Container>
                     <Row>
                         <Col className="m-2 ">
+
                             <AddNewStudent/>
                         </Col>
 
@@ -32,5 +35,5 @@ export default function StudentPage() {
                 </Container>
             </MainTemplate>
         );
-    }
+        }
 }

@@ -6,8 +6,12 @@ import Modal from 'react-bootstrap/Modal';
 import { FaPlusCircle } from "react-icons/fa";
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {save} from "@/actions/NewStudentAction";
+import {useCookies} from "next-client-cookies";
+
 
 function AddNewStudentForm(props: any) {
+    const token = useCookies().get('user-token');
+
     return (
         <Modal
             {...props}
@@ -25,6 +29,7 @@ function AddNewStudentForm(props: any) {
             <Modal.Body>
                 <Container className="justify-content-center">
                     <form action={save}>
+                        <input type="hidden" name={"token"} value={token} />
                         <Row className="justify-content-center">
                             <Col className="justify-content-center">
                                 <h2 className="m-4">Diák adatai</h2>
@@ -48,8 +53,10 @@ function AddNewStudentForm(props: any) {
                                     <Form.Control
                                         type="text"
                                         name="phone"
-                                        placeholder="Diák telefonszám"
+                                        placeholder="Diák telefonszáma (+36301234567)"
                                         className="inputFc m-4"
+                                        maxLength={12}
+                                        minLength={12}
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -83,8 +90,10 @@ function AddNewStudentForm(props: any) {
                                     <Form.Control
                                         type="text"
                                         name="parentphone"
-                                        placeholder="Szülő telefonszám"
+                                        placeholder="Szülő telefonszám (+36301234567)"
                                         className="inputFc m-4"
+                                        maxLength={12}
+                                        minLength={12}
                                     />
                                 </Form.Group>
                             </Col>

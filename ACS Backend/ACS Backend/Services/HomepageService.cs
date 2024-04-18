@@ -1,6 +1,7 @@
-﻿using ACS_Backend.Interfaces;
+using ACS_Backend.Interfaces;
 using ACS_Backend.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Internal;
 
 namespace ACS_Backend.Services;
 
@@ -20,7 +21,7 @@ public class HomepageService : IHomepageService
         int today = Convert.ToInt32(DateTime.Now.DayOfWeek);
 
         var ActiveNotes = _sql.Notes.Include(x => x.Student)
-            .Where(x => DateTime.Today.DayOfWeek.CompareTo(x.DayOfWeek) == 0).ToList();
+            .Where(x => today == x.DayOfWeek).ToList();
         foreach (var note in ActiveNotes)
         {
             notes.Add(note.Student.Name + " : " + note.Name);

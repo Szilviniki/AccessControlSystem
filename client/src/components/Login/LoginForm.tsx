@@ -24,8 +24,6 @@ function LoginForm() {
         }
         else {
             const res = await login(formData);
-            console.log(res)
-            alert(JSON.stringify(res))
             if (res.queryIsSuccess==false) {
                 let message = res.message;
                 if (Array.isArray(message)) {
@@ -67,7 +65,7 @@ function LoginForm() {
                 />
             </Form.Group>
             <Form.Group>
-                <Button type="submit" className="mt-2 loginBt">Mentés</Button>
+                <Button type="submit" className="mt-2 loginBt">Bejelentkezés</Button>
             </Form.Group>
         </form>
     );

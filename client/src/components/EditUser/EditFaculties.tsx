@@ -4,12 +4,22 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import {MdEdit} from "react-icons/md";
 import {Col, Container, Form, Row} from "react-bootstrap";
+import { useCookies} from "next-client-cookies";
+
 
 function EditFacultiesForm(props: any ,id:string) {
-    const [student, setData] = useState([]);
+    const [faculty, setData] = useState([]);
+    const cookies = useCookies();
+    const token = cookies.get("user-token")as string;
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/v1/Faculty/Get/${props.id}`).then((res) => {
+        fetch(`http://localhost:4001/api/v1/Faculty/Get/`+{id}, {
+            headers: {
+                "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
+                "Access-Control-Allow-Origin": "*",
+            },
+            mode: "cors",
+        }).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
             })
@@ -39,7 +49,7 @@ function EditFacultiesForm(props: any ,id:string) {
                                 <h2 className="m-4">Diák adatai</h2>
                                 <Form.Group>
                                     <Form.Control
-                                        // value={student.name}
+                                        defaultValue={faculty.name}
                                         type="text"
                                         name="name"
                                         placeholder="Dolgozó neve"
@@ -48,6 +58,7 @@ function EditFacultiesForm(props: any ,id:string) {
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Control
+                                        defaultValue={faculty.email}
                                         type="email"
                                         name="email"
                                         placeholder="Dolgozó email cím"
@@ -56,11 +67,20 @@ function EditFacultiesForm(props: any ,id:string) {
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Control
+                                        defaultValue={faculty.phone}
                                         type="text"
                                         name="phone"
                                         placeholder="Dolgozó telefonszám"
                                         className="inputFc m-4"
                                     />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Select name="day" defaultValue={faculty.role} >
+                                        <option value="1">Admin</option>
+                                        <option value="2">Kollégium vezető</option>
+                                        <option value="3">Nevelő</option>
+                                        <option value="4">Technikai dolgozó</option>
+                                    </Form.Select>
                                 </Form.Group>
                             </Col>
                         </Row>

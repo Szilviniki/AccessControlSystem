@@ -1,18 +1,18 @@
 'use client'
 
-import React, {use, useState} from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import {FaUserTag} from "react-icons/fa";
+import React from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import {Container, Form} from "react-bootstrap";
-import {save} from "@/actions/NewStudentAction";
+import {useCookies} from "next-client-cookies";
+import {INotesProps} from "@/interfaces/Notes";
+import {SaveNotes} from "@/actions/newNote";
+import {FaNoteSticky} from "react-icons/fa6";
 
-async function Get()  {
-    return await (await fetch(`http://localhost:4001/api/v1/Student/GetAll`)).json()
-}
+function AddNotesForm(props: any) {
+    const cookies = useCookies();
+    const token = (cookies.get("user-token") as string);
 
-function AddNewStudentForm(props: any) {
-    const data = use(Get()).data;
     return (
         <Modal
             {...props}
@@ -29,15 +29,9 @@ function AddNewStudentForm(props: any) {
             </Modal.Header>
             <Modal.Body>
                 <Container className="justify-content-center">
-                    <form action={save}>
-                        <Form.Group>
-                            <Form.Select name="day" aria-label="Default select example">
-                                <option>Diák neve</option>
-                                {data && data.map(student => (
-
-                                        <option value={student.id} >{student.name}</option> ))}
-                            </Form.Select>
-                        </Form.Group>
+                    <form action={SaveNotes}>
+                        <input type="hidden" name={"token"} value={token}/>
+                        <input type="hidden" name={"id"} value={props.id}/>
                         <Form.Group>
                             <Form.Control
                                 type="text"
@@ -49,7 +43,7 @@ function AddNewStudentForm(props: any) {
                         <Form.Group>
                             <Form.Select name="day" aria-label="Default select example">
                                 <option>Ezen a napon</option>
-                                <option value="1" >Hétfő</option>
+                                <option value="1">Hétfő</option>
                                 <option value="2">Kedd</option>
                                 <option value="3">Szerda</option>
                                 <option value="4">Csütörtök</option>
@@ -67,20 +61,18 @@ function AddNewStudentForm(props: any) {
     );
 }
 
-export default function AddNewStudent(props: any) {
-    const [modalShow, setModalShow] = useState(false);
-
+export default function AddNotes({id}: INotesProps) {
+    const [modalShow, setModalShow] = React.useState(false);
+    const cookies = useCookies();
+    const token = (cookies.get("user-token") as string);
     return (
         <>
-            <Button className="_new" onClick={() => setModalShow(true)}>
-                <FaUserTag  className="mx-1 mb-1"/>
-                Új feljegyzés
-            </Button>
-
-            <AddNewStudentForm
+            <Button className="newnotes" onClick={() => setModalShow(true)}><FaNoteSticky /></Button>
+            <AddNotesForm
                 show={modalShow}
                 onHide={() => setModalShow(false)}
-                {...props}
+                id={id}
+                token={token}
             />
         </>
     );

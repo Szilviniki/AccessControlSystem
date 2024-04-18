@@ -19,7 +19,7 @@ export async function save(formData:FormData): Promise<IResponse>{
             method: "PUT",
             headers:{
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
+                "Authorization": "Bearer " + (formData.get("token") as string).replaceAll("\"", "").trim(),
                 "Access-Control-Allow-Origin": "*",
             },
             mode: "cors",
@@ -28,14 +28,14 @@ export async function save(formData:FormData): Promise<IResponse>{
 
         const data = await res.json();
 
-
+console.log(data)
         return data
 
     } catch (e){
         console.log(e);
         return {
             queryIsSuccess: false,
-            message: "Sikeres létrehozás!"
+            message: "Sikertelen létrehozás!"
 
         }
     }

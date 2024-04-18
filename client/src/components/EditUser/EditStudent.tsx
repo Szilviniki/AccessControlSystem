@@ -7,12 +7,13 @@ import {MdEdit} from "react-icons/md";
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {StudentProps} from "@/interfaces/Student";
 import {useCookies} from "next-client-cookies";
+import {updateStudent} from "@/actions/StudentUpdate";
 
 function EditStudentForm(props: any) {
     const [student, setData] = useState([]);
+    const [parent, setParent] = useState([]);
     const cookies = useCookies();
     const token = (cookies.get("user-token") as string);
-   console.log(student)
 
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Students/Get/${props.id}`,{
@@ -25,6 +26,7 @@ function EditStudentForm(props: any) {
             ).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
+                setParent(datas.data.parent)
             })
         })
 
@@ -41,15 +43,17 @@ function EditStudentForm(props: any) {
         >
             <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Új diák hozzáadása
+                   Diák Szerkesztése
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container className="justify-content-center">
-                    <form>
+                    <form action={updateStudent}>
                         <Row className="justify-content-center">
                             <Col className="justify-content-center">
                                 <h2 className="m-4">Diák adatai</h2>
+                                <input type="hidden" name={"token"} value={token}/>
+                                <input type="hidden" name={"id"} value={props.id}/>
                                 <Form.Group>
                                     <Form.Control
                                         defaultValue={student.name}
@@ -82,7 +86,7 @@ function EditStudentForm(props: any) {
                                 <h2 className="m-4">Szülő adatai</h2>
                                 <Form.Group>
                                     <Form.Control
-                                        defaultValue={student.parent.name}
+                                        defaultValue={parent.name}
                                         type="text"
                                         name="parentname"
                                         placeholder="Szülő neve"
@@ -91,7 +95,7 @@ function EditStudentForm(props: any) {
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Control
-                                        defaultValue={student.parent.email}
+                                        defaultValue={parent.email}
                                         type="email"
                                         name="parentemail"
                                         placeholder="Szülő email cím"
@@ -100,7 +104,7 @@ function EditStudentForm(props: any) {
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Control
-                                        defaultValue={student.parent.phone}
+                                        defaultValue={parent.phone}
                                         type="text"
                                         name="parentphone"
                                         placeholder="Szülő telefonszám"

@@ -3,14 +3,16 @@ import MainTemplate from '@/app/templates/MainTemplate';
 import {Card, Col, Container, Row} from 'react-bootstrap';
 import Faculities from "@/components/DataTable/Faculities";
 import AddNewWorkersForm from "@/components/NewUser/AddNewWorkersForm";
-import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
+
+
 
 export default function WorkersPage() {
     const user = cookies().get("user-name");
 
     if (!user) {
-        redirect("/user")
+        redirect("/login")
     } else {
 
         return (

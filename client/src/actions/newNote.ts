@@ -2,7 +2,7 @@
 
 import {IResponse} from "@/interfaces/Response";
 
-export async function save(formData:FormData): Promise<IResponse>{
+export async function SaveNotes(formData:FormData): Promise<IResponse>{
     try {
         const body = JSON.stringify({
             name: formData.get("name"),

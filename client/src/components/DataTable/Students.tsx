@@ -7,8 +7,8 @@ import {FaUserCheck, FaUserTimes} from "react-icons/fa";
 import {Row, Col, Container, ButtonGroup} from "react-bootstrap";
 import DeleteStudent from "@/components/DeleteUser/DeleteStudent";
 import EditStudent from "@/components/EditUser/EditStudent";
+import AddNotes from "@/components/NewNote/NewNote";
 import {useCookies} from "next-client-cookies";
-
 
 function Students() {
     const [students, setStudents] = useState([])
@@ -26,6 +26,7 @@ function Students() {
 
             res.json().then((datas) => {
                 setStudents(datas.data)
+
             })
         })
 
@@ -71,6 +72,7 @@ function Students() {
                 </Col>
                 <Col className="expanded">
                     <ButtonGroup aria-label="Basic example">
+                        <AddNotes id={data.id}/>
                         <EditStudent id={data.id}/>
                         <DeleteStudent id={data.id}/>
                     </ButtonGroup>

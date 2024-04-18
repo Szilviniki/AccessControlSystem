@@ -4,19 +4,13 @@ import {redirect} from "next/navigation";
 import HomePageForm from "@/components/Home/HomeForm";
 
 export default function HomePage() {
-
-
     const user = cookies().get("user-name");
-console.log(user)
     if (!user) {
         redirect("/login")
     }
     else {
-
     return(
-
         <>
-
         <MainTemplate>
             <HomePageForm/>
         </MainTemplate>

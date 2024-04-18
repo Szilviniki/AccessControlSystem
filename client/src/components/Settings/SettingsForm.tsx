@@ -3,17 +3,17 @@ import {Button, Col, Row, Form} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {useCookies} from "next-client-cookies";
 import Notiflix from "notiflix";
-import {login} from "@/actions/loginAction";
+import {updateUser} from "@/actions/userDataUpdateAction";
 
 
-function settings() {
+export default function settings() {
     const cookies = useCookies();
     const id = (cookies.get("user-id") as string);
     const token = (cookies.get("user-token") as string);
-    const [data, setData] = useState([])
+    const [user, setData] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/v1/Guardian/get/`+id,{
+        fetch(`http://localhost:4001/api/v1/Faculty/get/`+id,{
             headers: {
             "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
                 "Access-Control-Allow-Origin": "*",
@@ -22,28 +22,16 @@ function settings() {
         ).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
+                console.log(user)
             })
         })
 
 
     }, [])
+
     async function update(formData: FormData ) {
 
-        if((formData.get("email")=="")) {
-            Notiflix.Report.warning(
-                'Hiba!',
-                'Az email cím megdása kötelező megadása kötelező!',
-                'Rendben',
-            );
-        }if (formData.get("password")=="") {
-            Notiflix.Report.warning(
-                'Hiba!',
-                'A jelszó megadása kötelező!',
-                'Rendben',
-            );
-        }
-        else {
-            const res = await login(formData);
+            const res = await updateUser(formData);
             if (res.queryIsSuccess==false) {
                 let message = res.message;
                 if (Array.isArray(message)) {
@@ -64,7 +52,7 @@ function settings() {
 
             }
         }
-    }
+
     return (
         <Row>
             <Col sm={12} md={12}>
@@ -72,11 +60,13 @@ function settings() {
                     <Row className="justify-content-center">
                         <Col sm={12} md={11}>
                             <Form.Group>
+                                <input type="hidden" name={"token"} value={token}/>
+                                <input type="hidden" name={"id"} value={id}/>
                                 <Form.Label>
                                     Név
                                 </Form.Label>
                                 <Form.Control
-
+                                    defaultValue={user}
                                     type="name"
                                     name="text"
                                     placeholder="Név"
@@ -89,6 +79,7 @@ function settings() {
                                     Telefonszám
                                 </Form.Label>
                                 <Form.Control
+                                    defaultValue={user}
                                     type="phone"
                                     name="text"
                                     placeholder="Telefonszám"
@@ -100,16 +91,39 @@ function settings() {
                                     Email cím
                                 </Form.Label>
                                 <Form.Control
+                                    defaultValue={user}
                                     type="email"
                                     name="email"
                                     placeholder="Email cím"
                                     className="inputFc"
                                 />
                             </Form.Group>
+                            <Form.Group>
+                                <Form.Label>
+                                    Új jelszó
+                                </Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    name="newpassword"
+                                    placeholder="Új jelszó"
+                                    className="inputFc"
+                                />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>
+                                    Új jelszó mégegyszer
+                                </Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="pass"
+                                    placeholder="Új jelszó mégegyszer"
+                                    className="inputFc"
+                                />
+                            </Form.Group>
                         </Col>
                         <Col md={6} >
                             <Form.Group>
-                                <Button type="submit" className="mt-2 loginBt">Mentés</Button>
+                                <Button type="submit" className="mt-1 loginBt">Mentés</Button>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -119,4 +133,3 @@ function settings() {
     );
 }
 
-export default settings;

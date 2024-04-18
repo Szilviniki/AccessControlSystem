@@ -22,6 +22,8 @@ export default function SideMenu({
         cookies.remove("user-name");
         cookies.remove("user-email");
         cookies.remove("user-role");
+        cookies.remove("user-id");
+        cookies.remove("user-token");
     }
 
 
