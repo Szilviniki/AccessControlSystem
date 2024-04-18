@@ -18,7 +18,7 @@ public class PersonnelController : ControllerBase
         _facultyService = facultyService;
     }
 
-    [HttpGet("Get/{id}")]
+    [HttpGet("Get/{id:guid}")]
     public IActionResult Get(Guid id)
     {
         var res = new GenericResponseModel<Personnel>

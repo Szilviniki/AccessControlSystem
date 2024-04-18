@@ -12,7 +12,7 @@ public class GetAllGuardians
     public void GetAllGuardiansTest()
     {
         var result = _parentService.GetAllGuardians().Length;
-        var expected = _sql.Parents.Count();
+        var expected = _sql.Guardians.Count();
         Assert.AreEqual(expected, result);
     }
 }

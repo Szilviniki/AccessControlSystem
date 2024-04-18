@@ -31,8 +31,9 @@
 
         [ForeignKey("ParentId")]
         public Guid ParentId { get; set; }
-
-
+        
+        public List<Note>? Notes { get; set; } = null!;
+        
         public Guardian? Parent { get; set; } = null!;
     }
 }

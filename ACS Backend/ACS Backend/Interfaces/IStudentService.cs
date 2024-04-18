@@ -12,4 +12,8 @@ public interface IStudentService
     public Task AddStudent(Student student);
     
     public Task AddStudentWithParent(Student student, Guardian parent);
+    
+    public Task AddNoteToStudent(Note note);
+    
+    public Task RemoveNoteFromStudent(int noteId);
 }

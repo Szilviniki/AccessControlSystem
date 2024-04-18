@@ -25,6 +25,7 @@ public class StudentService : IStudentService
     {
         if (!_sql.Students.Any(x => x.Id == id)) throw new ItemNotFoundException();
         var student = _sql.Students.Include(x => x.Parent).Single(x => x.Id == id);
+        student.Notes = _sql.Notes.Where(x => x.StudentId == student.Id).IgnoreAutoIncludes().ToList();
         return student;
     }
 
@@ -46,7 +47,7 @@ public class StudentService : IStudentService
 
         var studentOld = await _sql.Students.SingleAsync(x => x.Id == id);
 
-        if (student.ParentId != null && !_sql.Parents.Any(x => x.Id == student.ParentId))
+        if (student.ParentId != null && !_sql.Guardians.Any(x => x.Id == student.ParentId))
             throw new ReferredEntityNotFoundException();
 
 
@@ -110,7 +111,7 @@ public class StudentService : IStudentService
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
         }
 
-        if (!_sql.Parents.Any(x => x.Id == student.ParentId)) throw new ReferredEntityNotFoundException();
+        if (!_sql.Guardians.Any(x => x.Id == student.ParentId)) throw new ReferredEntityNotFoundException();
 
         student.Id = Guid.NewGuid();
         student.BirthDate = student.BirthDate.Date;
@@ -162,7 +163,7 @@ public class StudentService : IStudentService
             student.BirthDate = student.BirthDate.Date;
             student.ParentId = parent.Id;
             _sql.Students.Add(student);
-            _sql.Parents.Add(parent);
+            _sql.Guardians.Add(parent);
             await _sql.SaveChangesAsync();
             await transaction.CommitAsync();
         }
@@ -171,5 +172,21 @@ public class StudentService : IStudentService
             await transaction.RollbackAsync();
             throw;
         }
+    }
+
+    public async Task AddNoteToStudent(Note note)
+    {
+        if(!_sql.Students.Any(x=>x.Id==note.StudentId)) throw new ItemNotFoundException();
+        var val = _objectValidatorService.Validate(note);
+        if (!val.QueryIsSuccess) throw new ArgumentException(string.Join('|', val.Data));
+        _sql.Notes.Add(note);
+        await _sql.SaveChangesAsync();
+    }
+
+    public async Task RemoveNoteFromStudent(int noteId)
+    {
+        if (!_sql.Notes.Any(x => x.Id == noteId)) throw new ItemNotFoundException();
+        _sql.Notes.Remove(_sql.Notes.Single(x => x.Id == noteId));
+        await _sql.SaveChangesAsync();
     }
 }

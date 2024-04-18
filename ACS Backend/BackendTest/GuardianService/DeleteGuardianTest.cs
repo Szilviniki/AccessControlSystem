@@ -14,22 +14,22 @@ public class DeleteGuardianTest
     [TestInitialize]
     public async Task GuardianInit()
     {
-        if (_sql.Parents.Any(x => x.Phone == _guardian.Phone))
+        if (_sql.Guardians.Any(x => x.Phone == _guardian.Phone))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Phone == _guardian.Phone));
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Phone == _guardian.Phone));
             await _sql.SaveChangesAsync();
         }
 
-        _sql.Parents.Add(_guardian);
+        _sql.Guardians.Add(_guardian);
         await _sql.SaveChangesAsync();
     }
 
     [TestCleanup]
     public async Task GuradianCleanup()
     {
-        if (_sql.Parents.Any(x => x.Id == _guardian.Id))
+        if (_sql.Guardians.Any(x => x.Id == _guardian.Id))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Id == _guardian.Id));
             await _sql.SaveChangesAsync();
         }
     }
