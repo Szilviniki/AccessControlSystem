@@ -1,5 +1,4 @@
 ﻿using DB_Module.Models;
-
 namespace DB_Module.MockData;
 
 public class MockPersonnel : Personnel
@@ -41,7 +40,7 @@ public class MockPersonnel : Personnel
             Role = 4
         };
     }
-    
+
     public Personnel DeepCopyFaculty()
     {
         return new Personnel()
@@ -55,4 +54,19 @@ public class MockPersonnel : Personnel
             Role = 2
         };
     }
+
+    public UpdatePersonnelModel UpdateFaculty = new()
+    {
+        Name = "Teacher 1",
+        Phone = "+36400010001",
+        Email = "teacher@mock.dat",
+        Password = "bootom_jeans",
+    };
+    public UpdatePersonnelModel UpdateWorker = new()
+    {
+        Name = "Teacher 1",
+        Phone = "+36400010001",
+        Email = "teacher@mock.dat",
+    };
+
 }

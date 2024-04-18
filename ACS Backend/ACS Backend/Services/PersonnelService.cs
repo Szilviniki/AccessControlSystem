@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
+using ACS_Backend.Model;
 using ACS_Backend.Utilities;
 
 namespace ACS_Backend.Services;
@@ -35,7 +36,7 @@ public class PersonnelService : IPersonnelService
         return _sql.Personnel.ToArray();
     }
 
-    public async Task UpdateFaculty(Personnel faculty, Guid id)
+    public async Task UpdateFaculty(UpdatePersonnelModel faculty, Guid id)
     {
         if (!_sql.Personnel.Any(x => x.Id == id)) throw new ItemNotFoundException();
         
@@ -44,11 +45,15 @@ public class PersonnelService : IPersonnelService
         old.Name  =faculty.Name;
         old.Email = faculty.Email;
         old.Phone = faculty.Phone;
-        old.CanLogin = faculty.CanLogin;
-        old.Role = faculty.Role;
+
+        if (faculty.Role != null)
+        { 
+            old.Role = (int)faculty.Role; 
+        }
+  
         
         
-        if(faculty.CanLogin && string.IsNullOrWhiteSpace(faculty.Password) ==false)
+        if(old.CanLogin && string.IsNullOrWhiteSpace(faculty.Password) ==false)
         {
             var password = faculty.Password;
             old.Password = _encryptionService.Encrypt(password);

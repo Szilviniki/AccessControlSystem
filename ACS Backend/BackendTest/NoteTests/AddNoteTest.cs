@@ -25,6 +25,8 @@ public class AddNoteTest
         }
 
         await _sql.SaveChangesAsync();
+        
+        note.StudentId = _student.Id;
     }
     
     [TestCleanup]
@@ -96,7 +98,7 @@ public class AddNoteTest
             await _studentService.AddNoteToStudent(bad);
             Assert.Fail();
         }
-        catch (ItemNotFoundException)
+        catch (ArgumentException)
         {
             
         }

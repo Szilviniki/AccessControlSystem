@@ -176,9 +176,9 @@ public class StudentService : IStudentService
 
     public async Task AddNoteToStudent(Note note)
     {
-        if(!_sql.Students.Any(x=>x.Id==note.StudentId)) throw new ItemNotFoundException();
         var val = _objectValidatorService.Validate(note);
         if (!val.QueryIsSuccess) throw new ArgumentException(string.Join('|', val.Data));
+        if (!_sql.Students.Any(x => x.Id == note.StudentId)) throw new ItemNotFoundException();
         _sql.Notes.Add(note);
         await _sql.SaveChangesAsync();
     }

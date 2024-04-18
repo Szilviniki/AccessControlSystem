@@ -2,5 +2,4 @@
 
 public class UnprocessableEntityException : Exception
 {
-    public string? Message { get; set; }
 }

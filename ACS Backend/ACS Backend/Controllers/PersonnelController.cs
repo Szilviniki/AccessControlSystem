@@ -49,8 +49,11 @@ public class PersonnelController : ControllerBase
     }
 
     [HttpPost("Update/{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] Personnel faculty)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePersonnelModel faculty)
     {
+        
+        
+        
         await _facultyService.UpdateFaculty(faculty, id);
         return Ok();
     }
