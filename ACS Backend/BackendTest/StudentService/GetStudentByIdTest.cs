@@ -4,6 +4,7 @@ using DB_Module.MockData;
 namespace BackendTest.StudentServiceTest;
 
 [TestClass]
+[TestCategory("Services")]
 public class GetStudentByIdTest
 {
     private static SQL _sql = new SQL();

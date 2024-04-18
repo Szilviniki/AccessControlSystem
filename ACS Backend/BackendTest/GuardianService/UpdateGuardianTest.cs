@@ -1,6 +1,7 @@
 ﻿namespace BackendTest.GuardianService;
 
 [TestClass]
+[TestCategory("Services")]
 public class UpdateGuardianTest
 {
     private static Guardian _guardian = new MockGuardian().Parent;

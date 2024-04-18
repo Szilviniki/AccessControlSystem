@@ -3,6 +3,7 @@
 namespace BackendTest.PersonnelService;
 
 [TestClass]
+[TestCategory("Services")]
 public class DeletePersonnelTest
 {
     private static SQL _sql = new SQL();
@@ -47,6 +48,7 @@ public class DeletePersonnelTest
     }
 
     [TestMethod]
+    [TestCategory("Services")]
     public async Task DeletePersonnelNoId()
     {
         try

@@ -1,6 +1,7 @@
 ﻿namespace BackendTest.NoteTests;
 
 [TestClass]
+[TestCategory("Services")]
 public class AddNoteTest
 {
     private static SQL _sql = new();

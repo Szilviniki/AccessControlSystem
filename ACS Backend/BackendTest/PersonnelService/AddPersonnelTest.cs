@@ -3,6 +3,7 @@
 using ACS_Backend.Services;
 
 [TestClass]
+[TestCategory("Services")]
 public class AddPersonnelTest
 {
     private static SQL _sql = new SQL();

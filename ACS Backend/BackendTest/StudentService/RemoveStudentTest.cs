@@ -3,6 +3,7 @@
 namespace BackendTest.StudentServiceTest;
 
 [TestClass]
+[TestCategory("Services")]
 public class RemoveStudentTest
 {
     private static SQL _sql = new SQL();

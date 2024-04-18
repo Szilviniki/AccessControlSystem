@@ -6,6 +6,7 @@ using ACS_Backend.Interfaces;
 namespace BackendTest.PersonnelService;
 
 [TestClass]
+[TestCategory("Services")]
 public class UpdateFacultyTest
 {
     private static SQL _sql = new SQL();

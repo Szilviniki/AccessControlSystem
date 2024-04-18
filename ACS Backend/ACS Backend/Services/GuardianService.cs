@@ -22,8 +22,6 @@ namespace ACS_Backend.Services
 
         public async Task AddGuardian(Guardian guardian)
         {
-            if (_sql.Guardians.Any(x => x.Phone == guardian.Phone)) throw new ItemAlreadyExistsException();
-
             var valResult = _objectValidatorService.Validate(guardian);
 
             if (valResult.QueryIsSuccess == false) throw new ArgumentException(string.Join(',', valResult.Data));

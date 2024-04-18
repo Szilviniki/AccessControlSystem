@@ -2,9 +2,9 @@
 
 namespace BackendTest.StudentServiceTest;
 
-//purpose: Test the GetAllStudents method in the StudentService
 
 [TestClass]
+[TestCategory("Services")]
 public class GetAllStudentsTest
 {
     private static SQL _sql = new SQL();

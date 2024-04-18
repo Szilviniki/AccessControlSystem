@@ -3,6 +3,7 @@
 namespace BackendTest.GuardianService;
 
 [TestClass]
+[TestCategory("Services")]
 public class AddGuardianTest
 {
     private static Guardian _guardian = new MockGuardian().Parent;

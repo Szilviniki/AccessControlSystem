@@ -3,6 +3,7 @@
 namespace BackendTest.CheckIn;
 
 [TestClass]
+[TestCategory("Services")]
 public class CheckInServiceTest
 {
     private static Student _student = new MockStudent().Student;

@@ -4,6 +4,7 @@ using ACS_Backend.Utilities;
 namespace BackendTest.StudentServiceTest;
 
 [TestClass]
+[TestCategory("Services")]
 public class UpdateStudentTest
 {
     private static SQL _sql = new();

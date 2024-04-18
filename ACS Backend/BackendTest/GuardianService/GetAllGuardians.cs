@@ -1,6 +1,7 @@
 ﻿namespace BackendTest.GuardianService;
 
 [TestClass]
+[TestCategory("Services")]
 public class GetAllGuardians
 {
     private static SQL _sql = new SQL();

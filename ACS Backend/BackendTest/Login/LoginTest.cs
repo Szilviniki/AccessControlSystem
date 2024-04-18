@@ -5,6 +5,7 @@ using DB_Module.MockData;
 namespace BackendTest.Login;
 
 [TestClass]
+[TestCategory("Services")]
 public class LoginTest
 {
     private static SQL _sql = new SQL();
