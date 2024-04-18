@@ -12,7 +12,7 @@ public class CheckInServiceTest
     private CheckInService _checkInService = new(_sql);
 
     [TestInitialize]
-    public void Setup()
+    public async Task Setup()
     {
 
 
@@ -21,19 +21,19 @@ public class CheckInServiceTest
             _sql.Personnel.Add(_worker);
         }
         
-        if (_sql.Guardians.Any(x => x.Email == _guardian.Email))
+        if (!_sql.Guardians.Any(x => x.Id == _guardian.Id))
         {
-            _sql.Guardians.Add(_guardian);
-            _sql.SaveChanges();
+            _sql.Guardians.AddAsync(_guardian);
+            await _sql.SaveChangesAsync();
         }
 
         if (!_sql.Students.Any(x => x.Email == _student.Email))
         {
-            _student.ParentId = _sql.Guardians.FirstOrDefault(x => x.Email == _guardian.Email).Id;
+            _student.ParentId = _guardian.Id;
             _sql.Students.Add(_student);
         }
 
-        _sql.SaveChanges();
+        await _sql.SaveChangesAsync();
     }
 
     [TestMethod]

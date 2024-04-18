@@ -22,21 +22,10 @@ namespace ACS_Backend.Services
         {
             if (_sql.Personnel.Any(a => a.Email == email))
             {
-                string storedPassword = _sql.Personnel.First(x => x.Email == email).Password;
-                if (BCrypt.Net.BCrypt.EnhancedVerify(password, storedPassword))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
+                var storedPassword = _sql.Personnel.First(x => x.Email == email).Password;
+                if (BCrypt.Net.BCrypt.EnhancedVerify(password, storedPassword)) return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 

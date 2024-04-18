@@ -12,12 +12,12 @@ public class HomepageService : IHomepageService
     {
         _sql = sql;
     }
-
-    //TODO: Update HomepageService
+    
 
     public HomepageModel GetHomepageData()
     {
         List<string> notes = new List<string>();
+        int today = Convert.ToInt32(DateTime.Now.DayOfWeek);
 
         var ActiveNotes = _sql.Notes.Include(x => x.Student)
             .Where(x => DateTime.Today.DayOfWeek.CompareTo(x.DayOfWeek) == 0).ToList();
