@@ -1,8 +1,9 @@
 'use client'
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import {MdEdit} from "react-icons/md";
 import {Container, Form} from "react-bootstrap";
 import {useCookies} from "next-client-cookies";
 import {INotesProps} from "@/interfaces/Notes";

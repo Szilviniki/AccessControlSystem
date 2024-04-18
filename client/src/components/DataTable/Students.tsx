@@ -9,6 +9,7 @@ import DeleteStudent from "@/components/DeleteUser/DeleteStudent";
 import EditStudent from "@/components/EditUser/EditStudent";
 import AddNotes from "@/components/NewNote/NewNote";
 import {useCookies} from "next-client-cookies";
+import NewNote from '../NewNote/NewNote';
 
 function Students() {
     const [students, setStudents] = useState([])
@@ -64,21 +65,20 @@ function Students() {
                 <Col className="expanded">
 
                     <h6>Szülő adatai</h6>
-                    Név: Szülő Szilvia
+                    Név:
                     <br/>
-                    Email cím: {data.id}
+                    Email cím:
                     <br/>
-                    Telefonszám: +36301234567
+                    Telefonszám:
                 </Col>
                 <Col className="expanded">
                     <ButtonGroup aria-label="Basic example">
                         <AddNotes id={data.id}/>
                         <EditStudent id={data.id}/>
                         <DeleteStudent id={data.id}/>
+                        <NewNote id={data.id}/>
                     </ButtonGroup>
-
-                </Col>
-
+                    </Col>
             </Row>
         </Container>
 
@@ -109,6 +109,7 @@ function Students() {
 
     return (
         <>
+            {token}
             <DataTable
                 columns={columns}
                 data={transformedData}

@@ -5,7 +5,7 @@ import {IResponse} from "@/interfaces/Response";
 export async function SaveNotes(formData:FormData): Promise<IResponse>{
     try {
         const body = JSON.stringify({
-            name: formData.get("name"),
+            id: formData.get("id"),
             dayOfWeek: formData.get("dayOfWeek"),
             studentLockRules: formData.get("studentLockRules"),
         });
@@ -13,8 +13,11 @@ export async function SaveNotes(formData:FormData): Promise<IResponse>{
         const res = await fetch('http://localhost:4001/api/v1/Students/AddWithParent',{
             method: "PUT",
             headers:{
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + (formData.get("token") as string).replaceAll("\"", "").trim(),
+                "Access-Control-Allow-Origin": "*",
             },
+            mode: "cors",
             body: body
         })
 
