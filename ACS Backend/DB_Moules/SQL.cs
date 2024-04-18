@@ -22,13 +22,13 @@ namespace DB_Module
         }
 
         public DbSet<Student> Students { get; set; }
-        public DbSet<Guardian> Parents { get; set; }
+        public DbSet<Guardian> Guardians { get; set; }
 
         public DbSet<Personnel> Personnel { get; set; }
         
         public DbSet<GateLog> GateLogs { get; set; }
         
-        
+        public DbSet<Note> Notes { get; set; }
         
     }
 }

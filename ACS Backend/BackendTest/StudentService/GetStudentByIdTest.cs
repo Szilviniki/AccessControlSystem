@@ -20,12 +20,12 @@ public class GetStudentByIdTest
             _sql.Students.Remove(_sql.Students.Single(x => x.Email == _student.Email));
             
         }
-        if(_sql.Parents.Any(x => x.Id == _guardian.Id))
+        if(_sql.Guardians.Any(x => x.Id == _guardian.Id))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Id == _guardian.Id));
             
         }
-        _sql.Parents.Add(_guardian);
+        _sql.Guardians.Add(_guardian);
         _sql.Students.Add(_student);
         _sql.SaveChanges();
     }
@@ -58,9 +58,9 @@ public class GetStudentByIdTest
             await _sql.SaveChangesAsync();
         }
 
-        if (_sql.Parents.Any(x => x.Id == _guardian.Id))
+        if (_sql.Guardians.Any(x => x.Id == _guardian.Id))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Id == _guardian.Id));
             await _sql.SaveChangesAsync();
         }
     }

@@ -12,18 +12,18 @@ public class AddGuardianTest
     [TestInitialize]
     public void GuardianInit()
     {
-        if (_sql.Parents.Any(x => x.Phone == _guardian.Phone))
+        if (_sql.Guardians.Any(x => x.Phone == _guardian.Phone))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Phone == _guardian.Phone));
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Phone == _guardian.Phone));
         }
     }
     
     [TestCleanup]
     public async Task GuardianCleanup()
     {
-        if (_sql.Parents.Any(x => x.Phone == _guardian.Phone))
+        if (_sql.Guardians.Any(x => x.Phone == _guardian.Phone))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Phone == _guardian.Phone));
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Phone == _guardian.Phone));
             await _sql.SaveChangesAsync();
         }
     }

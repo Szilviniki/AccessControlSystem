@@ -85,4 +85,18 @@ public class StudentsController : ControllerBase
         await _studentService.AddStudentWithParent(student, parent);
         return StatusCode(201);
     }
+    
+    [HttpPost("AddNote")]
+    public async Task<IActionResult> AddNoteToStudent([FromBody] Note note)
+    {
+        await _studentService.AddNoteToStudent(note);
+        return StatusCode(201);
+    }
+    
+    [HttpDelete("RemoveNote/{noteId}")]
+    public async Task<IActionResult> RemoveNoteFromStudent(int noteId)
+    {
+        await _studentService.RemoveNoteFromStudent(noteId);
+        return Ok();
+    }
 }

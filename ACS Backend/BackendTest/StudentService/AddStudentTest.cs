@@ -22,10 +22,10 @@ public class AddStudentTest
             _sql.SaveChanges();
         }
 
-        if (_sql.Parents.Any(x=>x.Id == _guardian.Id))
+        if (_sql.Guardians.Any(x=>x.Id == _guardian.Id))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
-            _sql.Parents.Add(_guardian);
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Id == _guardian.Id));
+            _sql.Guardians.Add(_guardian);
             _sql.SaveChanges();
         }
     }
@@ -49,7 +49,7 @@ public class AddStudentTest
     {
         try
         {
-            _sql.Parents.Add(_guardian);
+            _sql.Guardians.Add(_guardian);
             await _sql.SaveChangesAsync();
             await _studentService.AddStudent(_student);
         }
@@ -128,9 +128,9 @@ public class AddStudentTest
             _sql.Students.Remove(_sql.Students.Single(x => x.CardId == _cardId));
             await _sql.SaveChangesAsync();
         }
-        if(_sql.Parents.Any(x=>x.Id== _guardian.Id))
+        if(_sql.Guardians.Any(x=>x.Id== _guardian.Id))
         {
-            _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == _guardian.Id));
+            _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Id == _guardian.Id));
             await _sql.SaveChangesAsync();
         }
     }

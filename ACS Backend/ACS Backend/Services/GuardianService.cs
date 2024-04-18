@@ -22,7 +22,7 @@ namespace ACS_Backend.Services
 
         public async Task AddGuardian(Guardian guardian)
         {
-            if (_sql.Parents.Any(x => x.Phone == guardian.Phone)) throw new ItemAlreadyExistsException();
+            if (_sql.Guardians.Any(x => x.Phone == guardian.Phone)) throw new ItemAlreadyExistsException();
 
             var valResult = _objectValidatorService.Validate(guardian);
 
@@ -32,16 +32,16 @@ namespace ACS_Backend.Services
 
             if (uResult.QueryIsSuccess == false) throw new ArgumentException(string.Join(',', uResult.Data));
 
-            _sql.Parents.Add(guardian);
+            _sql.Guardians.Add(guardian);
             await _sql.SaveChangesAsync();
         }
 
         public Task DeleteGuardian(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentException("Id can't be null");
-            if (_sql.Parents.Any(x => x.Id == id))
+            if (_sql.Guardians.Any(x => x.Id == id))
             {
-                _sql.Parents.Remove(_sql.Parents.Single(x => x.Id == id));
+                _sql.Guardians.Remove(_sql.Guardians.Single(x => x.Id == id));
                 return _sql.SaveChangesAsync();
             }
             else throw new ItemNotFoundException();
@@ -49,26 +49,26 @@ namespace ACS_Backend.Services
 
         public Array GetAllGuardians()
         {
-            return _sql.Parents.ToArray();
+            return _sql.Guardians.ToArray();
         }
 
         public Guardian GetGuardian(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentException("Id cannot be empty.");
-            if (!_sql.Parents.Any(x => x.Id == id)) throw new ItemNotFoundException();
-            return _sql.Parents.Single(x => x.Id == id);
+            if (!_sql.Guardians.Any(x => x.Id == id)) throw new ItemNotFoundException();
+            return _sql.Guardians.Single(x => x.Id == id);
         }
 
         public async Task UpdateGuardian(Guardian guardian, Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentException("No Id provided");
-            if (!_sql.Parents.Any(x => x.Id == id)) throw new ItemNotFoundException();
+            if (!_sql.Guardians.Any(x => x.Id == id)) throw new ItemNotFoundException();
 
             if (string.IsNullOrWhiteSpace(guardian.Phone) && string.IsNullOrWhiteSpace(guardian.Email) &&
                 string.IsNullOrWhiteSpace(guardian.Name))
                 throw new ArgumentException("No data provided");
 
-            var old = _sql.Parents.FirstOrDefault(x => x.Id == id);
+            var old = _sql.Guardians.FirstOrDefault(x => x.Id == id);
 
             if (!string.IsNullOrWhiteSpace(guardian.Email))
             {
@@ -89,7 +89,7 @@ namespace ACS_Backend.Services
             if (vRes.QueryIsSuccess == false)
                 throw new ArgumentException(string.Join(',', vRes.Data));
 
-            if (old != null) _sql.Parents.Update(old);
+            if (old != null) _sql.Guardians.Update(old);
             await _sql.SaveChangesAsync();
         }
     }
