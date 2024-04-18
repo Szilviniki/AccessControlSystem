@@ -1,4 +1,6 @@
-﻿namespace DB_Module.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace DB_Module.Models;
 
 [Table("Notes")]
 public class Note
@@ -12,5 +14,6 @@ public class Note
     [ForeignKey("Id")]
     [Required] public Guid StudentId { get; set; } = Guid.Empty;
     
-    public Student Student { get; set; } = null!;
+    [JsonIgnore]
+    public Student? Student { get; set; } = null!;
 }
