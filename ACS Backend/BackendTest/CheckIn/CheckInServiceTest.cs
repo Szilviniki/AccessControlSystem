@@ -21,15 +21,15 @@ public class CheckInServiceTest
             _sql.Personnel.Add(_worker);
         }
         
-        if (_sql.Parents.Any(x => x.Email == _guardian.Email))
+        if (_sql.Guardians.Any(x => x.Email == _guardian.Email))
         {
-            _sql.Parents.Add(_guardian);
+            _sql.Guardians.Add(_guardian);
             _sql.SaveChanges();
         }
 
         if (!_sql.Students.Any(x => x.Email == _student.Email))
         {
-            _student.ParentId = _sql.Parents.FirstOrDefault(x => x.Email == _guardian.Email).Id;
+            _student.ParentId = _sql.Guardians.FirstOrDefault(x => x.Email == _guardian.Email).Id;
             _sql.Students.Add(_student);
         }
 
@@ -99,10 +99,10 @@ public class CheckInServiceTest
             await _sql.SaveChangesAsync();
         }
 
-        var guardian = _sql.Parents.FirstOrDefault(x => x.Email == _guardian.Email);
+        var guardian = _sql.Guardians.FirstOrDefault(x => x.Email == _guardian.Email);
         if (guardian != null)
         {
-            _sql.Parents.Remove(guardian);
+            _sql.Guardians.Remove(guardian);
             await _sql.SaveChangesAsync();
         }
 
