@@ -51,8 +51,10 @@ public class PersonnelController : ControllerBase
     [HttpPost("Update/{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePersonnelModel faculty)
     {
-        
-        
+        Console.BackgroundColor = ConsoleColor.DarkBlue;
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"load: {faculty.Name} {faculty.Email} {faculty.Phone} {faculty.Role} {faculty.Password}");
+        Console.ResetColor();
         
         await _facultyService.UpdateFaculty(faculty, id);
         return Ok();
