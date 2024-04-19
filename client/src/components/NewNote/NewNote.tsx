@@ -36,7 +36,7 @@ function AddNotesForm(props: any) {
                                 type="text"
                                 name="name"
                                 placeholder="Feljegyzés tárgya"
-                                className="inputFc m-4"
+                                className="inputFc mb-4"
                             />
                         </Form.Group>
                         <Form.Group>

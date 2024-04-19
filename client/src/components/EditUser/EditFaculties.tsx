@@ -56,7 +56,7 @@ function EditFacultiesForm(props: any) {
                                         type="text"
                                         name="name"
                                         placeholder="Dolgozó neve"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -65,7 +65,7 @@ function EditFacultiesForm(props: any) {
                                         type="email"
                                         name="email"
                                         placeholder="Dolgozó email cím"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -74,11 +74,11 @@ function EditFacultiesForm(props: any) {
                                         type="text"
                                         name="phone"
                                         placeholder="Dolgozó telefonszám"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Select name="day" defaultValue={faculty.role}>
+                                    <Form.Select name="day" defaultValue={faculty.role} className="select">
                                         <option value="1">Admin</option>
                                         <option value="2">Kollégium vezető</option>
                                         <option value="3">Nevelő</option>

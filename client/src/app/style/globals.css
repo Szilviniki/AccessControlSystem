@@ -202,3 +202,12 @@ a {
     color: #858585;
     border: 0;
 }
+.select{
+    border-radius: 50px;
+    border-color: #FAFAFA;
+    margin: 5px;
+    padding: 5px;
+    background: #FAFAFA;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.10) inset;
+    font-size: 20px;
+}

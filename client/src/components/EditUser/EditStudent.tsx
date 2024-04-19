@@ -60,7 +60,7 @@ function EditStudentForm(props: any) {
                                         type="text"
                                         name="name"
                                         placeholder="Diák neve"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -69,7 +69,7 @@ function EditStudentForm(props: any) {
                                         type="email"
                                         name="email"
                                         placeholder="Diák email cím"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -78,7 +78,7 @@ function EditStudentForm(props: any) {
                                         type="text"
                                         name="phone"
                                         placeholder="Diák telefonszám"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                             </Col>
@@ -90,7 +90,7 @@ function EditStudentForm(props: any) {
                                         type="text"
                                         name="parentname"
                                         placeholder="Szülő neve"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -99,7 +99,7 @@ function EditStudentForm(props: any) {
                                         type="email"
                                         name="parentemail"
                                         placeholder="Szülő email cím"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -108,7 +108,7 @@ function EditStudentForm(props: any) {
                                         type="text"
                                         name="parentphone"
                                         placeholder="Szülő telefonszám"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                             </Col>
