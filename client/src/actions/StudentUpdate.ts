@@ -23,11 +23,11 @@ export async function updateStudent(formData:FormData): Promise<IResponse>{
 
         const data = await res.json();
 
-        console.log(data)
+
         return data
 
     } catch (e){
-        console.log(e);
+
         return {
             queryIsSuccess: false,
             message: "Sikeres módosítás!"

@@ -33,14 +33,14 @@ function AddNewWorkersForm(props:any) {
                                     type="text"
                                     name="name"
                                     placeholder="Dolgozó neve"
-                                    className="inputFc m-4"
+                                    className="inputFc mb-4"
                                 />
                     <Form.Group>
                         <Form.Control
                             type="text"
                             name="email"
                             placeholder="Dolgozó email címe"
-                            className="inputFc m-4"
+                            className="inputFc mb-4"
                         />
                     </Form.Group>
                     <Form.Group>
@@ -48,13 +48,13 @@ function AddNewWorkersForm(props:any) {
                             type="text"
                             name="phone"
                             placeholder="Dolgozó telefonszáma (+36301234567)"
-                            className="inputFc m-4"
+                            className="inputFc mb-4"
                             maxLength={12}
                             minLength={12}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Select name="role" defaultValue={4} >
+                        <Form.Select name="role" defaultValue={4} className="select">
                             <option value="1">Admin</option>
                             <option value="2">Kollégium vezető</option>
                             <option value="3">Nevelő</option>

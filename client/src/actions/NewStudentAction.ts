@@ -4,7 +4,6 @@ import {IResponse} from "@/interfaces/Response";
 
 export async function save(formData:FormData): Promise<IResponse>{
     try {
-        console.log(new Date(formData.get("birthday") as string))
         const body = JSON.stringify({
             studentName: formData.get("name"),
             studentEmail: formData.get("email"),
@@ -14,7 +13,6 @@ export async function save(formData:FormData): Promise<IResponse>{
             parentEmail: formData.get("parentemail"),
             parentPhone: formData.get("parentphone"),
         });
-
         const res = await fetch('http://localhost:4001/api/v1/Students/AddWithParent',{
             method: "PUT",
             headers:{
@@ -28,11 +26,11 @@ export async function save(formData:FormData): Promise<IResponse>{
 
         const data = await res.json();
 
-console.log(data)
+
         return data
 
     } catch (e){
-        console.log(e);
+
         return {
             queryIsSuccess: false,
             message: "Sikertelen létrehozás!"

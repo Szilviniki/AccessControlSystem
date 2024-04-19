@@ -23,12 +23,10 @@ export async function saveFaculty(formData:FormData): Promise<IResponse>{
         })
 
         const data = await res.json();
-
-        console.log(data)
         return data
 
     } catch (e){
-        console.log(e);
+
         return {
             queryIsSuccess: false,
             message: "Sikertelen létrehozás!"

@@ -17,11 +17,10 @@ export async function checkStudent(formData:FormData): Promise<ICheckResponse>{
         })
 
         const data = await res.json();
-        console.log(data)
         return data
 
     } catch (e){
-        console.log(e);
+
         return {
             queryIsSuccess: false,
             messages: "Sikertelen!"

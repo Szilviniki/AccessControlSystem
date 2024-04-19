@@ -14,7 +14,7 @@ export default function CheckForm() {
 
         if (resWorkers.queryIsSuccess===true || resStudent.queryIsSuccess===true) {
             Notify.success('Sikeres Belépés/Kilépés');
-            console.log(resWorkers)
+
             inputRef.current.value = ""
         } else {
             Notify.failure('Sikertelen Belépés/Kilépés! ', {

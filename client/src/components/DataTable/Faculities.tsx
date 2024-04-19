@@ -25,7 +25,7 @@ function Faculities() {
         }).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
-                console.log(datas)
+
             })
         })
 

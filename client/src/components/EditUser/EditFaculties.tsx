@@ -24,6 +24,7 @@ function EditFacultiesForm(props: any) {
         }).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
+                console.log(faculty)
             })
         })
 
@@ -49,7 +50,6 @@ function EditFacultiesForm(props: any) {
                         <input type="hidden" name={"token"} value={token}/>
                         <Row className="justify-content-center">
                             <Col className="justify-content-center">
-                                <h2 className="m-4">Diák adatai</h2>
                                 <Form.Group>
                                     <Form.Control
                                         defaultValue={faculty.name}

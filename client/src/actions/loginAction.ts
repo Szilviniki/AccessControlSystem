@@ -21,7 +21,7 @@ export async function login(formData:FormData): Promise<ILoginResponse>{
         return data
 
     } catch (e){
-        console.log(e);
+
        return {
             queryIsSuccess: false,
             message: "Sikertelen bejelentkezés!"

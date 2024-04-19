@@ -32,22 +32,6 @@ export default function settings() {
             const res = await updateUser(formData);
             if (res.queryIsSuccess==false) {
                 let message = res.message;
-                if (Array.isArray(message)) {
-                       message = message[0]
-                }
-
-                Notiflix.Report.warning(
-                    'Sikertelen módósítás!',
-                    'Figyeljen oda, hogy minden mező helyesen legyen kitöltve!',
-                    'Rendben',
-                );
-            } else {
-                Notiflix.Report.success(
-                    'Sikeres módosítás!',
-                    'Sikeresen módósította az adatait!',
-                    'Rendben',
-                );
-
             }
         }
 
@@ -65,8 +49,8 @@ export default function settings() {
                                 </Form.Label>
                                 <Form.Control
                                     defaultValue={user.name}
-                                    type="name"
-                                    name="text"
+                                    type="text"
+                                    name="name"
                                     placeholder="Név"
                                     className="inputFc"
 
@@ -78,8 +62,8 @@ export default function settings() {
                                 </Form.Label>
                                 <Form.Control
                                     defaultValue={user.phone}
-                                    type="phone"
-                                    name="text"
+                                    type="text"
+                                    name="phone"
                                     placeholder="Telefonszám"
                                     className="inputFc"
                                 />
@@ -104,17 +88,6 @@ export default function settings() {
                                     type="password"
                                     name="newpassword"
                                     placeholder="Új jelszó"
-                                    className="inputFc"
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>
-                                    Új jelszó mégegyszer
-                                </Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    name="pass"
-                                    placeholder="Új jelszó mégegyszer"
                                     className="inputFc"
                                 />
                             </Form.Group>

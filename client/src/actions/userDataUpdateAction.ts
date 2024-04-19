@@ -8,7 +8,7 @@ export async function updateUser(formData:FormData): Promise<IResponse>{
             name: formData.get("name"),
             email: formData.get("email"),
             phone: formData.get("phone"),
-            password: formData.get("password"),
+            password: formData.get("newpassword"),
         });
 
         const res = await fetch('http://localhost:4001/api/v1/Faculty/Update/'+(formData.get("id")as string),{
@@ -24,14 +24,14 @@ export async function updateUser(formData:FormData): Promise<IResponse>{
 
         const data = await res.json();
 
-        console.log(data)
+
         return data
 
     } catch (e){
-        console.log(e);
+
         return {
             queryIsSuccess: false,
-            message: "Sikeres módosítás!"
+            message: "Sikertelen módosítás!"
 
         }
     }

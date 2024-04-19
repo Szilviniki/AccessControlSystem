@@ -20,14 +20,12 @@ export async function SaveNotes(formData:FormData): Promise<IResponse>{
             mode: "cors",
             body: body
         })
-        console.log(body)
+
         const data = await res.json();
-
-
         return data
 
     } catch (e){
-        console.log(e);
+
         return {
             queryIsSuccess: false,
             message: "Sikertelen létrehozás!"

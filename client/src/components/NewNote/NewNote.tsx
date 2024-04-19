@@ -40,7 +40,7 @@ function AddNotesForm(props: any) {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Select name="day" aria-label="Default select example">
+                            <Form.Select name="day" aria-label="Default select example" className="select">
                                 <option>Ezen a napon</option>
                                 <option value={1}>Hétfő</option>
                                 <option value={2}>Kedd</option>

@@ -20,15 +20,17 @@ export async function updateFaculty(formData:FormData): Promise<IResponse>{
             },
             mode: "cors",
             body: body
+
         })
 
         const data = await res.json();
+        console.log(body);
 
-        console.log(data)
+
         return data
 
     } catch (e){
-        console.log("err",e);
+
         return {
             queryIsSuccess: false,
             message: "Sikertelen módosítás!"

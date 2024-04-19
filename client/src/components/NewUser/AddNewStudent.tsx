@@ -38,7 +38,7 @@ function AddNewStudentForm(props: any) {
                                         type="text"
                                         name="name"
                                         placeholder="Diák neve"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -46,7 +46,7 @@ function AddNewStudentForm(props: any) {
                                         type="email"
                                         name="email"
                                         placeholder="Diák email cím"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -54,7 +54,7 @@ function AddNewStudentForm(props: any) {
                                         type="text"
                                         name="phone"
                                         placeholder="Diák telefonszáma (+36301234567)"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                         maxLength={12}
                                         minLength={12}
                                     />
@@ -64,7 +64,7 @@ function AddNewStudentForm(props: any) {
                                         type="date"
                                         name="birthday"
                                         placeholder="Diák születési dátum"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                             </Col>
@@ -75,7 +75,7 @@ function AddNewStudentForm(props: any) {
                                         type="text"
                                         name="parentname"
                                         placeholder="Szülő neve"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -83,7 +83,7 @@ function AddNewStudentForm(props: any) {
                                         type="email"
                                         name="parentemail"
                                         placeholder="Szülő email cím"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                     />
                                 </Form.Group>
                                 <Form.Group>
@@ -91,7 +91,7 @@ function AddNewStudentForm(props: any) {
                                         type="text"
                                         name="parentphone"
                                         placeholder="Szülő telefonszám (+36301234567)"
-                                        className="inputFc m-4"
+                                        className="inputFc mb-4"
                                         maxLength={12}
                                         minLength={12}
                                     />
