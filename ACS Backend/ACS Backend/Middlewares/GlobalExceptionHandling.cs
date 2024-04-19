@@ -76,6 +76,10 @@ public class GlobalExceptionHandling : IMiddleware
         }
         catch (Exception e)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Error: " + e.Message);
+            Console.ResetColor();
+            
             res.Message = e.Message;
             context.Response.StatusCode = 500;
             await context.Response.WriteAsJsonAsync(res);
