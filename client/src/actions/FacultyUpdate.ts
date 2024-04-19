@@ -9,6 +9,7 @@ export async function updateFaculty(formData:FormData): Promise<IResponse>{
             email: formData.get("email"),
             phone: formData.get("phone"),
             role: formData.get("role"),
+            password: null,
         });
 
         const res = await fetch('http://localhost:4001/api/v1/Faculty/Update/'+(formData.get("id") as string),{
@@ -24,7 +25,7 @@ export async function updateFaculty(formData:FormData): Promise<IResponse>{
         })
 
         const data = await res.json();
-        console.log(body);
+
 
 
         return data

@@ -24,7 +24,6 @@ function EditFacultiesForm(props: any) {
         }).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
-                console.log(faculty)
             })
         })
 
@@ -48,6 +47,7 @@ function EditFacultiesForm(props: any) {
                 <Container className="justify-content-center">
                     <form action={updateFaculty}>
                         <input type="hidden" name={"token"} value={token}/>
+                        <input type="hidden" name={"id"} value={props.id}/>
                         <Row className="justify-content-center">
                             <Col className="justify-content-center">
                                 <Form.Group>
@@ -79,10 +79,10 @@ function EditFacultiesForm(props: any) {
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Select name="day" defaultValue={faculty.role} className="select">
-                                        <option value="1">Admin</option>
-                                        <option value="2">Kollégium vezető</option>
-                                        <option value="3">Nevelő</option>
-                                        <option value="4">Technikai dolgozó</option>
+                                        <option value={1}>Admin</option>
+                                        <option value={2}>Kollégium vezető</option>
+                                        <option value={3}>Nevelő</option>
+                                        <option value={4}>Technikai dolgozó</option>
                                     </Form.Select>
                                 </Form.Group>
                             </Col>
