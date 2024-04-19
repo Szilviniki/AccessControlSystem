@@ -2,16 +2,17 @@
 
 import {IResponse} from "@/interfaces/Response";
 
-export async function SaveNotes(formData:FormData): Promise<IResponse>{
+export async function saveFaculty(formData:FormData): Promise<IResponse>{
     try {
         const body = JSON.stringify({
-            studentId: formData.get("id"),
-            dayOfWeek:formData.get("day"),
             name: formData.get("name"),
+            email: formData.get("email"),
+            phone: formData.get("phone"),
+            role: formData.get("role"),
         });
 
-        const res = await fetch('http://localhost:4001/api/v1/Students/AddNote',{
-            method: "POST",
+        const res = await fetch('http://localhost:4001/api/v1/Faculty/Add',{
+            method: "PUT",
             headers:{
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + (formData.get("token") as string).replaceAll("\"", "").trim(),
@@ -20,10 +21,10 @@ export async function SaveNotes(formData:FormData): Promise<IResponse>{
             mode: "cors",
             body: body
         })
-        console.log(body)
+
         const data = await res.json();
 
-
+        console.log(data)
         return data
 
     } catch (e){

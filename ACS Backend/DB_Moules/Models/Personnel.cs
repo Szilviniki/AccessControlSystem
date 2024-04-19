@@ -14,7 +14,7 @@
         [MaxLength(255)] public string Password { get; set; } = "";
 
         [PhoneNumber] [MaxLength(13)] public string Phone { get; set; } = "";
-        [Column("present")] public bool IsPresent { get; set; }
+         public bool IsPresent { get; set; }
         
         public int Role { get; set; }
 

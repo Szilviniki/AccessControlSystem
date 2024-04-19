@@ -1,6 +1,6 @@
 'use client'
 
-import {use, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Card, Col, Container, Row} from "react-bootstrap";
 import {PiListFill} from "react-icons/pi";
 import {FaStar, FaUserEdit, FaUserTimes} from "react-icons/fa";
@@ -31,6 +31,7 @@ useEffect(() => {
          setData(r.data)
      })
  }, [])
+
  return data && (
          <Container>
              <Row>
@@ -52,7 +53,7 @@ useEffect(() => {
                      <Card className="CardHP justify-content-center align-items-center d-flex" id="problematic">
                          <FaUserEdit  size="3rem" className=""/>
                          <h3>Feljegyzések száma</h3>
-                         <h2>{data.naughtyStudents}</h2>
+                         <h2>{data.noteCount}</h2>
                      </Card>
                  </Col>
              </Row>
@@ -62,7 +63,7 @@ useEffect(() => {
                      <Col>
                          <Card className="CardHP">
                              <Row>
-                                 <Col md={2}>
+                                 <Col md={2} className="justify-content-center ">
                                      <PiListFill size="2rem" className="m-1"/>
                                  </Col>
                                  <Col md={10}>
@@ -85,15 +86,15 @@ useEffect(() => {
                      <Col>
                          <Card className="CardHP">
                              <Row>
-                                 <Col md={2}>
+                                 <Col md={2} className="justify-content-center ">
                                      <FaStar size="2rem" className="m-1"/>
                                  </Col>
-                                 <Col md={10}>
-                                     <h2>Feljegyzések</h2>
+                                 <Col md={8} >
+                                     <h2>Aktuális feljegyzések</h2>
                                  </Col>
-                                 <div>
-                                     {data.notices}
-                                 </div>
+                                 {data.notes.map((note, i) => (
+                                     <h4 key={i}>{note}</h4>
+                                 ))}
                              </Row>
                          </Card>
                      </Col>

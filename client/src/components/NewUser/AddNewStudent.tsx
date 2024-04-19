@@ -19,14 +19,14 @@ function AddNewStudentForm(props: any) {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             scrollable
-            className="w-100"
+
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
                     Új diák hozzáadása
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="justify-content-center text-center m-0">
                 <Container className="justify-content-center">
                     <form action={save}>
                         <input type="hidden" name={"token"} value={token} />
@@ -96,6 +96,7 @@ function AddNewStudentForm(props: any) {
                                         minLength={12}
                                     />
                                 </Form.Group>
+
                             </Col>
                         </Row>
                         <Row className="justify-content-center">

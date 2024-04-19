@@ -1,4 +1,5 @@
 "use client"
+
 import {Button, Col, Row, Form} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {useCookies} from "next-client-cookies";
@@ -8,12 +9,12 @@ import {updateUser} from "@/actions/userDataUpdateAction";
 
 export default function settings() {
     const cookies = useCookies();
-    const id = (cookies.get("user-id") as string);
+    const id = ((cookies.get("user-id")as string).replaceAll('"', ''));
     const token = (cookies.get("user-token") as string);
     const [user, setData] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/v1/Faculty/get/`+id,{
+        fetch(`http://localhost:4001/api/v1/Faculty/Get/${id}`,{
             headers: {
             "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
                 "Access-Control-Allow-Origin": "*",
@@ -22,11 +23,8 @@ export default function settings() {
         ).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
-                console.log(user)
             })
         })
-
-
     }, [])
 
     async function update(formData: FormData ) {
@@ -35,7 +33,7 @@ export default function settings() {
             if (res.queryIsSuccess==false) {
                 let message = res.message;
                 if (Array.isArray(message)) {
-                    message = message[0]
+                       message = message[0]
                 }
 
                 Notiflix.Report.warning(
@@ -66,7 +64,7 @@ export default function settings() {
                                     Név
                                 </Form.Label>
                                 <Form.Control
-                                    defaultValue={user}
+                                    defaultValue={user.name}
                                     type="name"
                                     name="text"
                                     placeholder="Név"
@@ -79,7 +77,7 @@ export default function settings() {
                                     Telefonszám
                                 </Form.Label>
                                 <Form.Control
-                                    defaultValue={user}
+                                    defaultValue={user.phone}
                                     type="phone"
                                     name="text"
                                     placeholder="Telefonszám"
@@ -91,7 +89,7 @@ export default function settings() {
                                     Email cím
                                 </Form.Label>
                                 <Form.Control
-                                    defaultValue={user}
+                                    defaultValue={user.email}
                                     type="email"
                                     name="email"
                                     placeholder="Email cím"
@@ -103,7 +101,7 @@ export default function settings() {
                                     Új jelszó
                                 </Form.Label>
                                 <Form.Control
-                                    type="email"
+                                    type="password"
                                     name="newpassword"
                                     placeholder="Új jelszó"
                                     className="inputFc"

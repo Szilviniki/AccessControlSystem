@@ -1,10 +1,8 @@
 'use client'
 
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import {MdEdit} from "react-icons/md";
-import {Container, Form} from "react-bootstrap";
+import {Container, Form, Modal} from "react-bootstrap";
 import {useCookies} from "next-client-cookies";
 import {INotesProps} from "@/interfaces/Notes";
 import {SaveNotes} from "@/actions/newNote";
@@ -17,7 +15,7 @@ function AddNotesForm(props: any) {
     return (
         <Modal
             {...props}
-            size="lg"
+
             aria-labelledby="contained-modal-title-vcenter"
             centered
             scrollable
@@ -44,11 +42,11 @@ function AddNotesForm(props: any) {
                         <Form.Group>
                             <Form.Select name="day" aria-label="Default select example">
                                 <option>Ezen a napon</option>
-                                <option value="1">Hétfő</option>
-                                <option value="2">Kedd</option>
-                                <option value="3">Szerda</option>
-                                <option value="4">Csütörtök</option>
-                                <option value="5">Péntek</option>
+                                <option value={1}>Hétfő</option>
+                                <option value={2}>Kedd</option>
+                                <option value={3}>Szerda</option>
+                                <option value={4}>Csütörtök</option>
+                                <option value={5}>Péntek</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group>

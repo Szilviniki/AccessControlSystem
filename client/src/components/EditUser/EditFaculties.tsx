@@ -5,15 +5,17 @@ import Modal from "react-bootstrap/Modal";
 import {MdEdit} from "react-icons/md";
 import {Col, Container, Form, Row} from "react-bootstrap";
 import { useCookies} from "next-client-cookies";
+import {StudentProps} from "@/interfaces/Student";
+import {updateFaculty} from "@/actions/FacultyUpdate";
 
 
-function EditFacultiesForm(props: any ,id:string) {
+function EditFacultiesForm(props: any) {
     const [faculty, setData] = useState([]);
     const cookies = useCookies();
-    const token = cookies.get("user-token")as string;
+    const token = (cookies.get("user-token")as string);
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/v1/Faculty/Get/`+{id}, {
+        fetch(`http://localhost:4001/api/v1/Faculty/Get/${props.id}`, {
             headers: {
                 "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
                 "Access-Control-Allow-Origin": "*",
@@ -38,12 +40,13 @@ function EditFacultiesForm(props: any ,id:string) {
         >
             <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Új diák hozzáadása
+                    Dolgozó szerkesztése
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container className="justify-content-center">
-                    <form>
+                    <form action={updateFaculty}>
+                        <input type="hidden" name={"token"} value={token}/>
                         <Row className="justify-content-center">
                             <Col className="justify-content-center">
                                 <h2 className="m-4">Diák adatai</h2>
@@ -75,7 +78,7 @@ function EditFacultiesForm(props: any ,id:string) {
                                     />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Select name="day" defaultValue={faculty.role} >
+                                    <Form.Select name="day" defaultValue={faculty.role}>
                                         <option value="1">Admin</option>
                                         <option value="2">Kollégium vezető</option>
                                         <option value="3">Nevelő</option>
@@ -98,7 +101,7 @@ function EditFacultiesForm(props: any ,id:string) {
         </Modal>
     );
 }
-export default function EditFaculties(props: any, id:string) {
+export default function EditFaculties({ id }: StudentProps){
     const [modalShow, setModalShow] = React.useState(false);
 
     return (

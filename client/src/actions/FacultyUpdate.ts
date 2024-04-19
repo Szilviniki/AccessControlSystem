@@ -2,15 +2,16 @@
 
 import {IResponse} from "@/interfaces/Response";
 
-export async function SaveNotes(formData:FormData): Promise<IResponse>{
+export async function updateFaculty(formData:FormData): Promise<IResponse>{
     try {
         const body = JSON.stringify({
-            studentId: formData.get("id"),
-            dayOfWeek:formData.get("day"),
             name: formData.get("name"),
+            email: formData.get("email"),
+            phone: formData.get("phone"),
+            role: formData.get("role"),
         });
 
-        const res = await fetch('http://localhost:4001/api/v1/Students/AddNote',{
+        const res = await fetch('http://localhost:4001/api/v1/Faculty/Update/'+(formData.get("id") as string),{
             method: "POST",
             headers:{
                 "Content-Type": "application/json",
@@ -20,18 +21,17 @@ export async function SaveNotes(formData:FormData): Promise<IResponse>{
             mode: "cors",
             body: body
         })
-        console.log(body)
+
         const data = await res.json();
 
-
+        console.log(data)
         return data
 
     } catch (e){
-        console.log(e);
+        console.log("err",e);
         return {
             queryIsSuccess: false,
-            message: "Sikertelen létrehozás!"
-
+            message: "Sikertelen módosítás!"
         }
     }
 }

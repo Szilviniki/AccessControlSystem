@@ -9,7 +9,6 @@ import DeleteStudent from "@/components/DeleteUser/DeleteStudent";
 import EditStudent from "@/components/EditUser/EditStudent";
 import AddNotes from "@/components/NewNote/NewNote";
 import {useCookies} from "next-client-cookies";
-import NewNote from '../NewNote/NewNote';
 
 function Students() {
     const [students, setStudents] = useState([])
@@ -28,6 +27,7 @@ function Students() {
             res.json().then((datas) => {
                 setStudents(datas.data)
 
+
             })
         })
 
@@ -45,6 +45,11 @@ function Students() {
                 birthDate: moment(item.birthDate).format("YYYY.MM.DD"),
                 phone: (<a href={`tel:${item.phone}`}>{item.phone}</a>),
                 present: item.isPresent ? (<FaUserCheck size="8%" color="#006D77" />) : (<FaUserTimes size="8%" color="E29578"/>),
+                pname: item.parent.name,
+                pemail: (<a href={`mailto:${item.parent.email}`}>{item.parent.email}</a>),
+                pphone:(<a href={`tel:${item.parent.phone}`}>{item.parent.phone}</a>),
+                notes:item.notes
+
             }
         }) : [];
     }
@@ -65,22 +70,29 @@ function Students() {
                 <Col className="expanded">
 
                     <h6>Szülő adatai</h6>
-                    Név:
+                    Név: {data.pname}
                     <br/>
-                    Email cím:
+                    Email cím: {data.pemail}
                     <br/>
-                    Telefonszám:
+                    Telefonszám: {data.pphone}
                 </Col>
                 <Col className="expanded">
                     <ButtonGroup aria-label="Basic example">
                         <AddNotes id={data.id}/>
                         <EditStudent id={data.id}/>
                         <DeleteStudent id={data.id}/>
-                        <NewNote id={data.id}/>
                     </ButtonGroup>
                     </Col>
+                </Row>
+            <Row>
+                <Col className="expanded">
+                   <h6>Feljegyzések:</h6>
+                    {data && data.notes.map(note => (
+                        <p key={note.Id}>-{note.name}</p>
+                    ))}
+                </Col>
             </Row>
-        </Container>
+            </Container>
 
     }</pre>;
 
@@ -109,7 +121,6 @@ function Students() {
 
     return (
         <>
-            {token}
             <DataTable
                 columns={columns}
                 data={transformedData}
