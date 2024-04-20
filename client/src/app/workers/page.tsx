@@ -10,6 +10,7 @@ import {cookies} from "next/headers";
 
 export default function WorkersPage() {
     const user = cookies().get("user-name");
+    const role = (cookies().get("user-role") || "") as string;
 
     if (!user) {
         redirect("/login")
@@ -20,7 +21,9 @@ export default function WorkersPage() {
                 <Container>
                     <Row>
                         <Col className="m-2 ">
+                            {(role=="1") && (
                             <AddNewWorkersForm/>
+                                )}
                         </Col>
                     </Row>
                     <Row>

@@ -8,12 +8,12 @@ import EditFaculties from "@/components/EditUser/EditFaculties";
 import DeleteFaculties from "@/components/DeleteUser/DeleteFaculties";
 import {useCookies} from "next-client-cookies";
 
-
 function Faculities() {
     const [faculties, setData] = useState([])
     const transformedData = prepareData(faculties)
     const cookies = useCookies();
     const token = (cookies.get("user-token") as string);
+    const role = (cookies.get("user-role" ||"") as string);
 
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Faculty/GetAll`,{
@@ -69,8 +69,12 @@ function Faculities() {
                 </Col>
     <Col className="expanded">
         <ButtonGroup aria-label="Basic example">
-            <EditFaculties id={data.id}/>
-            <DeleteFaculties id={data.id}/>
+            {(role=="1") && (
+                <>
+                    <EditFaculties id={data.id}/>
+                    <DeleteFaculties id={data.id}/>
+                </>
+            )}
         </ButtonGroup>
     </Col>
 

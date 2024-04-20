@@ -10,10 +10,12 @@ import EditStudent from "@/components/EditUser/EditStudent";
 import AddNotes from "@/components/NewNote/NewNote";
 import {useCookies} from "next-client-cookies";
 
+
 function Students() {
     const [students, setStudents] = useState([])
     const cookies = useCookies();
     const token = (cookies.get("user-token") as string);
+    const role = (cookies.get("user-role") || "") as string;
 
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Students/GetAll`,{
@@ -57,6 +59,7 @@ function Students() {
     const transformedData = prepareData(students);
 
     const ExpandedComponent = ({ data }:any) => <pre>{
+
         <Container>
             <Row>
                 <Col className="expanded">
@@ -79,8 +82,12 @@ function Students() {
                 <Col className="expanded">
                     <ButtonGroup aria-label="Basic example">
                         <AddNotes id={data.id}/>
-                        <EditStudent id={data.id}/>
-                        <DeleteStudent id={data.id}/>
+                        {(role=="1" || role=="2") && (
+                            <>
+                                <EditStudent id={data.id}/>
+                                <DeleteStudent id={data.id}/>
+                            </>
+                        )}
                     </ButtonGroup>
                     </Col>
                 </Row>

@@ -10,6 +10,7 @@ import {cookies} from "next/headers";
 export default function StudentPage() {
 
     const user = cookies().get("user-name");
+    const role = (cookies().get("user-role") || "") as string;
 
 
     if (!user) {
@@ -20,8 +21,10 @@ export default function StudentPage() {
                 <Container>
                     <Row>
                         <Col className="m-2 ">
+                            {(role=="1" || role=="2") && (
+                                <AddNewStudent/>
+                            )}
 
-                            <AddNewStudent/>
                         </Col>
 
                     </Row>
