@@ -19,6 +19,7 @@ function Students() {
     const token = (cookies.get("user-token") as string);
     const role = (cookies.get("user-role") || "") as string;
 
+
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Students/GetAll`,{
             headers: {
@@ -84,7 +85,7 @@ function Students() {
                 <Col className="expanded">
                     <ButtonGroup aria-label="Basic example">
                         <AddNotes id={data.id}/>
-                        {(role=="1" || role=="2") && (
+                        {(role=="\"1\"" || role=="\"2\"") && (
                             <>
                                 <EditStudent id={data.id}/>
                                 <DeleteStudent id={data.id}/>

@@ -116,13 +116,17 @@ function AddNewStudentForm(props: any) {
 
 export default function AddNewStudent(props: any) {
     const [modalShow, setModalShow] = useState(false);
-
+    const role = (useCookies().get("user-role") || "") as string;
     return (
         <>
-            <Button className="_new" onClick={() => setModalShow(true)}>
-                <FaPlusCircle className="mx-1 mb-1"/>
-                Új diák
-            </Button>
+            {(role=="\"1\"" || role=="\"2\"") && (
+                <>
+                    <Button className="_new" onClick={() => setModalShow(true)}>
+                        <FaPlusCircle className="mx-1 mb-1"/>
+                        Új diák
+                    </Button>
+                </>
+                )}
 
             <AddNewStudentForm
                 show={modalShow}
