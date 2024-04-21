@@ -21,12 +21,8 @@ export default function StudentPage() {
                 <Container>
                     <Row>
                         <Col className="m-2 ">
-                            {(role=="1" || role=="2") && (
                                 <AddNewStudent/>
-                            )}
-
                         </Col>
-
                     </Row>
                     <Row>
                         <Col>

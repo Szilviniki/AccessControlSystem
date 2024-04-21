@@ -10,27 +10,28 @@ namespace ACS_Backend
 {
     public static class Program
     {
-        
-        public static byte[] TokenEncryptionKey { get; private set; } = Encoding.UTF8.GetBytes("secretkeyneedstobeatleast32charactersor128bitshoweverthisisnotsecureatall");
+        public static byte[] TokenEncryptionKey { get; private set; } =
+            Encoding.UTF8.GetBytes("secretkeyneedstobeatleast32charactersor128bitshoweverthisisnotsecureatall");
+
         public static void Main(string[] args)
-        {  
+        {
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
             TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
             SQL.connectionString = builder.Configuration.GetConnectionString("REMOTE");
-
-
+            
+            
             // Add services to the container.
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy(name: origin, policy =>
                 {
                     policy.WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod().AllowCredentials();
+                        .AllowAnyHeader()
+                        .AllowAnyMethod().AllowCredentials();
                 });
             });
-
+            
             builder.Services.AddAuthentication(a =>
             {
                 a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,17 +55,17 @@ namespace ACS_Backend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<SQL>(a => { a.UseSqlServer(SQL.connectionString); });
-            
+
             //middleware
             builder.Services.AddTransient<GlobalExceptionHandling>();
-            
+
             //utilities
             builder.Services.AddScoped<IObjectValidatorService, ObjectValidatorService>();
             builder.Services.AddSingleton<ITokenService, TokenService>();
             builder.Services.AddSingleton<IValidatorService, ValidatorService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
 
-            
+
             //services
             builder.Services.AddScoped<IUniquenessChecker, UniquenessChecker>();
             builder.Services.AddTransient<IHomepageService, HomepageService>();
@@ -74,9 +75,7 @@ namespace ACS_Backend
             builder.Services.AddScoped<IPersonnelService, PersonnelService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IGuardianService, GuardianService>();
-            
-         
-            
+
 
             var app = builder.Build();
 
@@ -86,13 +85,17 @@ namespace ACS_Backend
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseCors(origin);
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseMiddleware<GlobalExceptionHandling>();
-            
+
             app.MapControllers();
+
+            app.Urls.Add("http://localhost:4001");
+            app.Urls.Add("https://localhost:4002");
             app.Run();
         }
     }

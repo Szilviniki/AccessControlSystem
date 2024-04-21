@@ -3,10 +3,10 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {FaPlusCircle} from "react-icons/fa";
-import {save} from "@/actions/NewStudentAction";
 import {Container, Form, Row} from "react-bootstrap";
 import {useCookies} from "next-client-cookies";
 import {saveFaculty} from "@/actions/newfaculty";
+
 
 function AddNewWorkersForm(props:any) {
     const token = useCookies().get('user-token');
@@ -76,13 +76,17 @@ function AddNewWorkersForm(props:any) {
 
 export default function AddNewWorkers() {
     const [modalShow, setModalShow] = React.useState(false);
-
+    const role = (useCookies().get("user-role") || "") as string;
     return (
         <>
-            <Button className="_new" onClick={() => setModalShow(true)}>
-                <FaPlusCircle className="mx-1 mb-1"/>
-                Új dolgozó
-            </Button>
+            {(role=="\"1\"") && (
+                <>
+                    <Button className="_new" onClick={() => setModalShow(true)}>
+                        <FaPlusCircle className="mx-1 mb-1"/>
+                        Új dolgozó
+                    </Button>
+                </>
+            )}
 
             <AddNewWorkersForm
                 show={modalShow}
