@@ -15,6 +15,14 @@ namespace ACS_Backend
 
         public static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("Access ");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("Control ");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("System");
+            Console.ResetColor();
+            Console.WriteLine("Backend v1.0.0");
             var origin = "_allowed";
             var builder = WebApplication.CreateBuilder(args);
             TokenEncryptionKey = Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key"));
