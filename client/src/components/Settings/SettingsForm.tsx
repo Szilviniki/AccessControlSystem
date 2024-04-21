@@ -5,13 +5,14 @@ import React, {useEffect, useState} from "react";
 import {useCookies} from "next-client-cookies";
 import Notiflix from "notiflix";
 import {updateUser} from "@/actions/userDataUpdateAction";
+import facultyType from "@/types/facultyType";
 
 
-export default function settings() {
+export default function Settings() {
     const cookies = useCookies();
     const id = ((cookies.get("user-id")as string).replaceAll('"', ''));
     const token = (cookies.get("user-token") as string);
-    const [user, setData] = useState([])
+    const [user, setData] = useState<facultyType>({id:"",email:"",name:"",phone:"",role:0,isPresent:false})
 
     useEffect(() => {
         fetch(`http://localhost:4001/api/v1/Faculty/Get/${id}`,{

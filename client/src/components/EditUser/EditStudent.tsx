@@ -8,22 +8,33 @@ import {Col, Container, Form, Row} from "react-bootstrap";
 import {StudentProps} from "@/interfaces/Student";
 import {useCookies} from "next-client-cookies";
 import {updateStudent} from "@/actions/StudentUpdate";
+import studentType from "@/types/studentType";
+import parentType from "@/types/parentType";
 
 function EditStudentForm(props: any) {
-    const [student, setData] = useState([]);
-    const [parent, setParent] = useState([]);
+    const [student, setData] = useState<studentType>({
+        name: "",
+        email: "",
+        id: "",
+        phone: "",
+        notes: [],
+        birthDate: new Date,
+        isPresent: false,
+        parent: {name: "", phone: "", email: ""}
+    });
+    const [parent, setParent] = useState<parentType>({name: "", phone: "", email: ""});
     const cookies = useCookies();
     const token = (cookies.get("user-token") as string);
 
     useEffect(() => {
-        fetch(`http://localhost:4001/api/v1/Students/Get/${props.id}`,{
+        fetch(`http://localhost:4001/api/v1/Students/Get/${props.id}`, {
                 headers: {
                     "Authorization": "Bearer " + token.replaceAll("\"", "").trim(),
                     "Access-Control-Allow-Origin": "*",
                 },
                 mode: "cors",
             }
-            ).then((res) => {
+        ).then((res) => {
             res.json().then((datas) => {
                 setData(datas.data)
                 setParent(datas.data.parent)
@@ -43,7 +54,7 @@ function EditStudentForm(props: any) {
         >
             <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
-                   Diák Szerkesztése
+                    Diák Szerkesztése
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -127,12 +138,13 @@ function EditStudentForm(props: any) {
         </Modal>
     );
 }
-export default function EditStudent({ id }: StudentProps) {
+
+export default function EditStudent({id}: StudentProps) {
     const [modalShow, setModalShow] = React.useState(false);
 
     return (
         <>
-            <Button className="buttonedit" onClick={() => setModalShow(true)}><MdEdit /></Button>
+            <Button className="buttonedit" onClick={() => setModalShow(true)}><MdEdit/></Button>
             <EditStudentForm
                 show={modalShow}
                 onHide={() => setModalShow(false)}
