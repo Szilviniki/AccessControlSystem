@@ -7,6 +7,7 @@ import {FaStar, FaUserEdit, FaUserTimes} from "react-icons/fa";
 import moment from "moment";
 import {FaUserCheck} from "react-icons/fa6";
 import {useCookies} from "next-client-cookies";
+import homeType from "@/types/homeType";
 
 async function Get(token: string)  {
 
@@ -23,7 +24,7 @@ async function Get(token: string)  {
 }
 
 function HomePageForm() {
- const [data, setData] = useState(null);
+ const [data, setData] = useState<homeType|null>(null);
 const cookies = useCookies();
 
 useEffect(() => {
@@ -93,7 +94,7 @@ useEffect(() => {
                                      <h2>Aktuális feljegyzések</h2>
                                  </Col>
                                  {data.notes.map((note, i) => (
-                                     <h4 key={i}>{note}</h4>
+                                     <h4 key={i}>{note.name}</h4>
                                  ))}
                              </Row>
                          </Card>

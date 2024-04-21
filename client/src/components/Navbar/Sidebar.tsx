@@ -46,7 +46,7 @@ export default function SideMenu({
                 <MenuItem className="Nav-item" component={<Link href="/"/>} icon={<FaHome/>} active={isActive("/")}>Kezdőlap</MenuItem>
                 <MenuItem className="Nav-item" component={<Link href="/students"/>} icon={<FaUserFriends/>} active={isActive("/students")}> Diákok </MenuItem>
                 <MenuItem className="Nav-item" component={<Link href="/workers"/>} icon={<FaUserTie/>} active={isActive("/workers")}> Dolgozók </MenuItem>
-                <MenuItem className="Nav-item" component={<Link href="/settings"/>} icon={<IoMdSettings/>} active={isActive("/settings")}> Beálítások </MenuItem>
+                <MenuItem className="Nav-item" component={<Link href="/settings"/>} icon={<IoMdSettings/>} active={isActive("/Settings")}> Beálítások </MenuItem>
                 <MenuItem className="Nav-item"  icon={<IoMdExit />} onClick={Logout} component={<Link href="/login"/>} >Kilépés</MenuItem>
             </Menu>
                 
