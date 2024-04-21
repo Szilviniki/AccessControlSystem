@@ -7,10 +7,11 @@ import {Col, Container, Form, Row} from "react-bootstrap";
 import { useCookies} from "next-client-cookies";
 import {StudentProps} from "@/interfaces/Student";
 import {updateFaculty} from "@/actions/FacultyUpdate";
+import facultyType from "@/types/facultyType";
 
 
 function EditFacultiesForm(props: any) {
-    const [faculty, setData] = useState([]);
+    const [faculty, setData] = useState<facultyType>({name:"",id:"",role:0,isPresent:false,email:"",phone:""});
     const cookies = useCookies();
     const token = (cookies.get("user-token")as string);
 

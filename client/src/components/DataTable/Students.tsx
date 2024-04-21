@@ -9,10 +9,12 @@ import DeleteStudent from "@/components/DeleteUser/DeleteStudent";
 import EditStudent from "@/components/EditUser/EditStudent";
 import AddNotes from "@/components/NewNote/NewNote";
 import {useCookies} from "next-client-cookies";
+import studentType from "@/types/studentType";
+import noteType from "@/types/noteType";
 
 
 function Students() {
-    const [students, setStudents] = useState([])
+    const [students, setStudents] = useState<studentType[]|never[]>([])
     const cookies = useCookies();
     const token = (cookies.get("user-token") as string);
     const role = (cookies.get("user-role") || "") as string;
@@ -36,7 +38,7 @@ function Students() {
 
     }, [])
 
-    function prepareData(datas: any[]) {
+    function prepareData(datas: studentType[]) {
 
         return datas ? datas.map((item) => {
             return {
@@ -95,8 +97,8 @@ function Students() {
             <Row>
                 <Col className="expanded">
                    <h6>Feljegyzések:</h6>
-                    {data && data.notes.map(note => (
-                        <p key={note.Id}>-{note.name}</p>
+                    {data && data.notes.map((note:noteType) => (
+                        <p key={note.id}>-{note.name}</p>
                     ))}
                 </Col>
             </Row>
@@ -144,3 +146,5 @@ function Students() {
 }
 
 export default Students;
+
+

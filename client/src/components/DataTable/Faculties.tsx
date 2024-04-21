@@ -8,7 +8,7 @@ import EditFaculties from "@/components/EditUser/EditFaculties";
 import DeleteFaculties from "@/components/DeleteUser/DeleteFaculties";
 import {useCookies} from "next-client-cookies";
 
-function Faculities() {
+function Faculties() {
     const [faculties, setData] = useState([])
     const transformedData = prepareData(faculties)
     const cookies = useCookies();
@@ -121,4 +121,4 @@ function Faculities() {
     );
 }
 
-export default Faculities;
+export default Faculties;

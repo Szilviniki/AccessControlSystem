@@ -1,7 +1,7 @@
 import React from 'react';
 import MainTemplate from '@/app/templates/MainTemplate';
 import {Card, Col, Container, Row} from 'react-bootstrap';
-import Faculities from "@/components/DataTable/Faculities";
+import Faculties from "@/components/DataTable/Faculties";
 import AddNewWorkersForm from "@/components/NewUser/AddNewWorkersForm";
 import {redirect} from "next/navigation";
 import {cookies} from "next/headers";
@@ -29,7 +29,7 @@ export default function WorkersPage() {
                     <Row>
                         <Col>
                             <Card className="table w-100">
-                                <Faculities/>
+                                <Faculties/>
                             </Card>
                         </Col>
                     </Row>
