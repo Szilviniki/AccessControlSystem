@@ -69,7 +69,7 @@ function Faculities() {
                 </Col>
     <Col className="expanded">
         <ButtonGroup aria-label="Basic example">
-            {(role=="1") && (
+            {(role=="\"1\"") && (
                 <>
                     <EditFaculties id={data.id}/>
                     <DeleteFaculties id={data.id}/>
