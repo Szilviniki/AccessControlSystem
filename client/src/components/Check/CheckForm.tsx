@@ -29,7 +29,7 @@ export default function CheckForm() {
                 <Form.Control
                     type="number"
                     name="code"
-                    placeholder="Belépőkód (diákigazolvány szám)"
+                    placeholder="Belépőkód"
                     className="inputFc"
                     maxLength={10}
                     ref={inputRef}
