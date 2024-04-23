@@ -1,11 +1,8 @@
 "use server"
 
-type LoginResponse = {
-    data? : string[]|string
-    error?: boolean
-    messages? : string[]|string
-}
-export async function login(formData:FormData): Promise<LoginResponse>{
+import {ILoginResponse} from "@/interfaces/LoginResponse";
+
+export async function login(formData:FormData): Promise<ILoginResponse>{
     try {
         const res = await fetch(`http://localhost:4001/api/v1/Auth/Check`,{
 
@@ -24,10 +21,10 @@ export async function login(formData:FormData): Promise<LoginResponse>{
         return data
 
     } catch (e){
-        console.log(e);
+
        return {
-            error: true,
-            messages: "Sikertelen bejelentkezés!"
+            queryIsSuccess: false,
+            message: "Sikertelen bejelentkezés!"
 
        }
     }

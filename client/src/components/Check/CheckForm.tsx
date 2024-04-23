@@ -14,7 +14,7 @@ export default function CheckForm() {
 
         if (resWorkers.queryIsSuccess===true || resStudent.queryIsSuccess===true) {
             Notify.success('Sikeres Belépés/Kilépés');
-            console.log(resWorkers)
+
             inputRef.current.value = ""
         } else {
             Notify.failure('Sikertelen Belépés/Kilépés! ', {
@@ -29,7 +29,7 @@ export default function CheckForm() {
                 <Form.Control
                     type="number"
                     name="code"
-                    placeholder="Belépőkód (diákigazolvány szám)"
+                    placeholder="Belépőkód"
                     className="inputFc"
                     maxLength={10}
                     ref={inputRef}

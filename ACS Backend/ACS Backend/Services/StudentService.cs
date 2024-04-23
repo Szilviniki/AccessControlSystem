@@ -1,6 +1,10 @@
 ﻿using ACS_Backend.Exceptions;
 using ACS_Backend.Interfaces;
+using ACS_Backend.Model;
 using ACS_Backend.Utilities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ACS_Backend.Services;
 
@@ -8,35 +12,81 @@ public class StudentService : IStudentService
 {
     private SQL _sql;
     private UniquenessChecker _checker = new UniquenessChecker(new SQL());
+    private ValidatorService _validatorService = new ValidatorService();
+    private ObjectValidatorService _objectValidatorService = new ObjectValidatorService();
 
     public StudentService(SQL sql)
     {
         _sql = sql;
     }
 
+
     public Student GetStudent(Guid id)
     {
         if (!_sql.Students.Any(x => x.Id == id)) throw new ItemNotFoundException();
-        var student = _sql.Students.Single(x => x.Id == id);
+        var student = _sql.Students.Include(x => x.Parent).Single(x => x.Id == id);
+        student.Notes = _sql.Notes.Where(x => x.StudentId == student.Id).IgnoreAutoIncludes().ToList();
         return student;
     }
 
     public Array GetAllStudents()
     {
-        return _sql.Students.ToArray();
+        return _sql.Students.Include(x=>x.Parent).Include(x=>x.Notes).IgnoreAutoIncludes().ToArray();
     }
 
-    public async Task UpdateStudent(Student student)
+    public async Task UpdateStudent(UpdateStudentModel student, Guid id)
     {
-        if (!_sql.Students.Any(x => x.Id == student.Id))
+        if (student.ParentId == null && student.Name.IsNullOrEmpty() && student.Email.IsNullOrEmpty() &&
+            student.Phone.IsNullOrEmpty() && student.BirthDate == null)
+            throw new ArgumentException("Nem adtál meg módosítandó adatot");
+
+        if (!_sql.Students.Any(x => x.Id == id))
         {
             throw new ItemNotFoundException();
         }
 
-        var checkRes = _checker.IsUniqueStudent(student);
+        var studentOld = await _sql.Students.SingleAsync(x => x.Id == id);
+
+        if (student.ParentId != null && !_sql.Guardians.Any(x => x.Id == student.ParentId))
+            throw new ReferredEntityNotFoundException();
+
+
+        if (!student.Email.IsNullOrEmpty())
+        {
+            studentOld.Email = student.Email;
+        }
+
+
+        if (!student.Phone.IsNullOrEmpty())
+        {
+            studentOld.Phone = student.Phone;
+        }
+
+        if (student.Name != null)
+        {
+            studentOld.Name = student.Name;
+        }
+
+        if (student.ParentId != Guid.Empty && student.ParentId != null)
+        {
+            studentOld.ParentId = student.ParentId.GetValueOrDefault();
+        }
+
+        if (student.BirthDate != null && student.BirthDate != DateTime.MinValue)
+        {
+            studentOld.BirthDate = student.BirthDate.GetValueOrDefault();
+        }
+
+        studentOld.Id = id;
+
+        var checkValid = _objectValidatorService.Validate(studentOld);
+        if (!checkValid.QueryIsSuccess)
+            throw new ArgumentException(string.Join('|', checkValid.Data));
+
+        var checkRes = _checker.IsUniqueStudentOnUpdate(studentOld);
         if (!checkRes.QueryIsSuccess)
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
-        _sql.Students.Update(student);
+        _sql.Students.Update(studentOld);
         await _sql.SaveChangesAsync();
     }
 
@@ -49,28 +99,94 @@ public class StudentService : IStudentService
 
     public async Task AddStudent(Student student)
     {
-        if (_sql.Students.Any(x => x.CardId == student.CardId))
+        var valRes = _objectValidatorService.Validate(student);
+        if (!valRes.QueryIsSuccess)
         {
-            throw new ItemAlreadyExistsException();
+            throw new ArgumentException(string.Join('|', valRes.Data));
         }
+
         var checkRes = _checker.IsUniqueStudent(student);
         if (!checkRes.QueryIsSuccess)
+        {
             throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+        }
+
+        if (!_sql.Guardians.Any(x => x.Id == student.ParentId)) throw new ReferredEntityNotFoundException();
+
         student.Id = Guid.NewGuid();
         student.BirthDate = student.BirthDate.Date;
+        student.CardId = new Random().Next(100000, 999999);
+
         _sql.Students.Add(student);
         await _sql.SaveChangesAsync();
     }
 
-    public Array GetExtendedStudent(int cardId)
+    public async Task AddStudentWithParent(Student student, Guardian parent)
     {
-        if (!_sql.Students.Any(x => x.CardId == cardId)) throw new ItemNotFoundException();
-        var info = _sql.ExtendedStudents.Where(x => x.CardId == cardId).ToArray();
-        return info;
+        await using var transaction = await _sql.Database.BeginTransactionAsync();
+        try
+        {
+            bool diditfail = false;
+            string failed = "";
+            var valResStudent = _objectValidatorService.Validate(student);
+            var valResParent = _objectValidatorService.Validate(parent);
+
+            if (!valResStudent.QueryIsSuccess)
+            {
+                diditfail = true;
+                failed += $"Student: {string.Join(';', valResStudent.Data)}";
+            }
+
+            if (!valResParent.QueryIsSuccess)
+            {
+                if (diditfail)
+                    failed += " | ";
+                diditfail = true;
+                failed += $"Parent: {string.Join(';', valResParent.Data)}";
+            }
+
+            if (diditfail)
+            {
+                throw new ArgumentException(failed);
+            }
+
+            var checkRes = _checker.IsUniqueStudent(student);
+            if (!checkRes.QueryIsSuccess)
+                throw new UniqueConstraintFailedException<List<string>> { FailedOn = checkRes.Data };
+
+            var uniqueParent = _checker.IsUniqueGuardian(parent);
+            if (!uniqueParent.QueryIsSuccess)
+                throw new UniqueConstraintFailedException<List<string>> { FailedOn = uniqueParent.Data };
+
+            student.Id = Guid.NewGuid();
+            parent.Id = Guid.NewGuid();
+            student.BirthDate = student.BirthDate.Date;
+            student.ParentId = parent.Id;
+            _sql.Students.Add(student);
+            _sql.Guardians.Add(parent);
+            await _sql.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
-    public Array GetAllExtendedStudents()
+    public async Task AddNoteToStudent(Note note)
     {
-        return _sql.ExtendedStudents.ToArray();
+        var val = _objectValidatorService.Validate(note);
+        if (!val.QueryIsSuccess) throw new ArgumentException(string.Join('|', val.Data));
+        if (!_sql.Students.Any(x => x.Id == note.StudentId)) throw new ItemNotFoundException();
+        _sql.Notes.Add(note);
+        await _sql.SaveChangesAsync();
+    }
+
+    public async Task RemoveNoteFromStudent(int noteId)
+    {
+        if (!_sql.Notes.Any(x => x.Id == noteId)) throw new ItemNotFoundException();
+        _sql.Notes.Remove(_sql.Notes.Single(x => x.Id == noteId));
+        await _sql.SaveChangesAsync();
     }
 }

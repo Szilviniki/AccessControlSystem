@@ -1,16 +1,14 @@
-import {Card, Col, Row} from "react-bootstrap";
 import React from "react";
-import {getCookies} from "next-client-cookies/server";
 import MainTemplate from "@/app/templates/MainTemplate";
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
-import {useCookies} from "next-client-cookies";
-
+import SettingsForm from "@/components/Settings/SettingsForm";
+import {Col, Container, Row} from "react-bootstrap";
 
 export default function SettingsPage() {
-    const email = cookies().get("email");
+    const user = cookies().get("user-name");
 
-    if (!email) {
+    if (!user) {
         redirect("/login")
     }
     else {
@@ -20,8 +18,20 @@ export default function SettingsPage() {
             <>
 
                 <MainTemplate>
-               settings
+                    <Container>
+                        <Row>
+                            <Col>
+                                <h2>Adatok módosítása</h2>
+                            </Col>
+                        </Row>
+                        <Row >
+                            <Col sm={5} md={12}>
+                                 <SettingsForm/>
+                            </Col>
+                        </Row>
+                    </Container>
                 </MainTemplate>
             </>
-        )}
+        )
+    }
 }

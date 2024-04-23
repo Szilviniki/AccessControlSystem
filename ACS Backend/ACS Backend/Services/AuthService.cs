@@ -24,29 +24,19 @@ public class AuthService : IAuthService
         if (isEmail)
         {
             var user = this._sql.Personnel.Single(u => u.Email == login.Email);
-            bool isPassword = _encryptionService.ValidatePassword(login.Password, login.Email);
+            bool isPassword = _encryptionService.Valdiate(login.Password, login.Email);
             if (isPassword)
             {
                 return new LoginResponseModel
                 {
+                    Id = user.Id,
                     Email = login.Email,
                     Name = user.Name,
-                    Role = "something",
+                    Role = user.Role+"",
                     Token = _tokenService.CreateToken(user)
                 };
             }
         }
-        else
-        {
-            throw new ItemNotFoundException();
-        }
-
-        return new LoginResponseModel
-        {
-            Email = login.Email,
-            Name = "Invalid",
-            Role = "Invalid",
-        };
-
+        throw new FailedLoginException();
     }
 }

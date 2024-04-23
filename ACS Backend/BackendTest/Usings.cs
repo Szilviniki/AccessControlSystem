@@ -1,0 +1,13 @@
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using DB_Module.Models;
+global using DB_Module.MockData;
+global using Microsoft.VisualStudio.TestTools.UnitTesting;
+global using ACS_Backend.Exceptions;
+global using ACS_Backend.Model;
+global using ACS_Backend.Services;
+global using ACS_Backend.Controllers;
+global using ACS_Backend.Utilities;
+global using DB_Module;

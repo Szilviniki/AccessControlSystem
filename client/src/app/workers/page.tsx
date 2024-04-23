@@ -1,28 +1,40 @@
-import React, {use} from 'react';
+import React from 'react';
 import MainTemplate from '@/app/templates/MainTemplate';
 import {Card, Col, Container, Row} from 'react-bootstrap';
-import Faculities from "@/components/DataTable/Faculities";
+import Faculties from "@/components/DataTable/Faculties";
 import AddNewWorkersForm from "@/components/NewUser/AddNewWorkersForm";
+import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
+
+
 
 export default function WorkersPage() {
+    const user = cookies().get("user-name");
 
 
-    return (
-    <MainTemplate>
-        <Container>
-            <Row>
-                <Col className="m-2 ">
-                    <AddNewWorkersForm/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Card className="table w-100">
-                        <Faculities/>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
-    </MainTemplate>
-    );
+    if (!user) {
+        redirect("/login")
+    } else {
+
+        return (
+            <MainTemplate>
+                <Container>
+                    <Row>
+                        <Col className="m-2 ">
+
+                                    <AddNewWorkersForm/>
+
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Card className="table w-100">
+                                <Faculties/>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+            </MainTemplate>
+        );
+    }
 }

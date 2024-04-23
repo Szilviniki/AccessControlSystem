@@ -13,7 +13,7 @@ public class CheckInService : ICheckInService
         _sql = sql;
     }
 
-    public async Task CheckFaculty(int cardId)
+    public async Task CheckPersonnel(int cardId)
     {
         if (!_sql.Personnel.Any(x => x.CardId == cardId))
         {

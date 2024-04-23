@@ -1,33 +1,39 @@
 ﻿namespace DB_Module.Models
 {
+    
     [Table("Students")]
     public class Student
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
 
         
         public int CardId {  get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required] [MaxLength(50)] public string Name { get; set; } = "";
 
-        public string Email { get; set; }
+        [Required]
+        [EmailAddress]
+        [MaxLength(100)]
+        public string Email { get; set; } = "";
 
         
         public bool IsPresent { get; set; }
 
         [Required]
-        public string Phone { get; set; }
+        [PhoneNumber]
+        [MaxLength(13)]
+        public string Phone { get; set; } = "";
 
         [Required]
+        [BirthDate]
         public DateTime BirthDate { get; set; }
 
         [ForeignKey("ParentId")]
         public Guid ParentId { get; set; }
-
-        [NotMapped]
-        public Guardian Parent { get; set; }
+        
+        public List<Note>? Notes { get; set; } = null!;
+        
+        public Guardian? Parent { get; set; } = null!;
     }
 }
